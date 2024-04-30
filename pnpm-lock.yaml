@@ -10,16 +10,22 @@ dependencies:
     version: 14.2.3
   drizzle-orm:
     specifier: ^0.30.9
-    version: 0.30.9(@types/react@18.3.1)(react@18.3.1)
+    version: 0.30.9(@types/react@18.3.1)(postgres@3.4.4)(react@18.3.1)
   next:
     specifier: 14.2.3
     version: 14.2.3(react-dom@18.3.1)(react@18.3.1)
+  postgres:
+    specifier: ^3.4.4
+    version: 3.4.4
   react:
     specifier: ^18
     version: 18.3.1
   react-dom:
     specifier: ^18
     version: 18.3.1(react@18.3.1)
+  zod:
+    specifier: ^3.23.4
+    version: 3.23.4
 
 devDependencies:
   '@types/node':
@@ -46,6 +52,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.4.1
     version: 3.4.3
+  tsx:
+    specifier: ^4.7.3
+    version: 4.7.3
   typescript:
     specifier: ^5
     version: 5.4.5
@@ -1338,7 +1347,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.9(@types/react@18.3.1)(react@18.3.1):
+  /drizzle-orm@0.30.9(@types/react@18.3.1)(postgres@3.4.4)(react@18.3.1):
     resolution: {integrity: sha512-VOiCFsexErmgqvNCOmbzmqDCZzZsHoz6SkWAjTFxsTr1AllKDbDJ2+GgedLXsXMDgpg/ljDG1zItIFeZtiO2LA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -1419,6 +1428,7 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.3.1
+      postgres: 3.4.4
       react: 18.3.1
     dev: false
 
@@ -3039,6 +3049,11 @@ packages:
       source-map-js: 1.2.0
     dev: true
 
+  /postgres@3.4.4:
+    resolution: {integrity: sha512-IbyN+9KslkqcXa8AO9fxpk97PA4pzewvpi2B3Dwy9u4zpV32QicaEdgmF3eSQUzdRk7ttDHQejNgAEr4XoeH4A==}
+    engines: {node: '>=12'}
+    dev: false
+
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3514,6 +3529,17 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: false
 
+  /tsx@4.7.3:
+    resolution: {integrity: sha512-+fQnMqIp/jxZEXLcj6WzYy9FhcS5/Dfk8y4AtzJ6ejKcKqmfTF8Gso/jtrzDggCF2zTU20gJa6n8XqPYwDAUYQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    dependencies:
+      esbuild: 0.19.12
+      get-tsconfig: 4.7.3
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -3708,4 +3734,3 @@ packages:
 
   /zod@3.23.4:
     resolution: {integrity: sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==}
-    dev: true
