@@ -10,9 +10,18 @@ export default function SignUp() {
     return (
         <div className="h-screen w-full flex items-center justify-center">
             <form className="md:w-[35%] flex flex-col" action={signUpAction}>
-                <input className="md:mb-4 text-black" type="email" name="email" placeholder="email"/>
-                <input className="md:mb-4 text-black" type="text" name="username" placeholder="username" />
-                <input className="md:mb-4 text-black" type="password" name="password" placeholder="password" />
+                <div className="w-full">
+                    <p className="md:text-sm text-red-600">{state?.errors.email}</p>
+                    <input className="md:mb-4 text-black w-full" type="email" name="email" placeholder="email"/>
+                </div>
+                <div className="w-full">
+                    <p className="md:text-sm text-red-600">{state?.errors.username}</p>
+                    <input className="md:mb-4 text-black w-full" type="text" name="username" placeholder="username" />
+                </div>
+                <div className="w-full">
+                    <p className="md:text-sm text-red-600">{state?.errors.password}</p>
+                    <input className="md:mb-4 text-black w-full" type="password" name="password" placeholder="password" />
+                </div>
                 <button type="submit">Submit</button>
             </form>
         </div>
