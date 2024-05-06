@@ -1,14 +1,14 @@
-import { boolean, date, pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import { boolean, date, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 
 export const user = pgTable('user', {
     id: serial('id').primaryKey(),
-    name: text('name').notNull(),
+    username: varchar('name', { length: 48 }).notNull(),
     email: varchar('email', { length: 254 }).notNull().unique(),
     password: text('password').notNull(),
     display_name: varchar('display_name', { length: 48 }).notNull(),
-    avatar: text('url').notNull(),
+    avatar: text('url'),
     description: varchar('description', { length: 150 }),
     is_admin: boolean('is_admin').default(false),
-    created_at: date('created_at').notNull()
+    created_at: timestamp('created_at').defaultNow().notNull()
 })
