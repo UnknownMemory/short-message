@@ -4,7 +4,7 @@ import { useFormState } from "react-dom"
 
 import signUp from "./actions"
 import { FormInput } from "@/components/FormInput"
-   
+
 
 export default function SignUp() {
     const [state, signUpAction] = useFormState(signUp, null)
