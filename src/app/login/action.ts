@@ -7,7 +7,8 @@ import { revalidatePath } from 'next/cache';
 
 export default async function login(prevState: any, formData: FormData) {
     try {
-        await signIn('credentials', formData);
+        const res = await signIn('credentials', formData);
+        console.log(res)
         revalidatePath('/login')
     } catch (error) {
         if (error instanceof AuthError) {

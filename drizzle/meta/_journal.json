@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1714473943482,
-      "tag": "0000_petite_darwin",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1714484000590,
-      "tag": "0001_plain_risque",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1714484060614,
-      "tag": "0002_stale_shiver_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1714753635401,
-      "tag": "0003_old_doomsday",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1715000135034,
-      "tag": "0004_small_klaw",
+      "when": 1715442732396,
+      "tag": "0000_pink_photon",
       "breakpoints": true
     }
   ]

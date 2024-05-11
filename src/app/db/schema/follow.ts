@@ -1,4 +1,4 @@
-import { date, integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { date, pgTable, serial, integer } from "drizzle-orm/pg-core";
 import { user } from "./user";
 
 
