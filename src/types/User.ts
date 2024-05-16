@@ -4,7 +4,7 @@ interface User {
     email?: string,
     password?: string,
     display_name: string,
-    avatar: string | null,
+    image: string | null,
     description: string | null,
     is_admin?: boolean | null,
     created_at?: Date
