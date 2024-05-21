@@ -18,3 +18,4 @@ export const generateTokens = async (userID: unknown, expires: { 'expireAccess':
 
     return [accessToken, refreshToken]
 }
+

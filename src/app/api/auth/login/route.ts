@@ -17,14 +17,17 @@ export async function POST(request: Request) {
 
     if (users[0] && users[0].password) {
         const [accessToken, refreshToken] = await generateTokens(users[0].id, { 'expireAccess': '8h', 'expireRefresh': '30d' })
-        const expireDate: string = getFutureDate(30)
+        const expireDate: number = getFutureDate(30)
 
         const passwordsMatch = await bcrypt.compare(password, users[0].password);
         if (passwordsMatch) {
-            return NextResponse.json(
+            const response = NextResponse.json(
                 { 'accessToken': accessToken },
-                { status: 200, headers: { 'Set-Cookie': `refreshToken=${refreshToken};Domain=${process.env.HOST};Path=/api/auth/refreshtoken;Expires=${expireDate};HttpOnly;SameSite=Strict` } }
+                { status: 200 }
             );
+
+            response.cookies.set('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', domain: process.env.HOST, path: '/api/auth/refreshtoken', expires: expireDate })
+            return response
         }
     }
 
