@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
     }
 }
 
-const protectedRoutes = ['^/api/auth/refreshtoken$']
+const protectedRoutes = ['^/api/auth/refreshtoken$', '^/api/user/me$']
 
 export const config = {
     matcher: ['/api/:path*']

@@ -26,7 +26,7 @@ export async function POST(request: Request) {
                 { status: 200 }
             );
 
-            response.cookies.set('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', domain: process.env.HOST, path: '/api/auth/refreshtoken', expires: expireDate })
+            response.cookies.set('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', domain: process.env.DOMAIN, path: '/api/auth/refreshtoken', expires: expireDate })
             return response
         }
     }
