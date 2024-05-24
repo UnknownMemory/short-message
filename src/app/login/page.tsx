@@ -13,7 +13,9 @@ export default function Login() {
             <form className="md:w-[35%] flex flex-col" action={loginAction}>
                 <FormInput name="email" type="email" error={null}></FormInput>
                 <FormInput name="password" type="password" error={null}></FormInput>
-                <button type="submit">Submit</button>
+                <div className="flex justify-end">
+                    <button className="btn-default" type="submit">Login</button>
+                </div>
             </form>
         </div>
     )

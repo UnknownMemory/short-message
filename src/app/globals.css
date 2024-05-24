@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -14,7 +14,7 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -26,8 +26,34 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+
+@layer base {
+  html {
+    @apply bg-sm-primary;
+  }
+
+  input::placeholder {
+    text-transform: capitalize;
+  }
+}
+
+@layer components {
+  .btn-default {
+    background-color: theme(colors.sm-secondary);
+    @apply text-white rounded md:px-6 md:py-1.5
+  }
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+/* @media (prefers-color-scheme: dark) {
+  @layer base {
+    html {
+      @apply bg-sm-dark;
+    }
+  }
+} */
