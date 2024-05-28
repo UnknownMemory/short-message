@@ -18,9 +18,5 @@ body:form-urlencoded {
 script:post-response {
   bru.setEnvVar("accessToken", res.body.accessToken)
   
-  const cookies = res.getHeader('set-cookie');
   
-  if(cookies) {
-    bru.setVar("cookie", cookies.join('; '));
-  }
 }
