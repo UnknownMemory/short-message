@@ -6,10 +6,9 @@ interface Props {
 
 export const FormInput = ({name, type, error}: Props) => {
     return (
-        
         <div className="w-full">
             {error ? <p className="md:text-sm text-red-600">{error}</p> : ''}
-            <input className="md:mb-4 md:p-2 text-black w-full rounded" type={type} name={name} placeholder={name}/>
+            <input className="input-light mb-2 md:mb-4 p-2 w-full rounded" type={type} name={name} placeholder={name}/>
         </div>
     )
 }

@@ -29,18 +29,28 @@ body {
 
 @layer base {
   html {
-    @apply bg-sm-primary;
+    @apply bg-sm-white;
   }
 
   input::placeholder {
     text-transform: capitalize;
   }
+
+  a {
+    color: theme(colors.sm-primary)
+  }
+
 }
 
 @layer components {
-  .btn-default {
-    background-color: theme(colors.sm-secondary);
-    @apply text-white rounded md:px-6 md:py-1.5
+  .btn-light {
+    background-color: theme(colors.sm-primary);
+    @apply text-white rounded px-4 md:px-6 py-1.5;
+  }
+
+  .input-light:focus {
+    outline-color: theme(colors.sm-primary);
+    @apply text-black;
   }
 }
 
