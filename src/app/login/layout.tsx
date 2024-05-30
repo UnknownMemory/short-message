@@ -1,5 +1,5 @@
 export const metadata = {
-    title: "Login | Short Message",
+    title: "Login / Short Message",
 };
 
 

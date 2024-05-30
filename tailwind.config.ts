@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         "sm-white": "#F6F5F2",
-        "sm-primary": "#D0BFFF",
+        "sm-primary": "#A374D5",
         "sm-dark-purple": "#BEADFA",
         "sm-primary-dark": "#222831",
         "sm-light-beige": "#F0EBE3",
