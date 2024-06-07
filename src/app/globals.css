@@ -32,6 +32,12 @@ body {
     @apply bg-sm-white;
   }
 
+  [contenteditable=true]:empty::before {
+    content: attr(placeholder);
+    display: block;
+    color: theme(colors.sm-dark-gray);
+  }
+
   input::placeholder {
     text-transform: capitalize;
   }
