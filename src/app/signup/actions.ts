@@ -1,8 +1,8 @@
 'use server'
 
 import { z } from "zod"
-import { db } from "@/app/db/db"
-import { user } from "@/app/db/schema/user"
+import { db } from "@/db/db"
+import { user } from "@/db/schema/user"
 import { revalidatePath } from "next/cache"
 import { hash } from "bcryptjs"
 

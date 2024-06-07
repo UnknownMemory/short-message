@@ -5,8 +5,7 @@ interface Props {
     post: string,
 }
 
-//md:w-40 flex justify-center
-//
+
 export const Post = ({user, post}: Props) => {
     return (
         <div className="flex md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
