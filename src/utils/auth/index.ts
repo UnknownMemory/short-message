@@ -19,3 +19,18 @@ export const generateTokens = async (userID: unknown, expires: { 'expireAccess':
     return [accessToken, refreshToken]
 }
 
+
+export const checkJWT = async (token: string) => {
+    const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
+
+
+    token = token.replace('Bearer ', "")
+
+    try {
+        await jose.jwtVerify(token, accessSecret)
+    } catch (e) {
+        throw new Error("User not authenticated")
+    }
+
+    return true
+}
