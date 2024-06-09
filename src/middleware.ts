@@ -1,46 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkJWT } from "./utils/auth";
-import { cookies } from "next/headers";
+import { JWTPayload } from "jose";
 
 
 export async function middleware(request: NextRequest) {
-    if (protectedRoutes.some((route: string) => request.nextUrl.pathname.match(route))) {
-        const cookieStore = cookies()
-        const token = cookieStore.get('accessToken')
+    if (protectedAPIRoutes.some((route: string) => request.nextUrl.pathname.match(route))) {
+        const requestHeaders = new Headers(request.headers)
+        let token: string | null = requestHeaders.get('Authorization')
 
-        if (token == undefined) {
+        if (token == null) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
 
-        if (await checkJWT(token.value)) {
-            return NextResponse.next()
+        token = token.replace('Bearer ', "")
+
+        const loggedUser: false | JWTPayload = await checkJWT(token)
+
+        if (await loggedUser) {
+            const response = NextResponse.next()
+            response.headers.set('userID', loggedUser.id)
+            return response
         }
 
-        return NextResponse.redirect(new URL('/login', request.url))
+        return NextResponse.json({ 'error': 'Authentication error' }, { status: 401 });
 
     }
 
-    if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
-        const cookieStore = cookies()
-        const token = cookieStore.get('accessToken')
+    // if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
+    //     const cookieStore = cookies()
+    //     const token = cookieStore.get('accessToken')
 
-        if (token != undefined) {
-            if (await checkJWT(token.value)) {
-                return NextResponse.redirect(new URL('/', request.url))
-            }
-            return NextResponse.next()
-        }
+    //     if (token != undefined) {
+    //         if (await checkJWT(token.value)) {
+    //             return NextResponse.redirect(new URL('/', request.url))
+    //         }
+    //         return NextResponse.next()
+    //     }
 
+    //     return NextResponse.next()
 
-
-        return NextResponse.next()
-
-    }
+    // }
 }
 
-const protectedRoutes = ['^/api/auth/refreshtoken$', '^/api/user/me$', '^/$']
-
+const protectedAPIRoutes = ['^/api/user/me$', '^/$']
 export const config = {
-    matcher: ['/api/:path*', '/', '/login', '/signup']
+    matcher: ['/api/:path*']
 }
 
