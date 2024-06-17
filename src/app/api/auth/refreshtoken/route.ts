@@ -31,10 +31,11 @@ export async function GET(request: Request) {
     const expireDate: number = getFutureDate(30)
 
     const response = NextResponse.json(
-        { 'accessToken': accessToken },
+        { 'status': 'ok' },
         { status: 200 }
     );
 
+    response.cookies.set('accessToken', accessToken, { sameSite: 'strict', domain: process.env.DOMAIN, expires: getFutureDate(8) })
     response.cookies.set('refreshToken', newRefreshToken, { httpOnly: true, sameSite: 'strict', domain: process.env.DOMAIN, path: '/api/auth/refreshtoken', expires: expireDate })
     return response
 }

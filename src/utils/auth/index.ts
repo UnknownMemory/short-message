@@ -1,6 +1,4 @@
 import * as jose from "jose"
-import { JWTPayload } from "jose"
-
 
 export const generateTokens = async (userID: unknown, expires: { 'expireAccess': string, 'expireRefresh': string }) => {
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
@@ -25,9 +23,6 @@ export const checkJWT = async (token: string) => {
     let user
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
 
-
-    // token = token.replace('Bearer ', "")
-    console.log(token)
     try {
         user = await jose.jwtVerify(token, accessSecret)
     } catch (e) {
