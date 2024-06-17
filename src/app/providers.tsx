@@ -3,9 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RequestError } from '@/utils/error'
 
 
-export default function Providers({ children }) {
+export default function Providers({ children }: {children: React.ReactNode}) {
     const router =  useRouter()
 
     const refreshTokenService = async () => {
@@ -22,7 +23,7 @@ export default function Providers({ children }) {
         defaultOptions: {
             queries: {
                 staleTime: 30000,
-                retry: (failureCount, error) => {
+                retry: (failureCount, error: RequestError) => {
                     if (error.status === 401){
                         return false;
                     }
@@ -31,7 +32,7 @@ export default function Providers({ children }) {
             },
         },
         queryCache: new QueryCache({
-            onError: async (error) => {
+            onError: async (error: RequestError) => {
                 if(error.status === 401){
                     refreshTokenService()
                 }

@@ -5,15 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
+import { RequestError } from "@/utils/error";
 
 
 const getCurrentUser = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/user/me`, {method: 'GET', headers: {'Authorization': `Bearer ${document.cookie.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()}`, 'Content-Type': 'application/json'}});
     
-    if(res.status === 401){
-        const authError = new Error('Authentication error')
-        authError.status = 401
-        throw authError
+    if(res.status != 200){
+        throw new RequestError('Authentication error', 401)
     }
     
     return await res.json();
