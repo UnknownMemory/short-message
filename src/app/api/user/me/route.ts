@@ -10,10 +10,18 @@ export async function GET(request: Request) {
     const headersList = headers()
     const userID: string = <string>headersList.get('userID')
 
-    const users: User[] = await db.select().from(user).where(eq(user.id, Number(userID)))
+    const users: User[] = await db.select({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        display_name: user.display_name,
+        image: user.image,
+        description: user.description,
+        is_admin: user.is_admin,
+        created_at: user.created_at
+    }).from(user).where(eq(user.id, Number(userID)))
 
     if (users[0]) {
-        delete users[0]['password']
         return NextResponse.json(users[0], { status: 200 });
     }
 

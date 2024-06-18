@@ -1,4 +1,3 @@
-import { headers } from "next/headers"
 import { eq } from 'drizzle-orm';
 
 import { db } from "@/db/db"
@@ -8,11 +7,16 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: { username: string } }) {
     const username = params.username
-    const users: User[] = await db.select().from(user).where(eq(user.username, username))
+    const users: User[] = await db.select({
+        id: user.id,
+        username: user.username,
+        display_name: user.display_name,
+        image: user.image,
+        description: user.description,
+        created_at: user.created_at
+    }).from(user).where(eq(user.username, username))
 
     if (users[0]) {
-        delete users[0]['password']
-        delete users[0]['is_admin']
         return NextResponse.json(users[0], { status: 200 });
     }
 
