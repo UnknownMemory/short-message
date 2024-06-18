@@ -4,8 +4,11 @@ import { useRef } from "react"
 import savePost from "./action"
 
 
-export const PostInput = () => {
+interface Props {
+    userId: number,
+}
 
+export const PostInput = ({userId}: Props) => {
     const editableRef = useRef<HTMLElement>(null)
 
     return (
@@ -20,7 +23,7 @@ export const PostInput = () => {
                 <button className="btn-light float-right" onClick={async () => {
 
                     if (editableRef.current) {
-                        await savePost(1, editableRef.current.innerText)
+                        await savePost(userId, editableRef.current.innerText)
                         editableRef.current.innerText = ''
                     }
 
