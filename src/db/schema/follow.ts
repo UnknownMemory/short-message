@@ -1,10 +1,12 @@
-import { date, pgTable, serial, integer } from "drizzle-orm/pg-core";
+import { date, pgTable, serial, integer, unique, primaryKey } from "drizzle-orm/pg-core";
 import { user } from "./user";
 
 
 export const follow = pgTable('follow', {
-    id: serial('id').primaryKey(),
-    user1ID: integer("user1_id").references(() => user.id),
-    user2ID: integer("user2_id").references(() => user.id),
+    userID: integer("user_id").references(() => user.id),
+    followingID: integer("following_id").references(() => user.id),
     created_at: date('created_at').notNull()
-})
+}, (t) => ({
+    pk: primaryKey({ columns: [t.userID, t.followingID] }),
+    uni: unique().on(t.userID, t.followingID)
+}))
