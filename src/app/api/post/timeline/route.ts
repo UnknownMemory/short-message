@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/db"
 import { post } from "@/db/schema/post"
 import { follow } from "@/db/schema/follow"
+import { user } from "@/db/schema/user";
 
 
 
@@ -16,10 +17,14 @@ export async function GET(request: NextRequest) {
         "id": post.id,
         "text": post.text,
         "authorID": post.authorID,
-        "created_at": post.created_at
+        "created_at": post.created_at,
+        "display_name": user.display_name,
+        "username": user.username,
+        "image": user.image
     })
         .from(post)
         .innerJoin(follow, eq(follow.userID, userID))
+        .leftJoin(user, eq(post.authorID, user.id))
         .where(
             and(
                 or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),

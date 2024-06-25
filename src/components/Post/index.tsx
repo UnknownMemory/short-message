@@ -1,12 +1,11 @@
 import Image from "next/image"
 
 interface Props {
-    user: User,
-    post: string,
+    post: Post & Partial<User>,
 }
 
 
-export const Post = ({user, post}: Props) => {
+export const Post = ({post}: Props) => {
     return (
         <div className="flex md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
             <div className="h-full pr-2">
@@ -15,8 +14,8 @@ export const Post = ({user, post}: Props) => {
             </div>
             </div>
             <div className="text-[0.9em]">
-                <div><span className="pr-1">User</span><span className="text-sm-dark-gray">@user</span></div>
-                <span className="whitespace-pre-wrap">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro numquam repudiandae qui ab ut quis provident aliquam! Blanditiis voluptatibus fugit ad quisquam accusantium nisi, sed ipsam voluptatum ea temporibus quis.</span>
+                <div><span className="pr-1">{post.display_name}</span><span className="text-sm-dark-gray">@{post.username}</span></div>
+                <span className="whitespace-pre-wrap">{post.text}</span>
             </div>
         </div>
     )
