@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image"
-import { useRef } from "react"
+import { FormEvent, useRef, useState } from "react"
 import savePost from "./action"
 
 
@@ -10,6 +10,11 @@ interface Props {
 
 export const PostInput = ({userId}: Props) => {
     const editableRef = useRef<HTMLElement>(null)
+    const [editable, setEditable] = useState('')
+
+    const onInput = (e: FormEvent<HTMLSpanElement>) => {
+        setEditable(e.currentTarget.innerText)
+    }
 
     return (
         <div className="flex flex-col md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
@@ -17,17 +22,18 @@ export const PostInput = ({userId}: Props) => {
                 <div className="h-[42px] w-[42px] relative">
                     <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                 </div>
-                <span className="post-input h-42px" ref={editableRef} contentEditable role="textbox" placeholder="What's on your mind..."></span>
+                <span className="post-input h-42px" ref={editableRef} contentEditable role="textbox" placeholder="What's on your mind..." onInput={onInput}></span>
             </div>
             <div className="w-full ">
                 <button className="btn-light float-right" onClick={async () => {
 
-                    if (editableRef.current) {
-                        await savePost(userId, editableRef.current.innerText)
+                    if (editable !== '' && editableRef.current) {
+                        await savePost(userId, editable)
+                        setEditable('')
                         editableRef.current.innerText = ''
                     }
 
-                }}>Post</button>
+                }} disabled={editable !== '' ? false : true}>Post</button>
             </div>
 
         </div>
