@@ -15,7 +15,6 @@ export const PostInput = ({userId}: Props) => {
     const onInput = (e: FormEvent<HTMLSpanElement>) => {
         setEditable(e.currentTarget.innerText)
     }
-
     return (
         <div className="flex flex-col md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
             <div className="flex h-full pr-2">
@@ -28,7 +27,7 @@ export const PostInput = ({userId}: Props) => {
                 <button className="btn-light float-right" onClick={async () => {
 
                     if (editable !== '' && editableRef.current) {
-                        await savePost(userId, editable)
+                        await savePost(userId, new Date(), editable)
                         setEditable('')
                         editableRef.current.innerText = ''
                     }

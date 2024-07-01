@@ -22,6 +22,27 @@
       "when": 1718973625942,
       "tag": "0002_lush_vertigo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1719841152869,
+      "tag": "0003_flowery_xorn",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1719843013729,
+      "tag": "0004_legal_pixie",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1719846045455,
+      "tag": "0005_flimsy_captain_cross",
+      "breakpoints": true
     }
   ]
 }
