@@ -33,7 +33,7 @@ body {
   }
 
   [contenteditable=true]:empty::before {
-    content: attr(placeholder);
+    content: attr(data-placeholder);
     display: block;
     color: theme(colors.sm-dark-gray);
   }

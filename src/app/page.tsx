@@ -21,16 +21,14 @@ export default function Home() {
         enabled: !!userId
     })
     return (
-        <main className="min-h-screen flex justify-center">
-            <div id="feed" className="min-h-full md:w-[35%] w-[90%]">
-                <PostInput userId={userId}/>
+        <div id="feed" className="min-h-full md:w-[35%] w-[90%]">
+            <PostInput userId={userId}/>
             <div className="flex flex-col">
                 {posts?.posts.map((post: Post) => (
                     <Post key={post.id} post={post}/>
                 ))}
 
             </div>
-            </div>
-        </main>
+        </div>
     );
 }
