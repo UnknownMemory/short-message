@@ -1,0 +1,1 @@
+ALTER TABLE "follow" ADD CONSTRAINT "follow_user_id_following_id_pk" PRIMARY KEY("user_id","following_id");

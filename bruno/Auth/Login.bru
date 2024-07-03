@@ -1,0 +1,21 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/auth/login
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  email: {{test_user_email}}
+  password: {{test_user_password}}
+}
+
+script:post-response {
+  bru.setEnvVar("accessToken", res.body.accessToken)
+  
+}

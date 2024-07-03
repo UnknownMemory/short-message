@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -14,7 +14,7 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -26,8 +26,61 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+
+@layer base {
+  html {
+    @apply bg-sm-white;
+  }
+
+  [contenteditable=true]:empty::before {
+    content: attr(data-placeholder);
+    display: block;
+    color: theme(colors.sm-dark-gray);
+  }
+
+  input::placeholder {
+    text-transform: capitalize;
+  }
+
+  a {
+    color: theme(colors.sm-primary)
+  }
+
+}
+
+@layer components {
+  .post-input {
+    background-color: theme(colors.sm-light-gray);
+    padding: 0 0.4em;
+    width: calc(100% - 42px);
+    display: block;
+  }
+
+  .post-input:focus {
+    outline: none;
+  }
+
+  .btn-light {
+    background-color: theme(colors.sm-primary);
+    @apply text-white rounded px-4 md:px-6 py-1.5;
+  }
+
+  .input-light:focus {
+    outline-color: theme(colors.sm-primary);
+    @apply text-black;
+  }
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+/* @media (prefers-color-scheme: dark) {
+  @layer base {
+    html {
+      @apply bg-sm-dark;
+    }
+  }
+} */
