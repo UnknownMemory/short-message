@@ -1,9 +1,9 @@
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
-import Providers from './providers'
+import Providers from '@/app/providers'
 import { Sidebar } from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
