@@ -21,7 +21,7 @@ export default function Home() {
         enabled: !!userId
     })
     return (
-        <div id="feed" className="min-h-full md:w-[35%] w-[90%]">
+        <div id="feed" className="min-h-full ">
             <PostInput userId={userId}/>
             <div className="flex flex-col">
                 {posts?.posts.map((post: Post) => (

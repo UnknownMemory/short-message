@@ -23,9 +23,10 @@ export async function GET(request: NextRequest) {
         "image": user.image
     })
         .from(post)
-        .innerJoin(follow, eq(follow.userID, userID))
+        .leftJoin(follow, eq(follow.userID, userID))
         .leftJoin(user, eq(post.authorID, user.id))
         .where(
+
             and(
                 or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),
                 request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, <string>request.nextUrl.searchParams.get("cursor")) : undefined
@@ -37,4 +38,5 @@ export async function GET(request: NextRequest) {
     if (posts.length > 0) {
         return NextResponse.json({ posts, cursor: posts[posts.length - 1].created_at }, { status: 200 });
     }
+    return NextResponse.json({ 'error': 'No posts found' }, { status: 401 });
 }
