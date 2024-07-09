@@ -15,14 +15,14 @@ export default function Home() {
 
     const userId = user?.id
 
-    const {data: posts} = useQuery({
+    const {data: posts, refetch} = useQuery({
         queryKey: ['posts'],
         queryFn: () => getTimeline(),
         enabled: !!userId
     })
     return (
         <div id="feed" className="min-h-full ">
-            <PostInput userId={userId}/>
+            <PostInput userId={userId} refetch={refetch}/>
             <div className="flex flex-col">
                 {posts?.posts.map((post: Post) => (
                     <Post key={post.id} post={post}/>

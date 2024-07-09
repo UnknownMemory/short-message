@@ -6,9 +6,10 @@ import savePost from "./action"
 
 interface Props {
     userId: number,
+    refetch?: Function
 }
 
-export const PostInput = ({userId}: Props) => {
+export const PostInput = ({userId, refetch}: Props) => {
     const editableRef = useRef<HTMLElement>(null)
     const [editable, setEditable] = useState('')
 
@@ -30,6 +31,7 @@ export const PostInput = ({userId}: Props) => {
                         await savePost(userId, new Date(), editable)
                         setEditable('')
                         editableRef.current.innerText = ''
+                        refetch()
                     }
 
                 }} disabled={editable !== '' ? false : true}>Post</button>
