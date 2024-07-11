@@ -1,4 +1,7 @@
+'use client'
+import { HeartIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
+import { likeAction } from "./actions"
 
 interface Props {
     post: Post & Partial<User>,
@@ -22,13 +25,16 @@ export const Post = ({post}: Props) => {
             </div>
             </div>
             <div className="w-full text-[0.9em]">
-                <div className="flex">
-                    <span className="pr-1">{post.display_name}</span>
-                    <div className="text-sm-dark-gray">
-                        <span className="">@{post.username}</span>
-                        <span className="px-0.5">·</span>
-                        <span className="">{createdAt}</span>
+                <div className="flex items-center justify-between">
+                    <div className="flex">
+                        <span className="pr-1">{post.display_name}</span>
+                        <div className="text-sm-dark-gray">
+                            <span className="">@{post.username}</span>
+                            <span className="px-0.5">·</span>
+                            <span className="">{createdAt}</span>
+                        </div>
                     </div>
+                    <div className="md:w-[16px] text-sm-dark-gray cursor-pointer" onClick={() => likeAction(post.id)}><HeartIcon/></div>
                 </div>
                 <span className="whitespace-pre-wrap">{post.text}</span>
             </div>

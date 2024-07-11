@@ -2,7 +2,7 @@
 import { useFormState } from "react-dom"
 import Link from "next/link"
 
-import login from "./action"
+import login from "./actions"
 import { FormInput } from "@/components/FormInput"
 
 

@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
     // }
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$',]
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$']
 
 export const config = {
     matcher: ['/api/:path*']

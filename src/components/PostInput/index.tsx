@@ -1,12 +1,12 @@
 'use client'
 import Image from "next/image"
 import { FormEvent, useRef, useState } from "react"
-import savePost from "./action"
+import savePost from "./actions"
 
 
 interface Props {
     userId: number,
-    refetch?: Function
+    refetch: Function
 }
 
 export const PostInput = ({userId, refetch}: Props) => {
@@ -28,7 +28,7 @@ export const PostInput = ({userId, refetch}: Props) => {
                 <button className="btn-light float-right" onClick={async () => {
 
                     if (editable !== '' && editableRef.current) {
-                        await savePost(userId, new Date(), editable)
+                        await savePost(new Date(), editable)
                         setEditable('')
                         editableRef.current.innerText = ''
                         refetch()
