@@ -12,7 +12,12 @@ const schema = z.object({
     postId: z.number()
 })
 
-export async function likeAction(postId: Post["id"]) {
+interface Error {
+    errors: string | string[] | undefined,
+}
+
+
+export async function likeAction(postId: Post["id"]): Promise<boolean | Error> {
     const accessToken = cookies().get('accessToken')
 
     if (accessToken) {
@@ -24,7 +29,7 @@ export async function likeAction(postId: Post["id"]) {
 
             if (!validatedFields.success) {
                 return {
-                    errors: validatedFields.error.flatten().fieldErrors,
+                    errors: validatedFields.error.flatten().fieldErrors.postId,
                 }
             }
 
@@ -48,6 +53,6 @@ export async function likeAction(postId: Post["id"]) {
         }
     }
 
-
+    return { 'errors': 'You must be authenticated to perform this action.' }
 
 }

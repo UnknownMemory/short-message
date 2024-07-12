@@ -15,7 +15,7 @@ interface Props {
 
 
 export const Post = ({post}: Props) => {
-    const [isLiked, setIsLiked] = useState(post.isLiked == null ? false : true)
+    const [isLiked, setIsLiked] = useState<boolean>(post.isLiked == null ? false : true)
 
     const postDate = new Date(post?.created_at)
     const dayLater = postDate.getTime() + (24*60*60*1000)
@@ -27,9 +27,11 @@ export const Post = ({post}: Props) => {
     const handleLike = async () => {
         const newLike = await likeAction(post.id)
 
-        if(newLike !== undefined){
-            setIsLiked(newLike)
+        if(typeof newLike === "object"){
+            return newLike.errors
         }
+
+        setIsLiked(newLike)
     }
 
     return (
