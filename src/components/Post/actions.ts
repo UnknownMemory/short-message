@@ -1,11 +1,11 @@
 'use server'
-import { is } from "drizzle-orm"
-import { cookies } from "next/headers"
+
 import { z } from "zod"
+import { cookies } from "next/headers"
+import { eq, and } from "drizzle-orm";
 
-
-import { checkJWT } from "@/utils/auth"
 import { db } from "@/db/db"
+import { checkJWT } from "@/utils/auth"
 import { like } from "@/db/schema/like"
 
 const schema = z.object({
@@ -28,11 +28,23 @@ export async function likeAction(postId: Post["id"]) {
                 }
             }
 
-            await db.insert(like).values({
-                postID: validatedFields.data.postId,
-                userID: Number(isLogged.id),
-                created_at: new Date()
-            })
+            const deletedLike = await db.delete(like).where(and(
+                eq(like.userID, Number(isLogged.id)),
+                eq(like.postID, validatedFields.data.postId)
+            )).returning({ deletedId: like.userID })
+
+            if (deletedLike.length == 0) {
+                await db.insert(like).values({
+                    postID: validatedFields.data.postId,
+                    userID: Number(isLogged.id),
+                    created_at: new Date()
+                })
+
+                return true
+            }
+
+            return false
+
         }
     }
 

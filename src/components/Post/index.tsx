@@ -1,7 +1,13 @@
 'use client'
-import { HeartIcon } from "@heroicons/react/24/outline"
+import { useState } from "react"
 import Image from "next/image"
+
+import { HeartIcon } from "@heroicons/react/24/outline"
+import { HeartIcon as SolidHeartIcon } from "@heroicons/react/16/solid"
+
 import { likeAction } from "./actions"
+
+
 
 interface Props {
     post: Post & Partial<User>,
@@ -9,13 +15,22 @@ interface Props {
 
 
 export const Post = ({post}: Props) => {
+    const [isLiked, setIsLiked] = useState(post.isLiked == null ? false : true)
+
     const postDate = new Date(post?.created_at)
-    const dayLater = new Date().getTime() + (24*60*60*1000)
+    const dayLater = postDate.getTime() + (24*60*60*1000)
 
     const hourPosted = postDate.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Paris'}) 
     const dayPosted = postDate.toLocaleTimeString('fr-FR', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'})
+    const createdAt = dayLater < new Date().getTime() ? dayPosted : hourPosted
 
-    const createdAt = dayLater > postDate.getTime() ? hourPosted : dayPosted
+    const handleLike = async () => {
+        const newLike = await likeAction(post.id)
+
+        if(newLike !== undefined){
+            setIsLiked(newLike)
+        }
+    }
 
     return (
         <div className="flex md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
@@ -34,7 +49,11 @@ export const Post = ({post}: Props) => {
                             <span className="">{createdAt}</span>
                         </div>
                     </div>
-                    <div className="md:w-[16px] text-sm-dark-gray cursor-pointer" onClick={() => likeAction(post.id)}><HeartIcon/></div>
+                    {isLiked ?
+                        <div className="md:w-[16px]  text-sm-primary cursor-pointer" onClick={handleLike}><SolidHeartIcon/></div> :
+                        <div className="md:w-[16px] text-sm-dark-gray cursor-pointer" onClick={handleLike}><HeartIcon/></div>
+                    }
+
                 </div>
                 <span className="whitespace-pre-wrap">{post.text}</span>
             </div>

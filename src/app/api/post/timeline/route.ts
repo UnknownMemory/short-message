@@ -6,6 +6,7 @@ import { db } from "@/db/db"
 import { post } from "@/db/schema/post"
 import { follow } from "@/db/schema/follow"
 import { user } from "@/db/schema/user";
+import { like } from "@/db/schema/like";
 
 
 
@@ -20,13 +21,14 @@ export async function GET(request: NextRequest) {
         "created_at": post.created_at,
         "display_name": user.display_name,
         "username": user.username,
-        "image": user.image
+        "image": user.image,
+        "isLiked": like.userID,
     })
         .from(post)
         .leftJoin(follow, eq(follow.userID, userID))
         .leftJoin(user, eq(post.authorID, user.id))
+        .leftJoin(like, and(eq(like.userID, user.id), eq(like.postID, post.id)))
         .where(
-
             and(
                 or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),
                 request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, <string>request.nextUrl.searchParams.get("cursor")) : undefined
