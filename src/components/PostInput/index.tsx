@@ -9,7 +9,7 @@ interface Props {
     refetch: Function
 }
 
-export const PostInput = ({userId, refetch}: Props) => {
+export const PostInput = ({refetch}: Props) => {
     const editableRef = useRef<HTMLElement>(null)
     const [editable, setEditable] = useState('')
 

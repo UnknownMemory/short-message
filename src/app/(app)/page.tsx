@@ -22,7 +22,7 @@ export default function Home() {
     })
     return (
         <div id="feed" className="min-h-full ">
-            <PostInput userId={userId} refetch={refetch}/>
+            <PostInput refetch={refetch}/>
             <div className="flex flex-col">
                 {posts?.posts.map((post: Post) => (
                     <Post key={post.id} post={post}/>

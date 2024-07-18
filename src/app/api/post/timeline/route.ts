@@ -22,12 +22,12 @@ export async function GET(request: NextRequest) {
         "display_name": user.display_name,
         "username": user.username,
         "image": user.image,
-        "isLiked": like.userID,
+        "isLiked": eq(like.userID, userID),
     })
         .from(post)
         .leftJoin(follow, eq(follow.userID, userID))
         .leftJoin(user, eq(post.authorID, user.id))
-        .leftJoin(like, and(eq(like.userID, user.id), eq(like.postID, post.id)))
+        .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
         .where(
             and(
                 or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),

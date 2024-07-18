@@ -15,7 +15,7 @@ interface Props {
 
 
 export const Post = ({post}: Props) => {
-    const [isLiked, setIsLiked] = useState<boolean>(post.isLiked == null ? false : true)
+    const [isLiked, setIsLiked] = useState<boolean>(!post.isLiked || post.isLiked == null ? false : true )
 
     const postDate = new Date(post?.created_at)
     const dayLater = postDate.getTime() + (24*60*60*1000)
@@ -52,8 +52,8 @@ export const Post = ({post}: Props) => {
                         </div>
                     </div>
                     {isLiked ?
-                        <div className="md:w-[16px]  text-sm-primary cursor-pointer" onClick={handleLike}><SolidHeartIcon/></div> :
-                        <div className="md:w-[16px] text-sm-dark-gray cursor-pointer" onClick={handleLike}><HeartIcon/></div>
+                        <div className="md:w-[18px]  text-sm-primary cursor-pointer" onClick={handleLike}><SolidHeartIcon/></div> :
+                        <div className="md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={handleLike}><HeartIcon/></div>
                     }
 
                 </div>

@@ -38,4 +38,5 @@ export default async function savePost(createdAt: Date, text: string) {
         }
     }
 
+    return { 'errors': 'You must be authenticated to perform this action.' }
 }
