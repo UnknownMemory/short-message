@@ -13,7 +13,7 @@ import { like } from "@/db/schema/like";
 export async function GET(request: NextRequest) {
     const headersList = headers()
     const userID: number = Number(<string>headersList.get('userID'))
-
+    console.log(request.nextUrl.searchParams.get("cursor"))
     const posts = await db.select({
         "id": post.id,
         "text": post.text,
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
         .where(
             and(
                 or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),
-                request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, <string>request.nextUrl.searchParams.get("cursor")) : undefined
+                request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, new Date(<string>request.nextUrl.searchParams.get("cursor"))) : undefined
             ))
         .orderBy(desc(post.created_at))
         .limit(20)

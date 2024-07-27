@@ -1,5 +1,6 @@
 "use client"
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { Virtuoso } from 'react-virtuoso'
 
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
@@ -15,20 +16,29 @@ export default function Home() {
 
     const userId = user?.id
 
-    const {data: posts, refetch} = useQuery({
+    const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
         queryKey: ['posts'],
-        queryFn: () => getTimeline(),
+        queryFn: ({pageParam}) => getTimeline(pageParam),
+        initialPageParam: false,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
+        getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
         enabled: !!userId
     })
+
+    const posts = postsPages?.pages.flatMap(page => {
+        return page.posts
+    })
+
     return (
         <div id="feed" className="min-h-full ">
             <PostInput refetch={refetch}/>
-            <div className="flex flex-col">
-                {posts?.posts.map((post: Post) => (
-                    <Post key={post.id} post={post}/>
-                ))}
-
-            </div>
+            <Virtuoso 
+                useWindowScroll
+                style={{height: '100%', margin: '1em 0'}}
+                data={posts} 
+                itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                endReached={(_) => fetchNextPage()}
+                />
         </div>
     );
 }

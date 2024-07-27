@@ -5,7 +5,6 @@ import savePost from "./actions"
 
 
 interface Props {
-    userId: number,
     refetch: Function
 }
 
@@ -17,7 +16,7 @@ export const PostInput = ({refetch}: Props) => {
         setEditable(e.currentTarget.innerText)
     }
     return (
-        <div className="flex flex-col md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
+        <div className="flex flex-col md:p-3 md:mt-5 bg-sm-light-gray rounded-xl">
             <div className="flex h-full pr-2">
                 <div className="h-[42px] w-[42px] relative">
                     <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>

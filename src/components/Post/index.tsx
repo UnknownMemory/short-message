@@ -35,7 +35,7 @@ export const Post = ({post}: Props) => {
     }
 
     return (
-        <div className="flex md:p-3 md:my-5 bg-sm-light-gray rounded-xl">
+        <div className="flex md:p-3 md:mb-8 bg-sm-light-gray rounded-xl">
             <div className="h-full pr-2">
             <div className="h-[42px] w-[42px] relative">
                 <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
