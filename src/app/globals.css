@@ -46,6 +46,10 @@ body {
     color: theme(colors.sm-primary)
   }
 
+  .sm-grid {
+    grid-template-columns: 1fr 1.2fr 1fr;
+  }
+
 }
 
 @layer components {

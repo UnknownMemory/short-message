@@ -27,6 +27,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.51.21",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",

@@ -23,7 +23,7 @@ export default function Layout({
 		<html lang="en">
 			<body className={inter.className}>
 				<Providers>
-					<div className="min-h-screen md:grid md:grid-cols-3">
+					<div className="min-h-screen md:grid md:sm-grid">
 						<Sidebar css="justify-self-end"/>
 						{children}
 					</div>
