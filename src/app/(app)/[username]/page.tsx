@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getCurrentUser, getUser } from "@/utils/service";
+import { Virtuoso } from 'react-virtuoso';
 
 
 export default function Home() {
@@ -43,9 +44,11 @@ export default function Home() {
                         <div className="md:text-sm text-sm-dark-gray">@{user?.username}</div>
                     </div>
                 </div>
-
             </div>
-
+            <div>
+                <div className="w-full flex justify-center md:py-4">Posts</div>
+                <Virtuoso></Virtuoso>
+            </div>
         </div>
     );
 }

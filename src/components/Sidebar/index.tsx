@@ -16,11 +16,11 @@ export const Sidebar = ({ css = null }: { css: string | null }) => {
     return (
         <div className={css != null ? 'md:w-1/3 md:mr-12 '+ css : 'md:w-1/3 r-6'}>
             <nav className="text-xl flex flex-col md:mt-5">
-                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/"><HomeIcon className="size-6 mr-2"/>Home</Link>
-                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/notifications"><BellIcon className="size-6 mr-2"/>Notifications</Link>
-                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href={`/${user?.username}`}><UserCircleIcon className="size-6 mr-2"/>Profile</Link>
-                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/settings"><Cog6ToothIcon className="size-6 mr-2"/>Settings</Link>
-                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/logout"><ArrowRightEndOnRectangleIcon className="size-6 mr-2"/>Logout</Link>
+                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/"><HomeIcon className="size-6"/>Home</Link>
+                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/notifications"><BellIcon className="size-6"/>Notifications</Link>
+                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href={`/${user?.username}`}><UserCircleIcon className="size-6"/>Profile</Link>
+                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/settings"><Cog6ToothIcon className="size-6"/>Settings</Link>
+                <Link className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/logout"><ArrowRightEndOnRectangleIcon className="size-6"/>Logout</Link>
             </nav>
         </div>
     )

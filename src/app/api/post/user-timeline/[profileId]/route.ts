@@ -4,16 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db/db"
 import { post } from "@/db/schema/post"
-import { follow } from "@/db/schema/follow"
 import { user } from "@/db/schema/user";
 import { like } from "@/db/schema/like";
 
 
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, { params }: { params: { profileId: number } }) {
     const headersList = headers()
     const userID: number = Number(<string>headersList.get('userID'))
-
+    s
     const posts = await db.select({
         "id": post.id,
         "text": post.text,
@@ -25,12 +24,11 @@ export async function GET(request: NextRequest) {
         "isLiked": eq(like.userID, userID),
     })
         .from(post)
-        .leftJoin(follow, eq(follow.userID, userID))
-        .leftJoin(user, eq(post.authorID, user.id))
-        .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
+        .innerJoin(user, eq(post.authorID, user.id))
+        .leftJoin(like, eq(like.userID, post.id))
         .where(
             and(
-                or(eq(post.authorID, userID), eq(post.authorID, follow.followingID)),
+                eq(post.authorID, params.profileId),
                 request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, new Date(<string>request.nextUrl.searchParams.get("cursor"))) : undefined
             ))
         .orderBy(desc(post.created_at))
