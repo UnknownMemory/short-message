@@ -4,8 +4,9 @@ import { useParams } from 'next/navigation'
 import Image from "next/image"
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getCurrentUser, getUser } from "@/utils/service";
+import { getUser, userTimeline } from "@/utils/service";
 import { Virtuoso } from 'react-virtuoso';
+import { Post } from '@/components/Post';
 
 
 export default function Home() {
@@ -23,6 +24,19 @@ export default function Home() {
     })
 
     const userId = user?.id
+
+    const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
+        queryKey: ['posts'],
+        queryFn: ({pageParam}) => userTimeline(userId, pageParam),
+        initialPageParam: false,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
+        getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
+        enabled: !!userId
+    })
+
+    const posts = postsPages?.pages.flatMap(page => {
+        return page.posts
+    })
 
     return (
         <div className="min-h-full">
@@ -47,7 +61,13 @@ export default function Home() {
             </div>
             <div>
                 <div className="w-full flex justify-center md:py-4">Posts</div>
-                <Virtuoso></Virtuoso>
+                <Virtuoso 
+                    useWindowScroll
+                    style={{height: '100%', margin: '1em 0'}}
+                    data={posts} 
+                    itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                    endReached={(_) => fetchNextPage()}
+                />
             </div>
         </div>
     );

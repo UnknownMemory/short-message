@@ -12,7 +12,7 @@ import { like } from "@/db/schema/like";
 export async function GET(request: NextRequest, { params }: { params: { profileId: number } }) {
     const headersList = headers()
     const userID: number = Number(<string>headersList.get('userID'))
-    s
+
     const posts = await db.select({
         "id": post.id,
         "text": post.text,

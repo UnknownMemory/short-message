@@ -35,3 +35,14 @@ export const getTimeline = async (cursor?: string | boolean) => {
     
     return await res.json();
 }
+
+export const userTimeline = async (userId: number, cursor?: string | boolean) => {
+    const res = await fetch(`${URL}/api/post/user-timeline/${userId}/${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: {'Authorization': `Bearer ${document.cookie.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()}`, 'Content-Type': 'application/json'}})
+
+    if(res.status != 200){
+        const response = await res.json()
+        throw new RequestError(response.error, res.status)
+    }
+    
+    return await res.json();
+}
