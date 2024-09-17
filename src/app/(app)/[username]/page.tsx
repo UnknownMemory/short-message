@@ -26,7 +26,7 @@ export default function Home() {
     const userId = user?.id
 
     const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
-        queryKey: ['posts'],
+        queryKey: ['user_posts', params.username],
         queryFn: ({pageParam}) => userTimeline(userId, pageParam),
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
