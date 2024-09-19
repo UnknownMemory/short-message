@@ -4,6 +4,7 @@ import { Virtuoso } from 'react-virtuoso'
 
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
+import { Navbar } from "@/components/Navbar";
 import { getCurrentUser, getTimeline } from "@/utils/service";
 
 
@@ -30,15 +31,17 @@ export default function Home() {
     })
 
     return (
-        <div id="feed" className="min-h-full ">
-            <PostInput refetch={refetch}/>
-            <Virtuoso 
-                useWindowScroll
-                style={{height: '100%', margin: '1em 0'}}
-                data={posts} 
-                itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
-                endReached={(_) => fetchNextPage()}
-                />
-        </div>
+        <>
+            <div id="feed" className="min-h-full border-x-[1px]">
+                <PostInput refetch={refetch}/>
+                <Virtuoso 
+                    useWindowScroll
+                    style={{height: '100%'}}
+                    data={posts} 
+                    itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                    endReached={(_) => fetchNextPage()}
+                    />
+            </div>
+        </>
     );
 }
