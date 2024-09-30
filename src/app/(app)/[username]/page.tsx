@@ -11,22 +11,17 @@ import { Post } from '@/components/Post';
 
 export default function Home() {
     const params = useParams()
-
-    const queryClient = useQueryClient()
     
     const {data: user} = useQuery({
-        queryKey: [{"users": params.username}],
+        queryKey: ['profile', params.username],
         queryFn: () => getUser(params.username),
         staleTime: Infinity,
-        initialData: () => {
-            return queryClient.getQueryData(['me'])
-        },
     })
 
     const userId = user?.id
 
     const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
-        queryKey: ['user_posts', params.username],
+        queryKey: ['profile_posts', params.username],
         queryFn: ({pageParam}) => userTimeline(userId, pageParam),
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
@@ -39,7 +34,7 @@ export default function Home() {
     })
 
     return (
-        <div className="min-h-full">
+        <div id="profile" className="min-h-full">
             <div>
                 <div className="h-[142px] w-full">
                     <div className="w-full h-full bg-slate-500"></div>
