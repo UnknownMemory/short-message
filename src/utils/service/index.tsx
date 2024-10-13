@@ -14,7 +14,7 @@ export const getCurrentUser = async () => {
 };
 
 export const getUser = async (username: string) => {
-    const res = await fetch(`${URL}/api/user/${username}`, {method: 'GET', headers: {'Content-Type': 'application/json'}});
+    const res = await fetch(`${URL}/api/user/${username}`, {method: 'GET', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${document.cookie.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()}`}});
     
     if(res.status != 200){
         const response = await res.json()

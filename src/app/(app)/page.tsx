@@ -4,7 +4,6 @@ import { Virtuoso } from 'react-virtuoso'
 
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
-import { Navbar } from "@/components/Navbar";
 import { getCurrentUser, getTimeline } from "@/utils/service";
 
 
