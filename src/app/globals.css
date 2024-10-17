@@ -79,6 +79,10 @@ body {
     @apply text-white rounded px-4 md:px-6 py-1.5;
   }
 
+  .btn-light-outline {
+    @apply rounded px-4 md:px-6 py-1.5 border-[1px];
+  }
+
   .input-light:focus {
     outline-color: theme(colors.sm-primary);
     @apply text-black;

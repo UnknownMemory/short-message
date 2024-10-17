@@ -50,6 +50,13 @@
       "when": 1720696434509,
       "tag": "0006_known_whiplash",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1729178048589,
+      "tag": "0007_smooth_riptide",
+      "breakpoints": true
     }
   ]
 }

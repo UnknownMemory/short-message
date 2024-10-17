@@ -1,12 +1,14 @@
 "use client"
 
-import { useParams } from 'next/navigation'
 import Image from "next/image"
+import { useParams } from 'next/navigation'
+import { Virtuoso } from 'react-virtuoso';
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getUser, getCurrentUser, userTimeline } from "@/utils/service";
-import { Virtuoso } from 'react-virtuoso';
+
 import { Post } from '@/components/Post';
+import followAction from './actions';
 
 
 export default function Profile() {
@@ -43,19 +45,31 @@ export default function Profile() {
         return page.posts
     })
 
+    const profileButton = () => {
+        if(me?.username == params.username){
+            return <button className="btn-light-outline">Edit Profile</button> 
+        } else {
+            if (user?.is_following) {
+                return <button onClick={() => followAction()} className="btn-light-outline">Following</button>
+            } else {
+                return <button onClick={() => followAction()} className="btn-light">Follow</button>
+            }
+        }
+    }
+
     return (
         <div id="profile" className="min-h-full border-x-[1px]">
             <div className="relative">
                 <div className="h-[150px] w-full">
                     <div className="w-full h-full bg-slate-500"></div>
                 </div>
-                <div id="avatar" className="flex justify-center w-full absolute md:top-[107px]">
+                <div id="avatar" className="flex justify-center w-full absolute md:top-[107px] pointer-events-none">
                     <div className="md:h-[90px] md:w-[90px] relative">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                     </div>
                 </div>
                 <div className="w-100 md:p-2 flex justify-end">
-                {me?.username == params.username ? '' : <button className="btn-light">{user?.is_following ? 'Following' : 'Follow'}</button>}
+                {profileButton()}
                 </div>
                 <div>
                     <div className="flex flex-col items-center">
