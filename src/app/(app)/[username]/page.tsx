@@ -29,7 +29,7 @@ export default function Profile() {
         queryFn: () => getUser(params.username),
         staleTime: Infinity,
     })
-
+    
     const userId = user?.id
 
     const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
@@ -38,21 +38,22 @@ export default function Profile() {
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
-        enabled: !!userId
+        enabled: !!userId,
     })
 
     const posts = postsPages?.pages.flatMap(page => {
         return page.posts
     })
 
+
     const profileButton = () => {
         if(me?.username == params.username){
             return <button className="btn-light-outline">Edit Profile</button> 
         } else {
             if (user?.is_following) {
-                return <button onClick={() => followAction()} className="btn-light-outline">Following</button>
+                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
             } else {
-                return <button onClick={() => followAction()} className="btn-light">Follow</button>
+                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": true}))} className="btn-light">Follow</button>
             }
         }
     }
