@@ -25,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { profileI
     })
         .from(post)
         .innerJoin(user, eq(post.authorID, user.id))
-        .leftJoin(like, eq(like.userID, post.id))
+        .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
         .where(
             and(
                 eq(post.authorID, params.profileId),
