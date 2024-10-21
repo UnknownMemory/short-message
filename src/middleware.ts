@@ -26,23 +26,32 @@ export async function middleware(request: NextRequest) {
 
     }
 
-    // if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
-    //     const cookieStore = cookies()
-    //     const token = cookieStore.get('accessToken')
+    if (request.nextUrl.pathname.match(profileRoute)) {
+        const requestHeaders = new Headers(request.headers)
+        let token: string | null = requestHeaders.get('Authorization')
 
-    //     if (token != undefined) {
-    //         if (await checkJWT(token.value)) {
-    //             return NextResponse.redirect(new URL('/', request.url))
-    //         }
-    //         return NextResponse.next()
-    //     }
+        if (token == null) {
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
 
-    //     return NextResponse.next()
+        token = token.replace('Bearer ', "")
 
-    // }
+        const loggedUser: false | JWTPayload = await checkJWT(token)
+
+        if (await loggedUser) {
+            const response = NextResponse.next()
+            response.headers.set('userID', loggedUser.id)
+            return response
+        }
+
+        return NextResponse.next();
+
+    }
+
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$',]
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$']
+const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
 
 export const config = {
     matcher: ['/api/:path*']

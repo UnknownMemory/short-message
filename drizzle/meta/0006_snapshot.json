@@ -78,12 +78,6 @@
       "name": "like",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
         "post_id": {
           "name": "post_id",
           "type": "integer",
@@ -132,8 +126,25 @@
           "onDelete": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "compositePrimaryKeys": {
+        "like_user_id_post_id_pk": {
+          "name": "like_user_id_post_id_pk",
+          "columns": [
+            "user_id",
+            "post_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "like_user_id_post_id_unique": {
+          "name": "like_user_id_post_id_unique",
+          "columns": [
+            "user_id",
+            "post_id"
+          ],
+          "nullsNotDistinct": false
+        }
+      }
     },
     "public.palette": {
       "name": "palette",
@@ -175,6 +186,12 @@
         },
         "author_id": {
           "name": "author_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "like_count": {
+          "name": "like_count",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -287,7 +304,7 @@
     "tables": {},
     "columns": {}
   },
-  "id": "c4dba5a6-a7b6-4bce-a4fb-6185a8c36c3d",
-  "prevId": "5d215b5c-d467-4a26-b77e-bcf5aa9ae8dd",
+  "id": "f1e97b7d-9d16-48b9-925b-dde193db66a7",
+  "prevId": "b9070335-24f8-4e51-83ce-f9996ad872fb",
   "sequences": {}
 }

@@ -43,14 +43,28 @@ body {
   }
 
   a {
-    color: theme(colors.sm-primary)
+    color: theme(colors.sm-primary);
   }
 
+  a.post {
+    color: initial;
+  }
+
+  a.post:hover {
+    text-decoration: underline;
+  }
+
+  .sm-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  #feed, #profile {
+    grid-column: 2 / 3;
+  }
 }
 
 @layer components {
   .post-input {
-    background-color: theme(colors.sm-light-gray);
     padding: 0 0.4em;
     width: calc(100% - 42px);
     display: block;
@@ -65,9 +79,21 @@ body {
     @apply text-white rounded px-4 md:px-6 py-1.5;
   }
 
+  .btn-light-outline {
+    @apply rounded px-4 md:px-6 py-1.5 border-[1px];
+  }
+
   .input-light:focus {
     outline-color: theme(colors.sm-primary);
     @apply text-black;
+  }
+
+  .nav-link {
+    text-align: center;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.15);
   }
 }
 

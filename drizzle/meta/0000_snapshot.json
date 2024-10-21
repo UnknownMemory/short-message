@@ -1,10 +1,8 @@
 {
-  "id": "910405e7-83b0-47d9-8188-f5a4c12b721b",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "follow": {
+    "public.follow": {
       "name": "follow",
       "schema": "",
       "columns": {
@@ -38,34 +36,34 @@
         "follow_user1_id_user_id_fk": {
           "name": "follow_user1_id_user_id_fk",
           "tableFrom": "follow",
-          "tableTo": "user",
           "columnsFrom": [
             "user1_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "follow_user2_id_user_id_fk": {
           "name": "follow_user2_id_user_id_fk",
           "tableFrom": "follow",
-          "tableTo": "user",
           "columnsFrom": [
             "user2_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "like": {
+    "public.like": {
       "name": "like",
       "schema": "",
       "columns": {
@@ -99,34 +97,34 @@
         "like_post_id_post_id_fk": {
           "name": "like_post_id_post_id_fk",
           "tableFrom": "like",
-          "tableTo": "post",
           "columnsFrom": [
             "post_id"
           ],
+          "tableTo": "post",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "like_user_id_user_id_fk": {
           "name": "like_user_id_user_id_fk",
           "tableFrom": "like",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "palette": {
+    "public.palette": {
       "name": "palette",
       "schema": "",
       "columns": {
@@ -148,7 +146,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "post": {
+    "public.post": {
       "name": "post",
       "schema": "",
       "columns": {
@@ -182,21 +180,21 @@
         "post_author_id_user_id_fk": {
           "name": "post_author_id_user_id_fk",
           "tableFrom": "post",
-          "tableTo": "user",
           "columnsFrom": [
             "author_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -263,10 +261,10 @@
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     }
@@ -274,8 +272,11 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "910405e7-83b0-47d9-8188-f5a4c12b721b",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "sequences": {}
 }
