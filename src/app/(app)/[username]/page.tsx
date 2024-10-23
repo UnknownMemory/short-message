@@ -32,7 +32,7 @@ export default function Profile() {
     
     const userId = user?.id
 
-    const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
+    const {data: postsPages, fetchNextPage} = useInfiniteQuery({
         queryKey: ['profile_posts', params.username],
         queryFn: ({pageParam}) => userTimeline(userId, pageParam),
         initialPageParam: false,
