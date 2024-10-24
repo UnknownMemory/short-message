@@ -64,12 +64,12 @@ export default function Profile() {
                 <div className="h-[150px] w-full">
                     <div className="w-full h-full bg-slate-500"></div>
                 </div>
-                <div id="avatar" className="flex justify-center w-full absolute md:top-[107px] pointer-events-none">
-                    <div className="md:h-[90px] md:w-[90px] relative">
+                <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none">
+                    <div className="h-[90px] w-[90px] relative">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                     </div>
                 </div>
-                <div className="w-100 md:p-2 flex justify-end">
+                <div className="w-100 p-2 flex justify-end">
                 {profileButton()}
                 </div>
                 <div>
