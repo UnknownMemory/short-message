@@ -4,8 +4,8 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
 import Providers from '@/app/providers'
-import { Sidebar } from "@/components/Sidebar";
 import { Navbar } from "@/components/Navbar";
+import { BottomNavbar } from "@/components/BottomNavbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +26,9 @@ export default function Layout({
 				<Providers>
 					<Navbar css={null} />
 					<div className="min-h-screen md:grid md:sm-grid">
-						{/* <Sidebar css="justify-self-end"/> */}
 						{children}
 					</div>
+					<BottomNavbar />
 				</Providers>
 			</body>
 		</html>

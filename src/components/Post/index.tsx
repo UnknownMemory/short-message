@@ -47,7 +47,7 @@ export const Post = ({post}: Props) => {
                         <div className="text-sm-dark-gray flex items-center">
                             <span className="truncate inline-block max-w-24 md:max-w-full">@{post.username}</span>
                             <span className="px-0.5">·</span>
-                            <span className="truncate inline-block max-w-20 md:max-w-full">{createdAt}</span>
+                            <span className="truncate inline-block max-w-16 md:max-w-full">{createdAt}</span>
                         </div>
                     </div>
                     {isLiked ?

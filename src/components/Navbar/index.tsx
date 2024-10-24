@@ -20,7 +20,7 @@ export const Navbar = ({ css = null }: { css: string | null }) => {
         staleTime: Infinity,
     })
     return (
-        <div className="md:grid md:sm-grid md:h-16 sticky top-0 bg-sm-white z-[1]">
+        <div className="md:grid md:sm-grid md:h-16 sticky top-0 bg-sm-white z-[1] max-sm:invisible">
             <Link className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
             <nav className=" flex justify-center items-center border-x-[1px] border-b-[1px]">
                 <Link className="w-[50%] h-full md:p-2 flex items-center justify-center text-sm-primary-dark nav-link" href="/"><HomeIcon className="size-5 mr-1"/>Home</Link>
