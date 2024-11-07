@@ -51,9 +51,9 @@ export default function Profile() {
             return <button className="btn-light-outline">Edit Profile</button> 
         } else {
             if (user?.is_following) {
-                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
+                return <button onClick={() => followAction(user.id).then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
             } else {
-                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": true}))} className="btn-light">Follow</button>
+                return <button onClick={() => followAction(user.id).then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": true}))} className="btn-light">Follow</button>
             }
         }
     }

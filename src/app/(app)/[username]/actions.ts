@@ -4,15 +4,28 @@ import { sql } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { checkJWT } from "@/utils/auth"
+import { z } from "zod";
 
 
-export default async function followAction() {
+const schema = z.object({
+    profileID: z.number()
+})
 
+export default async function followAction(profileID: User["id"]) {
     const accessToken = cookies().get('accessToken')
     if (accessToken) {
         const user = await checkJWT(accessToken.value)
 
         if (user) {
+            const validatedFields = schema.safeParse({
+                profileID: profileID
+            })
+
+            if (!validatedFields.success) {
+                return {
+                    errors: validatedFields.error.flatten().fieldErrors.profileID,
+                }
+            }
 
             const userID = user.id
             const created_at = Date.now() / 1000.0
@@ -20,10 +33,10 @@ export default async function followAction() {
             const statement = sql.raw(`
                 DO $$
                 BEGIN
-                    IF EXISTS (SELECT * FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = 2) THEN
-                        DELETE FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = 2;
+                    IF EXISTS (SELECT * FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = ${validatedFields.data.profileID}) THEN
+                        DELETE FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = ${validatedFields.data.profileID};
                     ELSE
-                        INSERT INTO follow (user_id, following_id, created_at) VALUES (${userID}, 2, TO_TIMESTAMP(${created_at}));
+                        INSERT INTO follow (user_id, following_id, created_at) VALUES (${userID}, ${validatedFields.data.profileID}, TO_TIMESTAMP(${created_at}));
                     END IF;
                 END $$
             `)
