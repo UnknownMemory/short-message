@@ -56,7 +56,7 @@ export const Post = ({post}: Props) => {
                     }
 
                 </div>
-                <span className="whitespace-pre-wrap break-all">{post.text}</span>
+                <span className="whitespace-pre-wrap break-words word-break-words">{post.text}</span>
             </div>
         </div>
     )

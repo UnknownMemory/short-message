@@ -61,6 +61,11 @@ body {
   #feed, #profile {
     grid-column: 2 / 3;
   }
+
+  .word-break-words {
+    word-break: break-word;
+  }
+
 }
 
 @layer components {

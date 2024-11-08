@@ -3,15 +3,17 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState } from "react"
 
-import { HomeIcon, ArrowRightEndOnRectangleIcon, BellIcon, Cog6ToothIcon, UserCircleIcon, ChevronDownIcon} from "@heroicons/react/24/outline"
+import { ArrowRightEndOnRectangleIcon, BellIcon, Cog6ToothIcon, UserCircleIcon, ChevronDownIcon} from "@heroicons/react/24/outline"
 import { useQuery } from "@tanstack/react-query"
 
 import { getCurrentUser } from "@/utils/service"
+import { usePathname } from "next/navigation"
 
 
 
 
 export const Navbar = ({ css = null }: { css: string | null }) => {
+    const pathname = usePathname()
     const [showDropdown, setShowDropdown] = useState(false)
     
     const {data: user} = useQuery({
@@ -22,13 +24,16 @@ export const Navbar = ({ css = null }: { css: string | null }) => {
     return (
         <div className="md:grid md:sm-grid md:h-16 sticky top-0 bg-sm-white z-[1] max-sm:hidden">
             <Link className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
-            <nav className=" flex justify-center items-center border-x-[1px] border-b-[1px]">
-                <Link className="w-[50%] h-full md:p-2 flex items-center justify-center text-sm-primary-dark nav-link" href="/"><HomeIcon className="size-5 mr-1"/>Home</Link>
-                <Link className="w-[50%] h-full md:p-2 flex items-center justify-center text-sm-primary-dark nav-link" href="/notifications"><BellIcon className="size-5 mr-1"/>Notifications</Link>
-
-            </nav>
+            <nav className="flex justify-center items-center border-x-[1px] border-b-[1px]">
+            {pathname == '/' ? <div className="w-[50%] h-full md:p-2 flex items-center justify-center">Feed</div> : false}
+            </nav> 
             <div className="flex justify-end items-center md:mr-2 text-sm">
-                <div className={`user-dropdown flex justify-center items-center p-2 rounded-2xl relative cursor-pointer border`} onClick={() => setShowDropdown(!showDropdown)}>
+                <Link className={`user-dropdown flex justify-center items-center p-2 rounded-2xl relative cursor-pointer border h-[50px] mr-1 text-sm-primary-dark`} href="/notifications">
+                    <BellIcon className="size-5 m-[5px]"/>
+                    <div className="select-none">Notifications</div>
+                </Link>
+
+                <div className={`user-dropdown flex justify-center items-center p-2 rounded-2xl relative cursor-pointer border h-[50px]`} onClick={() => setShowDropdown(!showDropdown)}>
                     <div className="h-[32px] w-[32px] relative md:mr-1">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                     </div>
