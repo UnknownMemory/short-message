@@ -5,6 +5,7 @@ import { Virtuoso } from 'react-virtuoso'
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
 import { getCurrentUser, getTimeline } from "@/utils/service";
+import { useEffect } from "react";
 
 
 export default function Home() {
@@ -28,6 +29,21 @@ export default function Home() {
     const posts = postsPages?.pages.flatMap(page => {
         return page.posts
     })
+
+
+    useEffect(() => {
+        const eventSrc = new EventSource(`${process.env.NEXT_PUBLIC_HOST}/api/post/timeline/update`, {withCredentials: true})
+
+        eventSrc.onmessage = (event) => {
+            if(event.data){
+                console.log(event.data)
+            }
+        }
+
+        return () => {
+            eventSrc.close();
+          };    
+    }, [])
 
     return (
         <>
