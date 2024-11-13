@@ -2,17 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkJWT } from "./utils/auth";
 import { JWTPayload } from "jose";
 
+const getAccessToken = async (headers: Headers) => {
+    let token: string | null = headers.get('Authorization')
+    if (token) {
+        token = token.replace('Bearer ', "")
+        return token
+    }
+
+    let cookieToken: string | null | undefined = headers.get('Cookie')
+    if (cookieToken) {
+        cookieToken = cookieToken.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()
+        return cookieToken
+    }
+
+    return false
+}
 
 export async function middleware(request: NextRequest) {
     if (protectedAPIRoutes.some((route: string) => request.nextUrl.pathname.match(route))) {
-        const requestHeaders = new Headers(request.headers)
-        let token: string | null = requestHeaders.get('Authorization')
+        const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
 
-        if (token == null) {
+        if (!token) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
-
-        token = token.replace('Bearer ', "")
 
         const loggedUser: false | JWTPayload = await checkJWT(token)
 
@@ -50,7 +62,7 @@ export async function middleware(request: NextRequest) {
 
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$']
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$']
 const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
 
 export const config = {

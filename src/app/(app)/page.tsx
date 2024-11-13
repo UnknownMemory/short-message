@@ -23,7 +23,8 @@ export default function Home() {
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
-        enabled: !!userId
+        enabled: !!userId,
+        staleTime: Infinity
     })
 
     const posts = postsPages?.pages.flatMap(page => {

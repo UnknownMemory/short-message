@@ -7,6 +7,7 @@ import { post } from "@/db/schema/post"
 import { follow } from "@/db/schema/follow"
 import { user } from "@/db/schema/user";
 import { like } from "@/db/schema/like";
+import { timeline } from "@/db/schema/timeline";
 
 
 
@@ -38,6 +39,12 @@ export async function GET(request: NextRequest) {
 
 
     if (posts.length > 0) {
+        await db.insert(timeline).values({ userID: userID, lastSeen: posts[0].created_at })
+            .onConflictDoUpdate({
+                target: timeline.userID,
+                set: { lastSeen: posts[0].created_at }
+            })
+
         return NextResponse.json({ posts, cursor: posts[posts.length - 1].created_at }, { status: 200 });
     }
     return NextResponse.json({ 'error': 'No posts found' }, { status: 401 });
