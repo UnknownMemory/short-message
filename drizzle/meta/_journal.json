@@ -71,6 +71,34 @@
       "when": 1731430951582,
       "tag": "0009_dapper_vargas",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1731585892934,
+      "tag": "0010_brainy_lilandra",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1731588121971,
+      "tag": "0011_curly_fabian_cortez",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1731588206235,
+      "tag": "0012_aromatic_inertia",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1731588276842,
+      "tag": "0013_rare_invaders",
+      "breakpoints": true
     }
   ]
 }

@@ -3,8 +3,8 @@ import { user } from "./user";
 
 
 export const follow = pgTable('follow', {
-    userID: integer("user_id").references(() => user.id),
-    followingID: integer("following_id").references(() => user.id),
+    userID: integer("user_id").references(() => user.id, { onDelete: 'cascade' }),
+    followingID: integer("following_id").references(() => user.id, { onDelete: 'cascade' }),
     created_at: timestamp('created_at').notNull()
 }, (t) => ({
     pk: primaryKey({ columns: [t.userID, t.followingID] }),
