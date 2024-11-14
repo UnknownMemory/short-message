@@ -32,19 +32,19 @@ export default function Home() {
     })
 
 
-    useEffect(() => {
-        const eventSrc = new EventSource(`${process.env.NEXT_PUBLIC_HOST}/api/post/timeline/update`, {withCredentials: true})
+    // useEffect(() => {
+    //     const eventSrc = new EventSource(`${process.env.NEXT_PUBLIC_HOST}/api/post/timeline/update`, {withCredentials: true})
 
-        eventSrc.onmessage = (event) => {
-            if(event.data){
-                console.log(event.data)
-            }
-        }
+    //     eventSrc.onmessage = (event) => {
+    //         if(event.data){
+    //             console.log(event.data)
+    //         }
+    //     }
 
-        return () => {
-            eventSrc.close();
-          };    
-    }, [])
+    //     return () => {
+    //         eventSrc.close();
+    //       };    
+    // }, [])
 
     return (
         <>
