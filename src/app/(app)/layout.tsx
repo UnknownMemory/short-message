@@ -4,8 +4,9 @@ import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
 import Providers from '@/app/providers'
-import { Navbar } from "@/components/Navbar";
 import { BottomNavbar } from "@/components/BottomNavbar";
+import { RPanel } from "@/components/RPanel";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +25,15 @@ export default function Layout({
 		<html lang="en">
 			<body className={inter.className}>
 				<Providers>
-					<Navbar css={null} />
+			
 					<div className="min-h-screen md:grid md:sm-grid">
+						<div className="md:h-14 sticky top-0 bg-sm-white z-[1] max-sm:hidden flex items-center">
+							<Link className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
+						</div>
 						{children}
+						<RPanel/>
 					</div>
+					
 					<BottomNavbar />
 				</Providers>
 			</body>

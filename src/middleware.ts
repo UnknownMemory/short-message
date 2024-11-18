@@ -39,14 +39,11 @@ export async function middleware(request: NextRequest) {
     }
 
     if (request.nextUrl.pathname.match(profileRoute)) {
-        const requestHeaders = new Headers(request.headers)
-        let token: string | null = requestHeaders.get('Authorization')
+        const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
 
-        if (token == null) {
+        if (!token) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
-
-        token = token.replace('Bearer ', "")
 
         const loggedUser: false | JWTPayload = await checkJWT(token)
 
