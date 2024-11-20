@@ -1,10 +1,11 @@
 'use server'
 import { cookies } from "next/headers"
 import { sql } from 'drizzle-orm';
+import { z } from "zod";
 
 import { db } from "@/db/db"
 import { checkJWT } from "@/utils/auth"
-import { z } from "zod";
+import { User } from "@/types/User";
 
 
 const schema = z.object({

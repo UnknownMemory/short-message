@@ -1,21 +1,13 @@
 'use client'
 import Link from "next/link"
-import Image from "next/image"
-import { useState } from "react"
-
-import { ArrowRightEndOnRectangleIcon, BellIcon, Cog6ToothIcon, UserCircleIcon, ChevronDownIcon} from "@heroicons/react/24/outline"
 import { useQuery } from "@tanstack/react-query"
 
 import { getCurrentUser } from "@/utils/service"
-import { usePathname } from "next/navigation"
 
 
 
 
 export const Navbar = ({ css = null }: { css: string | null }) => {
-    const pathname = usePathname()
-    const [showDropdown, setShowDropdown] = useState(false)
-    
     const {data: user} = useQuery({
         queryKey: ['me'],
         queryFn: () => getCurrentUser(),

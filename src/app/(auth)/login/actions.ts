@@ -10,6 +10,7 @@ import { generateTokens } from "@/utils/auth";
 import { getFutureDate } from "@/utils/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { User } from "@/types/User";
 
 const schema = z.object({
     email: z.string({ invalid_type_error: 'Invalid Email' }).email().max(254),

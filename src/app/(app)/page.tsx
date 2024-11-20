@@ -1,12 +1,12 @@
 "use client"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 import { Virtuoso } from 'react-virtuoso'
 
 import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
 import { getCurrentUser, getTimeline } from "@/utils/service";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { Post as PostT } from "@/types/Post";
 
 
 export default function Home() {
@@ -46,7 +46,7 @@ export default function Home() {
                     useWindowScroll
                     style={{height: '100%'}}
                     data={posts} 
-                    itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post}/>}}
                     endReached={(_) => fetchNextPage()}
                     />
             </div>

@@ -8,6 +8,7 @@ import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-quer
 import { getUser, getCurrentUser, userTimeline } from "@/utils/service";
 
 import { Post } from '@/components/Post';
+import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
 
 
@@ -85,7 +86,7 @@ export default function Profile() {
                     useWindowScroll
                     style={{height: '100%', borderTopWidth: '1px'}}
                     data={posts} 
-                    itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post}/>}}
                     endReached={(_) => fetchNextPage()}
                 />
             </div>

@@ -1,10 +1,8 @@
 "use client"
 
-import { FormInput } from "@/components/FormInput";
 import { getCurrentUser } from "@/utils/service";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
 import deleteUserAction from "./actions";
 
 

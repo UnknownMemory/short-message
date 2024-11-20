@@ -7,6 +7,7 @@ import { eq, and } from "drizzle-orm";
 import { db } from "@/db/db"
 import { checkJWT } from "@/utils/auth"
 import { like } from "@/db/schema/like"
+import { Post } from "@/types/Post";
 
 const schema = z.object({
     postId: z.number()

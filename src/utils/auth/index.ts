@@ -1,3 +1,4 @@
+import { UserJWTPayload } from "@/types/User"
 import * as jose from "jose"
 
 export const generateTokens = async (userID: unknown, expires: { 'expireAccess': string, 'expireRefresh': string }) => {
@@ -24,7 +25,7 @@ export const checkJWT = async (token: string) => {
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
 
     try {
-        user = await jose.jwtVerify(token, accessSecret)
+        user = await jose.jwtVerify<UserJWTPayload>(token, accessSecret)
     } catch (e) {
         return false
     }

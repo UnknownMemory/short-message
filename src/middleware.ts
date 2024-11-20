@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkJWT } from "./utils/auth";
-import { JWTPayload } from "jose";
+
+import { UserJWTPayload } from "./types/User";
 
 const getAccessToken = async (headers: Headers) => {
     let token: string | null = headers.get('Authorization')
@@ -26,9 +27,9 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
 
-        const loggedUser: false | JWTPayload = await checkJWT(token)
+        const loggedUser: false | UserJWTPayload = await checkJWT(token)
 
-        if (await loggedUser) {
+        if (loggedUser) {
             const response = NextResponse.next()
             response.headers.set('userID', loggedUser.id)
             return response
@@ -45,9 +46,9 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
 
-        const loggedUser: false | JWTPayload = await checkJWT(token)
+        const loggedUser: false | UserJWTPayload = await checkJWT(token)
 
-        if (await loggedUser) {
+        if (loggedUser) {
             const response = NextResponse.next()
             response.headers.set('userID', loggedUser.id)
             return response

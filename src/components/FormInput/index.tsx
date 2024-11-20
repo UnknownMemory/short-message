@@ -2,7 +2,7 @@ interface Props {
     name: string,
     value?: string,
     type: string,
-    error: string[] | null
+    error: string[] | undefined
 }
 
 export const FormInput = ({name, value, type, error}: Props) => {

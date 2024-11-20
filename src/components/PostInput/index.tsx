@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image"
-import { FormEvent, KeyboardEvent, useRef, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import savePost from "./actions"
 
 

@@ -1,9 +1,10 @@
+import { NextResponse } from "next/server";
 import { headers } from "next/headers"
 import { eq } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { user } from "@/db/schema/user"
-import { NextResponse } from "next/server";
+import { User } from "@/types/User";
 
 
 export async function GET(request: Request) {

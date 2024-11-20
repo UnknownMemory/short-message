@@ -44,10 +44,14 @@ export async function GET(request: NextRequest) {
 
     const getNewPosts = setInterval(async () => {
         const cursor = await lastSeen(userID)
-        const posts = await newPosts(userID, cursor)
-        if (posts[0].count > 0) {
-            console.log(posts[0].count)
+        if (cursor) {
+            const posts = await newPosts(userID, cursor)
+            if (posts[0].count > 0) {
+                console.log(posts[0].count)
+            }
         }
+
+
     }, 60000)
 
 

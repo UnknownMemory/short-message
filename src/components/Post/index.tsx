@@ -7,10 +7,12 @@ import { HeartIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/16/solid"
 
 import { likeAction } from "./actions"
+import { User } from "@/types/User"
+import { Post as PostT } from "@/types/Post"
 
 
 interface Props {
-    post: Post & Partial<User>,
+    post: PostT & Partial<User>,
 }
 
 export const Post = ({post}: Props) => {
