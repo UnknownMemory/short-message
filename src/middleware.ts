@@ -39,29 +39,29 @@ export async function middleware(request: NextRequest) {
 
     }
 
-    if (request.nextUrl.pathname.match(profileRoute)) {
-        const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
+    // if (request.nextUrl.pathname.match(profileRoute)) {
+    //     const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
 
-        if (!token) {
-            return NextResponse.redirect(new URL('/login', request.url))
-        }
+    //     if (!token) {
+    //         return NextResponse.redirect(new URL('/login', request.url))
+    //     }
 
-        const loggedUser: false | UserJWTPayload = await checkJWT(token)
+    //     const loggedUser: false | UserJWTPayload = await checkJWT(token)
 
-        if (loggedUser) {
-            const response = NextResponse.next()
-            response.headers.set('userID', loggedUser.id)
-            return response
-        }
+    //     if (loggedUser) {
+    //         const response = NextResponse.next()
+    //         response.headers.set('userID', loggedUser.id)
+    //         return response
+    //     }
 
-        return NextResponse.next();
+    //     return NextResponse.json({ 'error': 'Authentication error' }, { status: 401 });
 
-    }
+    // }
 
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$']
-const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$', '^/api/user/*']
+// const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
 
 export const config = {
     matcher: ['/api/:path*']

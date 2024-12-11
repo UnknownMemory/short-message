@@ -37,7 +37,7 @@ export const RPanel = () => {
                         <div className="user-dropdown-link absolute w-full rounded-2xl md:top-14 border">
                             <Link className="md:p-3 flex items-center text-sm-primary-dark rounded-t-2xl nav-link border-b" href={`/${user?.username}`}><UserCircleIcon className="size-5"/>Profile</Link>
                             <Link className="md:p-3 flex items-center text-sm-primary-dark nav-link border-b" href="/settings"><Cog6ToothIcon className="size-5"/>Settings</Link>
-                            <Link className="md:p-3 flex items-center text-sm-primary-dark rounded-b-2xl nav-link " href="/logout"><ArrowRightEndOnRectangleIcon className="size-5"/>Logout</Link>
+                            <Link prefetch={false} className="md:p-3 flex items-center text-sm-primary-dark rounded-b-2xl nav-link " href="/logout"><ArrowRightEndOnRectangleIcon className="size-5"/>Logout</Link>
                         </div>
                     }
 
