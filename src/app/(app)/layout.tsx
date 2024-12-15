@@ -28,7 +28,7 @@ export default function Layout({
 			
 					<div className="min-h-screen md:grid md:sm-grid">
 						<div className="md:h-14 sticky top-0 bg-sm-white z-[1] max-sm:hidden flex items-center">
-							<Link className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
+							<Link prefetch={false} className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
 						</div>
 						{children}
 						<RPanel/>

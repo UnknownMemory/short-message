@@ -16,7 +16,7 @@ export default function Login() {
                 <FormInput name="email" type="email" error={undefined}></FormInput>
                 <FormInput name="password" type="password" error={undefined}></FormInput>
                 <div className="flex justify-between">
-                    <Link className="pt-2 inline" href="/signup">{"Don\'t have an account?"}</Link>
+                    <Link prefetch={false} className="pt-2 inline" href="/signup">{"Don\'t have an account?"}</Link>
                     <button className="btn-light" type="submit">Login</button>
                 </div>
             </form>

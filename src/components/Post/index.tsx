@@ -45,7 +45,7 @@ export const Post = ({post}: Props) => {
             <div className="w-full text-[0.9em]">
                 <div className="flex items-center justify-between">
                     <div className="flex">
-                        <Link className="post" href={"/"+post.username}><span className="pr-1">{post.display_name}</span></Link>
+                        <Link prefetch={false} className="post" href={"/"+post.username}><span className="pr-1">{post.display_name}</span></Link>
                         <div className="text-sm-dark-gray flex items-center">
                             <span className="truncate inline-block max-w-24 md:max-w-full">@{post.username}</span>
                             <span className="px-0.5">·</span>
