@@ -19,7 +19,7 @@ export const RPanel = () => {
         staleTime: Infinity,
     })
     return (
-        <div className="md:h-14 sticky top-0 bg-sm-white z-[1] max-sm:hidden flex items-center justify-end">
+        <div className="fixed top-0 right-0 bg-sm-white z-[1] max-sm:hidden flex items-center justify-end md:top-4">
             <div className="flex justify-end items-center md:mr-2 text-sm">
                 <Link prefetch={false} className={`user-dropdown flex justify-center items-center p-2 rounded-2xl relative cursor-pointer border h-[50px] mr-1 text-sm-primary-dark`} href="/notifications">
                     <BellIcon className="size-5 m-[5px]"/>

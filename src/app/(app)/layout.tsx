@@ -27,7 +27,7 @@ export default function Layout({
 				<Providers>
 			
 					<div className="min-h-screen md:grid md:sm-grid">
-						<div className="md:h-14 sticky top-0 bg-sm-white z-[1] max-sm:hidden flex items-center">
+						<div className="fixed top-0 left-0 bg-sm-white z-[1] max-sm:hidden flex items-center md:my-4">
 							<Link prefetch={false} className="font-bold self-center md:ml-5 text-sm-primary-dark" href="/">Short Message</Link>
 						</div>
 						{children}
