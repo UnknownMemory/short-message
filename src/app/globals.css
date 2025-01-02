@@ -88,6 +88,14 @@ body {
     @apply rounded px-4 md:px-6 py-1.5 border-[1px];
   }
 
+  .input-light {
+    @apply bg-sm-light-gray;
+  }
+
+  .input-light::placeholder {
+    @apply text-sm-dark-gray;
+  }
+
   .input-light:focus {
     outline-color: theme(colors.sm-primary);
     @apply text-black;

@@ -29,7 +29,9 @@ export default function Layout({
 					<div className="min-h-screen md:grid md:sm-grid">
 						<Sidebar/>
 						{children}
-						<RPanel/>
+						<div className="md:ml-6 md:mr-28 md:mt-5">
+							<input className="input-light mb-2 md:mb-4 p-2 w-full rounded-md" placeholder="Search"/>
+						</div>
 					</div>
 					<BottomNavbar />
 				</Providers>
