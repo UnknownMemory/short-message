@@ -1,26 +1,51 @@
 'use client'
-import { useQuery } from "@tanstack/react-query"
-
-import { getCurrentUser } from "@/utils/service"
 import Link from "next/link"
+import Image from "next/image"
+
+import { useQuery } from "@tanstack/react-query"
 import { HomeIcon, ArrowRightEndOnRectangleIcon, BellIcon, Cog6ToothIcon, UserCircleIcon } from "@heroicons/react/24/outline"
 
+import { getCurrentUser } from "@/utils/service"
 
 
-export const Sidebar = ({ css = null }: { css: string | null }) => {
+export const Sidebar = () => {
     const {data: user} = useQuery({
         queryKey: ['me'],
         queryFn: () => getCurrentUser(),
         staleTime: Infinity,
     })
     return (
-        <div className={css != null ? 'md:w-1/3 md:mr-12 '+ css : 'md:w-1/3 r-6'}>
-            <nav className="text-xl flex flex-col md:mt-5">
-                <Link prefetch={false} className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/"><HomeIcon className="size-6"/>Home</Link>
-                <Link prefetch={false} className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/notifications"><BellIcon className="size-6"/>Notifications</Link>
-                <Link prefetch={false} className="md:p-2 flex items-center text-sm-primary-dark nav-link" href={`/${user?.username}`}><UserCircleIcon className="size-6"/>Profile</Link>
-                <Link prefetch={false} className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/settings"><Cog6ToothIcon className="size-6"/>Settings</Link>
-                <Link prefetch={false} className="md:p-2 flex items-center text-sm-primary-dark nav-link" href="/logout"><ArrowRightEndOnRectangleIcon className="size-6"/>Logout</Link>
+        <div className="md:w-44 mr-6 justify-self-end">
+            <nav className="md:text-lg flex flex-col md:mt-5">
+                <Link className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark"  href={`/${user?.username}`}>
+                    <div className="h-[44px] w-[44px] relative md:mr-2">
+                        <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm">{user?.display_name}</span>
+                        <span className="text-sm text-sm-dark-gray">@{user?.username}</span>
+                    </div>
+                </Link>
+                <Link prefetch={false} className="md:h-11 md:px-2 md:mt-4 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/">
+                    <HomeIcon className="size-6 mr-1"/>
+                    <span>Home</span>
+                </Link>
+                <Link prefetch={false} className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/notifications">
+                    <BellIcon className="size-6 mr-1"/>
+                    <span>Notifications</span>
+                </Link>
+                <Link prefetch={false} className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark nav-link" href={`/${user?.username}`}>
+                    <UserCircleIcon className="size-6 mr-1"/>
+                    <span>Profile</span>
+                </Link>
+                <Link prefetch={false} className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/settings">
+                    <Cog6ToothIcon className="size-6 mr-1"/>
+                    <span>Settings</span>
+                </Link>
+                <Link prefetch={false} className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/logout">
+                    <ArrowRightEndOnRectangleIcon className="size-6 mr-1"/>
+                    <span>Logout</span>
+                </Link>
             </nav>
         </div>
     )
