@@ -5,8 +5,6 @@ import "@/app/globals.css";
 
 import Providers from '@/app/providers'
 import { BottomNavbar } from "@/components/BottomNavbar";
-import { RPanel } from "@/components/RPanel";
-import Link from "next/link";
 import { Sidebar } from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +27,7 @@ export default function Layout({
 					<div className="min-h-screen md:grid md:sm-grid">
 						<Sidebar/>
 						{children}
-						<div className="md:ml-6 md:mr-28 md:mt-5">
+						<div className="md:ml-6 md:mr-28 md:mt-5 md:block hidden">
 							<input className="input-light mb-2 md:mb-4 p-2 w-full rounded-md" placeholder="Search"/>
 						</div>
 					</div>

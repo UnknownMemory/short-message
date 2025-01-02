@@ -15,8 +15,8 @@ export const Sidebar = () => {
         staleTime: Infinity,
     })
     return (
-        <div className="md:w-44 mr-6 justify-self-end">
-            <nav className="md:text-lg flex flex-col md:mt-5">
+        <div className="md:w-44 md:mr-6 md:justify-self-end top-0 left-0 fixed bg-sm-white h-full z-10">
+            <nav className="md:text-lg flex flex-col md:mt-5 bg-sm-white h-full">
                 <Link className="md:h-11 md:px-2 md:rounded-md flex items-center text-sm-primary-dark"  href={`/${user?.username}`}>
                     <div className="h-[44px] w-[44px] relative md:mr-2">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>

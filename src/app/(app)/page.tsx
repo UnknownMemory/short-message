@@ -7,6 +7,7 @@ import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
 import { getCurrentUser, getTimeline } from "@/utils/service";
 import { Post as PostT } from "@/types/Post";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 
 export default function Home() {
@@ -38,8 +39,9 @@ export default function Home() {
     return (
         <>
             <div id="feed" className="min-h-full border-x-[1px]">
-                <nav className="h-14 flex justify-center items-center border-x-[1px] border-b-[1px]">
-                    {pathname == '/' ? <div className="w-[50%] h-full md:p-2 flex items-center justify-center">Feed</div> : false}
+                <nav className="grid grid-cols-3 w-full h-14 border-x-[1px] border-b-[1px]">
+                    <Bars3Icon className="size-6 self-center ml-4 md:hidden"/>
+                    <div className="text-center self-center col-span-3">Feed</div>
                 </nav> 
                 <PostInput refetch={refetch}/>
                 <Virtuoso 
