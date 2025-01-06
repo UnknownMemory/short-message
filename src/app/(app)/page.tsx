@@ -1,5 +1,6 @@
 "use client"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import { Virtuoso } from 'react-virtuoso'
 
@@ -7,10 +8,12 @@ import { Post } from "@/components/Post";
 import { PostInput } from "@/components/PostInput";
 import { getCurrentUser, getTimeline } from "@/utils/service";
 import { Post as PostT } from "@/types/Post";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+
+import { useSidebarStore } from "@/stores/sidebar-store";
 
 
 export default function Home() {
+    const {setIsOpen} = useSidebarStore((state) => state)
     const pathname = usePathname()
 
     const {data: user} = useQuery({
@@ -40,8 +43,8 @@ export default function Home() {
         <>
             <div id="feed" className="min-h-full border-x-[1px]">
                 <nav className="grid grid-cols-3 w-full h-14 border-x-[1px] border-b-[1px]">
-                    <Bars3Icon className="size-6 self-center ml-4 md:hidden"/>
-                    <div className="text-center self-center col-span-3">Feed</div>
+                    <Bars3Icon className="size-6 self-center ml-4 md:hidden" onClick={() => setIsOpen(true)}/>
+                    <div className="text-center self-center md:col-span-3">Feed</div>
                 </nav> 
                 <PostInput refetch={refetch}/>
                 <Virtuoso 
