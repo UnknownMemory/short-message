@@ -25,8 +25,13 @@ export const Sidebar = () => {
     })
 
     return (
-        <div className={`md:w-44 md:mr-6 md:justify-self-end md:static md:border-0 md:block top-0 left-0 fixed bg-sm-white h-full z-10 border-r-[1px] ${isOpen ? 'block': 'hidden'}`}>
-            <nav className="md:text-lg flex flex-col md:mt-5 bg-sm-white h-full text-xl">
+        <div className={`md:w-44 md:mr-6 md:justify-self-end md:static md:border-0 md:block md:bg-sm-white fixed top-0 left-0 w-full bg-sm-primary/[0.2] h-full z-10 border-r-[1px] ${isOpen ? 'block': 'hidden'}`}
+            onClick={(e) => {
+                if(e.target == e.currentTarget) {
+                    setIsOpen(false)
+                }}
+            }>
+            <nav className="md:text-lg md:static fixed top-0 left-0 flex flex-col md:mt-5 bg-sm-white h-full text-xl">
                 <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 pt-3 md:rounded-md flex items-center text-sm-primary-dark"  href={`/${user?.username}`}>
                     <div className="h-[44px] w-[44px] relative mr-2">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
