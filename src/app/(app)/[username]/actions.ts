@@ -4,34 +4,30 @@ import { sql } from 'drizzle-orm';
 import { z } from "zod";
 
 import { db } from "@/db/db"
-import { checkJWT } from "@/utils/auth"
-import { User } from "@/types/User";
+import { authAction } from "@/utils/auth"
+import { User, UserJWTPayload } from "@/types/User";
 
 
 const schema = z.object({
     profileID: z.number()
 })
 
-export default async function followAction(profileID: User["id"]) {
-    const accessToken = cookies().get('accessToken')
-    if (accessToken) {
-        const user = await checkJWT(accessToken.value)
 
-        if (user) {
-            const validatedFields = schema.safeParse({
-                profileID: profileID
-            })
+async function action(loggedUser: UserJWTPayload, profileID: User["id"]) {
+    const validatedFields = schema.safeParse({
+        profileID: profileID
+    })
 
-            if (!validatedFields.success) {
-                return {
-                    errors: validatedFields.error.flatten().fieldErrors.profileID,
-                }
-            }
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors.profileID,
+        }
+    }
 
-            const userID = user.id
-            const created_at = Date.now() / 1000.0
+    const userID = loggedUser.id
+    const created_at = Date.now() / 1000.0
 
-            const statement = sql.raw(`
+    const statement = sql.raw(`
                 DO $$
                 BEGIN
                     IF EXISTS (SELECT * FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = ${validatedFields.data.profileID}) THEN
@@ -42,9 +38,10 @@ export default async function followAction(profileID: User["id"]) {
                 END $$
             `)
 
-            return await db.execute(statement)
-        }
-    }
+    return await db.execute(statement)
+}
 
-    return { 'errors': 'You must be authenticated to perform this action.' }
+
+export default async function followAction(profileID: User["id"]) {
+    return authAction(cookies().get('accessToken'), action, profileID)
 }
