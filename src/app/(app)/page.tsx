@@ -51,7 +51,7 @@ export default function Home() {
                     useWindowScroll
                     style={{height: '100%'}}
                     data={posts} 
-                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true}/>}}
                     endReached={(_) => fetchNextPage()}
                     />
             </div>

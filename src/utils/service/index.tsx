@@ -26,6 +26,17 @@ export const getUser = async (username: string | string[]) => {
     return await res.json();
 };
 
+export const getPost = async (postId: number) => {
+    const res = await fetch(`${URL}/api/post/${postId}`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})
+
+    if(res.status != 200){
+        const response = await res.json()
+        throw new RequestError(response.error, res.status)
+    }
+    
+    return await res.json();
+}
+
 
 export const getTimeline = async (cursor?: string | boolean) => {
     const res = await fetch(`${URL}/api/post/timeline${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})

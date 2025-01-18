@@ -60,7 +60,7 @@ export async function middleware(request: NextRequest) {
 
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$', '^/api/user/*']
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$', '^/api/user/*', '^/api/post/[0-9]+$']
 // const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
 
 export const config = {

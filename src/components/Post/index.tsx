@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -13,9 +14,11 @@ import { Post as PostT } from "@/types/Post"
 
 interface Props {
     post: PostT & Partial<User>,
+    isTimeline: boolean
 }
 
-export const Post = ({post}: Props) => {
+export const Post = ({post, isTimeline}: Props) => {
+    const router = useRouter()
     const [isLiked, setIsLiked] = useState<boolean>(!post.isLiked || post.isLiked == null ? false : true )
 
     const postDate = new Date(post?.created_at)
@@ -36,7 +39,11 @@ export const Post = ({post}: Props) => {
     }
 
     return (
-        <div className="flex px-3 py-5 border-b-[1px]">
+        <div className={`flex px-3 py-5 border-b-[1px] ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={() => {
+            if(isTimeline){
+               router.push(`/${post.username}/post/${post.id}`)
+            }
+        }}>
             <div className="h-full pr-2">
             <div className="h-[42px] w-[42px] relative">
                 <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
