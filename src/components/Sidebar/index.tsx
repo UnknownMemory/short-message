@@ -37,8 +37,8 @@ export const Sidebar = () => {
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                     </div>
                     <div className="flex flex-col">
-                        <span className="md:text-sm text-lg font-bold">{user?.display_name}</span>
-                        <span className="text-sm text-sm-dark-gray">@{user?.username}</span>
+                        <span className="md:text-sm md:max-w-[104px] truncate text-lg font-bold">{user?.display_name}</span>
+                        <span className="text-sm md:max-w-[108px] truncate text-sm-dark-gray">@{user?.username}</span>
                     </div>
                 </Link>
                 <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 py-3 md:mt-4 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/">
