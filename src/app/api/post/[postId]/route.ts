@@ -1,5 +1,5 @@
 import { headers } from "next/headers"
-import { eq, and, isNotNull } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { post } from "@/db/schema/post"
