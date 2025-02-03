@@ -22,7 +22,7 @@ export default function Home() {
         staleTime: Infinity,
     })
 
-    const userId = user?.id
+    
 
     const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
         queryKey: ['posts'],
@@ -30,7 +30,7 @@ export default function Home() {
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
-        enabled: !!userId,
+        enabled: !!user?.id,
         staleTime: Infinity
     })
 
