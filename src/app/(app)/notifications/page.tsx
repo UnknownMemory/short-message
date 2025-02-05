@@ -2,6 +2,7 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { NotificationCard } from "@/components/NotificationCard";
 import { getCurrentUser, getNotifications } from "@/utils/service";
 import { useSidebarStore } from "@/stores/sidebar-store";
 import { Virtuoso } from "react-virtuoso";
@@ -43,7 +44,7 @@ export default function Notification() {
                 useWindowScroll
                 style={{height: '100%'}}
                 data={notifications} 
-                itemContent={(index, notification) =>{ return <div key={index}>{notification.type}</div>}}
+                itemContent={(index, notification) =>{ return <NotificationCard key={index} notification={notification}/>}}
                 endReached={(_) => fetchNextPage()}
                 />
         </div>
