@@ -1,4 +1,6 @@
+import { UserJWTPayload } from "@/types/User"
 import * as jose from "jose"
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies"
 
 export const generateTokens = async (userID: unknown, expires: { 'expireAccess': string, 'expireRefresh': string }) => {
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
@@ -24,10 +26,21 @@ export const checkJWT = async (token: string) => {
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
 
     try {
-        user = await jose.jwtVerify(token, accessSecret)
+        user = await jose.jwtVerify<UserJWTPayload>(token, accessSecret)
     } catch (e) {
         return false
     }
 
     return user.payload
+}
+
+
+export const authAction = async (accessToken: RequestCookie | undefined, action: Function, ...args: any[]) => {
+    if (accessToken) {
+        const isLogged = await checkJWT(accessToken.value)
+        if (isLogged) {
+            return await action(isLogged, ...args)
+        }
+    }
+    return { 'errors': 'You must be authenticated to perform this action.' }
 }

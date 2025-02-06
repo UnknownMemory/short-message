@@ -1,36 +1,47 @@
 'use server'
 import { cookies } from "next/headers"
 import { sql } from 'drizzle-orm';
+import { z } from "zod";
 
 import { db } from "@/db/db"
-import { checkJWT } from "@/utils/auth"
+import { authAction } from "@/utils/auth"
+import { User, UserJWTPayload } from "@/types/User";
 
 
-export default async function followAction() {
+const schema = z.object({
+    profileID: z.number()
+})
 
-    const accessToken = cookies().get('accessToken')
-    if (accessToken) {
-        const user = await checkJWT(accessToken.value)
 
-        if (user) {
+async function action(loggedUser: UserJWTPayload, profileID: User["id"]) {
+    const validatedFields = schema.safeParse({
+        profileID: profileID
+    })
 
-            const userID = user.id
-            const created_at = Date.now() / 1000.0
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors.profileID,
+        }
+    }
 
-            const statement = sql.raw(`
+    const userID = loggedUser.id
+    const created_at = Date.now() / 1000.0
+
+    const statement = sql.raw(`
                 DO $$
                 BEGIN
-                    IF EXISTS (SELECT * FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = 2) THEN
-                        DELETE FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = 2;
+                    IF EXISTS (SELECT * FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = ${validatedFields.data.profileID}) THEN
+                        DELETE FROM follow WHERE follow.user_id = ${userID} AND follow.following_id = ${validatedFields.data.profileID};
                     ELSE
-                        INSERT INTO follow (user_id, following_id, created_at) VALUES (${userID}, 2, TO_TIMESTAMP(${created_at}));
+                        INSERT INTO follow (user_id, following_id, created_at) VALUES (${userID}, ${validatedFields.data.profileID}, TO_TIMESTAMP(${created_at}));
                     END IF;
                 END $$
             `)
 
-            return await db.execute(statement)
-        }
-    }
+    return await db.execute(statement)
+}
 
-    return { 'errors': 'You must be authenticated to perform this action.' }
+
+export default async function followAction(profileID: User["id"]) {
+    return authAction(cookies().get('accessToken'), action, profileID)
 }

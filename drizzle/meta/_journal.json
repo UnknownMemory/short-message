@@ -57,6 +57,62 @@
       "when": 1729178048589,
       "tag": "0007_smooth_riptide",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1731427307576,
+      "tag": "0008_eminent_titanium_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1731430951582,
+      "tag": "0009_dapper_vargas",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1731585892934,
+      "tag": "0010_brainy_lilandra",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1731588121971,
+      "tag": "0011_curly_fabian_cortez",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1731588206235,
+      "tag": "0012_aromatic_inertia",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1731588276842,
+      "tag": "0013_rare_invaders",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1736527757655,
+      "tag": "0014_tranquil_drax",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1736703932658,
+      "tag": "0015_special_sabretooth",
+      "breakpoints": true
     }
   ]
 }

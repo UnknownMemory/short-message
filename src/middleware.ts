@@ -1,22 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkJWT } from "./utils/auth";
-import { JWTPayload } from "jose";
 
+import { UserJWTPayload } from "./types/User";
+
+const getAccessToken = async (headers: Headers) => {
+    let token: string | null = headers.get('Authorization')
+    if (token) {
+        token = token.replace('Bearer ', "")
+        return token
+    }
+
+    let cookieToken: string | null | undefined = headers.get('Cookie')
+    if (cookieToken) {
+        cookieToken = cookieToken.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()
+        return cookieToken
+    }
+
+    return false
+}
 
 export async function middleware(request: NextRequest) {
     if (protectedAPIRoutes.some((route: string) => request.nextUrl.pathname.match(route))) {
-        const requestHeaders = new Headers(request.headers)
-        let token: string | null = requestHeaders.get('Authorization')
+        const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
 
-        if (token == null) {
+        if (!token) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
 
-        token = token.replace('Bearer ', "")
+        const loggedUser: false | UserJWTPayload = await checkJWT(token)
 
-        const loggedUser: false | JWTPayload = await checkJWT(token)
-
-        if (await loggedUser) {
+        if (loggedUser) {
             const response = NextResponse.next()
             response.headers.set('userID', loggedUser.id)
             return response
@@ -26,32 +39,29 @@ export async function middleware(request: NextRequest) {
 
     }
 
-    if (request.nextUrl.pathname.match(profileRoute)) {
-        const requestHeaders = new Headers(request.headers)
-        let token: string | null = requestHeaders.get('Authorization')
+    // if (request.nextUrl.pathname.match(profileRoute)) {
+    //     const token: string | false | undefined = await getAccessToken(new Headers(request.headers))
 
-        if (token == null) {
-            return NextResponse.redirect(new URL('/login', request.url))
-        }
+    //     if (!token) {
+    //         return NextResponse.redirect(new URL('/login', request.url))
+    //     }
 
-        token = token.replace('Bearer ', "")
+    //     const loggedUser: false | UserJWTPayload = await checkJWT(token)
 
-        const loggedUser: false | JWTPayload = await checkJWT(token)
+    //     if (loggedUser) {
+    //         const response = NextResponse.next()
+    //         response.headers.set('userID', loggedUser.id)
+    //         return response
+    //     }
 
-        if (await loggedUser) {
-            const response = NextResponse.next()
-            response.headers.set('userID', loggedUser.id)
-            return response
-        }
+    //     return NextResponse.json({ 'error': 'Authentication error' }, { status: 401 });
 
-        return NextResponse.next();
-
-    }
+    // }
 
 }
 
-const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$']
-const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
+const protectedAPIRoutes = ['^/api/user/me$', '^/api/post/timeline$', '^/api/post/like$', '^/api/post/user-timeline/[0-9]+$', '^/api/post/timeline/update$', '^/api/user/*', '^/api/post/[0-9]+$', '^/api/notification$']
+// const profileRoute = '^\/api\/user(\/(?!notifications|settings|logout)[^\/]*)*$'
 
 export const config = {
     matcher: ['/api/:path*']

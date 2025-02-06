@@ -6,6 +6,7 @@ import { user } from "@/db/schema/user"
 import { NextResponse } from "next/server";
 import { follow } from "@/db/schema/follow";
 import { alias } from "drizzle-orm/pg-core";
+import { User } from "@/types/User";
 
 
 export async function GET(request: Request, { params }: { params: { username: string } }) {

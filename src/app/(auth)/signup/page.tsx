@@ -19,7 +19,7 @@ export default function SignUp() {
                 <FormInput name="password" type="password" error={state?.errors.password}></FormInput>
                 <button className="btn-light" type="submit">Sign Up</button>
             </form>
-            <Link className="pt-2 inline" href="/login">Already have an account?</Link>
+            <Link prefetch={false} className="pt-2 inline" href="/login">Already have an account?</Link>
 
         </div>
     )

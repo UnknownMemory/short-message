@@ -1,4 +1,6 @@
-interface User {
+import { JWTPayload } from "jose"
+
+export interface User {
     id?: number
     username: string,
     email?: string,
@@ -8,4 +10,8 @@ interface User {
     description: string | null,
     is_admin?: boolean | null,
     created_at?: Date
+}
+
+export interface UserJWTPayload extends JWTPayload {
+    id: string
 }

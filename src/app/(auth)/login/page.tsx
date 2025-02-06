@@ -13,10 +13,10 @@ export default function Login() {
     return (
         <div className="h-screen w-full flex flex-col items-center justify-center">
             <form className="w-[90%] md:w-[35%] flex flex-col" action={loginAction}>
-                <FormInput name="email" type="email" error={null}></FormInput>
-                <FormInput name="password" type="password" error={null}></FormInput>
+                <FormInput name="email" type="email" error={undefined}></FormInput>
+                <FormInput name="password" type="password" error={undefined}></FormInput>
                 <div className="flex justify-between">
-                    <Link className="pt-2 inline" href="/signup">Don't have an account?</Link>
+                    <Link prefetch={false} className="pt-2 inline" href="/signup">{"Don\'t have an account?"}</Link>
                     <button className="btn-light" type="submit">Login</button>
                 </div>
             </form>

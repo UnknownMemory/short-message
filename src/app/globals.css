@@ -26,13 +26,12 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-
 @layer base {
   html {
     @apply bg-sm-white;
   }
 
-  [contenteditable=true]:empty::before {
+  [contenteditable="true"]:empty::before {
     content: attr(data-placeholder);
     display: block;
     color: theme(colors.sm-dark-gray);
@@ -55,11 +54,17 @@ body {
   }
 
   .sm-grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1.3fr 1fr;
   }
 
-  #feed, #profile {
+  #feed,
+  #profile,
+  #settings {
     grid-column: 2 / 3;
+  }
+
+  .word-break-words {
+    word-break: break-word;
   }
 }
 
@@ -83,6 +88,14 @@ body {
     @apply rounded px-4 md:px-6 py-1.5 border-[1px];
   }
 
+  .input-light {
+    @apply bg-sm-light-gray;
+  }
+
+  .input-light::placeholder {
+    @apply text-sm-dark-gray;
+  }
+
   .input-light:focus {
     outline-color: theme(colors.sm-primary);
     @apply text-black;
@@ -96,7 +109,6 @@ body {
     background-color: rgba(0, 0, 0, 0.15);
   }
 }
-
 
 @layer utilities {
   .text-balance {

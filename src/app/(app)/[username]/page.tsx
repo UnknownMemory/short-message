@@ -8,6 +8,7 @@ import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-quer
 import { getUser, getCurrentUser, userTimeline } from "@/utils/service";
 
 import { Post } from '@/components/Post';
+import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
 
 
@@ -32,7 +33,7 @@ export default function Profile() {
     
     const userId = user?.id
 
-    const {data: postsPages, fetchNextPage, refetch} = useInfiniteQuery({
+    const {data: postsPages, fetchNextPage} = useInfiniteQuery({
         queryKey: ['profile_posts', params.username],
         queryFn: ({pageParam}) => userTimeline(userId, pageParam),
         initialPageParam: false,
@@ -51,9 +52,9 @@ export default function Profile() {
             return <button className="btn-light-outline">Edit Profile</button> 
         } else {
             if (user?.is_following) {
-                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
+                return <button onClick={() => followAction(user.id).then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
             } else {
-                return <button onClick={() => followAction().then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": true}))} className="btn-light">Follow</button>
+                return <button onClick={() => followAction(user.id).then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": true}))} className="btn-light">Follow</button>
             }
         }
     }
@@ -64,12 +65,12 @@ export default function Profile() {
                 <div className="h-[150px] w-full">
                     <div className="w-full h-full bg-slate-500"></div>
                 </div>
-                <div id="avatar" className="flex justify-center w-full absolute md:top-[107px] pointer-events-none">
-                    <div className="md:h-[90px] md:w-[90px] relative">
+                <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none">
+                    <div className="h-[90px] w-[90px] relative">
                         <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                     </div>
                 </div>
-                <div className="w-100 md:p-2 flex justify-end">
+                <div className="w-100 p-2 flex justify-end">
                 {profileButton()}
                 </div>
                 <div>
@@ -85,7 +86,7 @@ export default function Profile() {
                     useWindowScroll
                     style={{height: '100%', borderTopWidth: '1px'}}
                     data={posts} 
-                    itemContent={(_, post: Post) =>{ return <Post key={post.id} post={post}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true}/>}}
                     endReached={(_) => fetchNextPage()}
                 />
             </div>

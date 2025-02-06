@@ -7,6 +7,7 @@ import { db } from "@/db/db";
 import { user } from "@/db/schema/user"
 import { generateTokens } from '@/utils/auth';
 import { getFutureDate } from '@/utils/utils';
+import { User } from '@/types/User';
 
 export async function POST(request: Request) {
     const res = await request.formData();

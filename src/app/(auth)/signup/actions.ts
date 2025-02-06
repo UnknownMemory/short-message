@@ -32,7 +32,6 @@ export default async function signUp(prevState: any, formData: FormData) {
         email: validatedFields.data.email,
         username: validatedFields.data.username,
         display_name: validatedFields.data.username,
-        avatar: '',
         password: hashedPassword,
     })
 
