@@ -39,9 +39,9 @@ export const Post = ({post, isTimeline}: Props) => {
     }
 
     return (
-        <div className={`flex px-3 py-5 border-b-[1px] ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={() => {
+        <div className={`flex px-3 py-5 border-b-[1px] relative ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={(e) => {
             if(isTimeline){
-               router.push(`/${post.username}/post/${post.id}`)
+                router.push(`/${post.username}/post/${post.id}`)
             }
         }}>
             <div className="h-full pr-2">
@@ -52,7 +52,7 @@ export const Post = ({post, isTimeline}: Props) => {
             <div className="w-full text-[0.9em]">
                 <div className="flex items-center justify-between">
                     <div className="flex">
-                        <Link prefetch={false} className="post" href={"/"+post.username}><span className="pr-1">{post.display_name}</span></Link>
+                        <Link prefetch={false} className="post" href={`/${post.username}`} passHref onClick={(e) => {e.stopPropagation(); router.push(`/${post.username}`)}}><span className="pr-1">{post.display_name}</span></Link>
                         <div className="text-sm-dark-gray flex items-center">
                             <span className="truncate inline-block max-w-24 md:max-w-full">@{post.username}</span>
                             <span className="px-0.5">·</span>
@@ -60,8 +60,8 @@ export const Post = ({post, isTimeline}: Props) => {
                         </div>
                     </div>
                     {isLiked ?
-                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={handleLike}><SolidHeartIcon/></div> :
-                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={handleLike}><HeartIcon/></div>
+                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={(e) => {e.stopPropagation(); handleLike()}}><SolidHeartIcon/></div> :
+                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={(e) => {e.stopPropagation(); handleLike()}}><HeartIcon/></div>
                     }
 
                 </div>
