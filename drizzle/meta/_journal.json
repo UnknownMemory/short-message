@@ -113,6 +113,13 @@
       "when": 1736703932658,
       "tag": "0015_special_sabretooth",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1739820720712,
+      "tag": "0016_pretty_grandmaster",
+      "breakpoints": true
     }
   ]
 }
