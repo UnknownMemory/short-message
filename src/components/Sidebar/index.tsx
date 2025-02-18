@@ -1,4 +1,6 @@
 'use client'
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -17,12 +19,28 @@ import { useSidebarStore } from "@/stores/sidebar-store"
 
 export const Sidebar = () => {
     const pathname = usePathname()
-    const {isOpen, setIsOpen} = useSidebarStore((state) => state)
+    const {isOpen, setIsOpen, notificationBadge, setNotificationBadge} = useSidebarStore((state) => state)
+
     const {data: user} = useQuery({
         queryKey: ['me'],
         queryFn: () => getCurrentUser(),
         staleTime: Infinity,
     })
+
+    useEffect(() => {
+        const eventSrc = new EventSource(`${process.env.NEXT_PUBLIC_HOST}/api/notification/update`, {withCredentials: true})
+
+        eventSrc.onmessage = (event) => {
+            if(event.data){
+                const data = JSON.parse(event.data);
+                setNotificationBadge(data.newNotifications)
+            }
+        }
+
+        return () => {
+            eventSrc.close();
+        };    
+    }, [])
 
     return (
         <div className={`md:w-44 md:mr-6 md:justify-self-end md:static md:border-0 md:block md:bg-sm-white fixed top-0 left-0 w-full bg-sm-primary/[0.2] h-full z-10 border-r-[1px] ${isOpen ? 'block': 'hidden'}`}
@@ -45,7 +63,8 @@ export const Sidebar = () => {
                     {pathname == '/' ? <HomeIconSolid className="size-6 mr-1"/> : <HomeIcon className="size-6 mr-1"/>}
                     {pathname == '/' ? <span className="font-bold">Home</span> : <span>Home</span>}
                 </Link>
-                <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 py-3 md:rounded-md flex items-center text-sm-primary-dark nav-link" href="/notifications">
+                <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 py-3 md:rounded-md flex items-center text-sm-primary-dark nav-link relative" href="/notifications">
+                    {notificationBadge ? <div className="max-sm:hidden w-3 h-3 rounded-full bg-sm-primary absolute text-[0.50rem] flex justify-center items-center top-[15%] right-[82%]">{notificationBadge}</div> : null}
                     {pathname == '/notifications' ? <BellIconSolid className="size-6 mr-1"/> : <BellIcon className="size-6 mr-1"/>}
                     {pathname == '/notifications' ? <span className="font-bold">Notifications</span> : <span>Notifications</span>}
                 </Link>

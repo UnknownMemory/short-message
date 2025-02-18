@@ -1,0 +1,19 @@
+meta {
+  name: Notification Update
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/notification/update
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {"userId": 1}
+}
