@@ -1,4 +1,3 @@
-import { notification } from "@/db/schema/notification";
 import { create } from "zustand";
 
 

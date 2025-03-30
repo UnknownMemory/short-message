@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { checkJWT } from "./utils/auth";
+import { getCookie } from "./utils/utils";
 
 import { UserJWTPayload } from "./types/User";
+
 
 const getAccessToken = async (headers: Headers) => {
     let token: string | null = headers.get('Authorization')
@@ -12,7 +15,7 @@ const getAccessToken = async (headers: Headers) => {
 
     let cookieToken: string | null | undefined = headers.get('Cookie')
     if (cookieToken) {
-        cookieToken = cookieToken.match('(^|;)\\s*' + 'accessToken' + '\\s*=\\s*([^;]+)')?.pop()
+        cookieToken = getCookie('accessToken')
         return cookieToken
     }
 
@@ -33,8 +36,6 @@ export async function middleware(request: NextRequest) {
             response.headers.set('userID', loggedUser.id)
             return response
         }
-
-
     }
 
     if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
