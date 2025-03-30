@@ -24,19 +24,19 @@ const getAccessToken = async (headers: Headers) => {
 
 export async function middleware(request: NextRequest) {
 
-    if (request.nextUrl.pathname.startsWith('/api/')) {
-        const token: string | null | undefined = await getAccessToken(new Headers(request.headers))
-        if (!token || token == undefined) {
-            return NextResponse.json({ 'error': 'Authentication error' }, { status: 401 });
-        }
+    // if (request.nextUrl.pathname.startsWith('/api/')) {
+    //     const token: string | null | undefined = await getAccessToken(new Headers(request.headers))
+    //     if (!token || token == undefined) {
+    //         return NextResponse.json({ 'error': 'Authentication error' }, { status: 401 });
+    //     }
 
-        const loggedUser: false | UserJWTPayload = await checkJWT(token)
-        if (loggedUser) {
-            const response = NextResponse.next()
-            response.headers.set('userID', loggedUser.id)
-            return response
-        }
-    }
+    //     const loggedUser: false | UserJWTPayload = await checkJWT(token)
+    //     if (loggedUser) {
+    //         const response = NextResponse.next()
+    //         response.headers.set('userID', loggedUser.id)
+    //         return response
+    //     }
+    // }
 
     if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
         const token: string | null | undefined = await getAccessToken(new Headers(request.headers))

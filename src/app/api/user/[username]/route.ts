@@ -8,10 +8,16 @@ import { follow } from "@/db/schema/follow";
 import { alias } from "drizzle-orm/pg-core";
 import { User } from "@/types/User";
 
+import { apiCheckAuth } from "@/utils/auth";
+
 
 export async function GET(request: Request, { params }: { params: { username: string } }) {
-    const headersList = headers()
-    const userID: number = Number(<string>headersList.get('userID'))
+    const isLogged = await apiCheckAuth(headers())
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 400 });
+    }
+
+    const userID: number = Number(isLogged.id)
     const username = params.username
 
     const isFollowing = alias(follow, "isFollowing")

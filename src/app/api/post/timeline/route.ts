@@ -9,11 +9,16 @@ import { user } from "@/db/schema/user";
 import { like } from "@/db/schema/like";
 import { timeline } from "@/db/schema/timeline";
 
+import { apiCheckAuth } from "@/utils/auth";
+
 
 
 export async function GET(request: NextRequest) {
-    const headersList = headers()
-    const userID: number = Number(<string>headersList.get('userID'))
+    const isLogged = await apiCheckAuth(headers())
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 400 });
+    }
+    const userID: number = Number(isLogged.id)
 
     const posts = await db.select({
         "id": post.id,

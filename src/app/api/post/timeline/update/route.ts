@@ -8,6 +8,8 @@ import { user } from "@/db/schema/user";
 import { follow } from "@/db/schema/follow";
 import { timeline } from "@/db/schema/timeline";
 
+import { apiCheckAuth } from "@/utils/auth";
+
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
@@ -34,8 +36,11 @@ const newPosts = async (userID: number, cursor: Date) => {
 }
 
 export async function GET(request: NextRequest) {
-    const headersList = headers()
-    const userID: number = Number(<string>headersList.get('userID'))
+    const isLogged = await apiCheckAuth(headers())
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 400 });
+    }
+    const userID: number = Number(isLogged.id)
 
     let responseStream = new TransformStream();
     const writer = responseStream.writable.getWriter();

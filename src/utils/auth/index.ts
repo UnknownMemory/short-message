@@ -44,3 +44,14 @@ export const authAction = async (accessToken: RequestCookie | undefined, action:
     }
     return { 'errors': 'You must be authenticated to perform this action.' }
 }
+
+
+export const apiCheckAuth = async (headers: Headers) => {
+    let token: string | null = headers.get('Authorization')
+    if (token) {
+        token = token.replace('Bearer ', "")
+        return await checkJWT(token)
+    }
+
+    return false
+}
