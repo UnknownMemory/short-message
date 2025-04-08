@@ -12,7 +12,7 @@ import { apiCheckAuth, checkJWT } from "@/utils/auth";
 export async function GET(request: Request) {
     const isLogged = await apiCheckAuth(headers())
     if (!isLogged) {
-        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 400 });
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
     }
 
     const userID: string = isLogged.id

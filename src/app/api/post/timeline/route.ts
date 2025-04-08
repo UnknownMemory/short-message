@@ -16,7 +16,7 @@ import { apiCheckAuth } from "@/utils/auth";
 export async function GET(request: NextRequest) {
     const isLogged = await apiCheckAuth(headers())
     if (!isLogged) {
-        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 400 });
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
     }
     const userID: number = Number(isLogged.id)
 
