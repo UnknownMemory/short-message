@@ -5,6 +5,7 @@ import { db } from "@/db/db"
 import { user } from "@/db/schema/user"
 import { revalidatePath } from "next/cache"
 import { hash } from "bcryptjs"
+import { notification_last_read } from "@/db/schema/notification_last_read"
 
 
 const schema = z.object({
@@ -28,11 +29,16 @@ export default async function signUp(prevState: any, formData: FormData) {
 
     const hashedPassword = await hash(validatedFields.data.password, 12)
 
-    await db.insert(user).values({
+    const newUser = await db.insert(user).values({
         email: validatedFields.data.email,
         username: validatedFields.data.username,
         display_name: validatedFields.data.username,
         password: hashedPassword,
+    }).returning({ id: user.id })
+
+    await db.insert(notification_last_read).values({
+        userId: newUser[0].id,
+        last_read: new Date()
     })
 
     revalidatePath('/signup')

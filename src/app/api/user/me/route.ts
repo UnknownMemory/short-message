@@ -4,12 +4,18 @@ import { eq } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { user } from "@/db/schema/user"
-import { User } from "@/types/User";
+import { User, UserJWTPayload } from "@/types/User";
+
+import { apiCheckAuth, checkJWT } from "@/utils/auth";
 
 
 export async function GET(request: Request) {
-    const headersList = headers()
-    const userID: string = <string>headersList.get('userID')
+    const isLogged = await apiCheckAuth(headers())
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
+    }
+
+    const userID: string = isLogged.id
 
     const users: User[] = await db.select({
         id: user.id,

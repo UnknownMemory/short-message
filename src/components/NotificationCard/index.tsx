@@ -10,7 +10,7 @@ export const NotificationCard = ({notification}: any) => {
                 <div className="h-[32px] w-[32px] relative">
                     <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
                 </div>
-                <div className="text-sm pt-1">{notification.total == 1 ? `${notification.latestNotifier.username} liked your post` : `${notification.latestNotifier.username} and ${notification.total-1} others liked your post`}</div>
+                <div className="text-sm pt-1">{notification.total == 1 ? `${notification.latestnotifier.username} liked your post` : `${notification.latestnotifier.username} and ${notification.total-1} others liked your post`}</div>
                 <div className="text-sm pt-1 text-sm-dark-gray whitespace-pre-wrap break-words word-break-words">{notification.post.text}</div>
             </div>
         </div>

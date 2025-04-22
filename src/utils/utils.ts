@@ -4,5 +4,5 @@ export const getFutureDate = (days: number) => {
 }
 
 export const getCookie = (name: string) => {
-    return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop()
+    return document.cookie.split('; ').find((row) => row.split('=')[0] === name)?.split('=')[1];
 }

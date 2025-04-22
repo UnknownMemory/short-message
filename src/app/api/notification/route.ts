@@ -7,32 +7,36 @@ import { user } from "@/db/schema/user"
 import { NextResponse } from "next/server";
 import { post } from "@/db/schema/post";
 
-export async function GET(request: Request) {
-    const headersList = headers()
-    const userID: number = Number(<string>headersList.get('userID'))
+import { apiCheckAuth } from "@/utils/auth";
 
-    const notifications = await db.select({
-        "post": { "postId": post.id, "text": post.text },
-        "latestNotifier": { "userId": user.id, "username": user.username },
-        "notifiedId": notification.notifiedId,
-        "type": notification.type,
-        "created_at": sql<Date>`DATE(${notification.created_at})`.as("notification_date"),
-        "total": count()
-    })
-        .from(notification)
-        .innerJoin(post, eq(notification.postId, post.id))
-        .leftJoin(user, eq(user.id, sql`(
-        SELECT MAX(notifier_id) 
-        FROM notification 
-        WHERE post_id = ${notification.postId} 
-        GROUP BY DATE(created_at)
-        ORDER BY DATE(created_at) DESC
-        LIMIT 1
-    )`))
-        .where(eq(notification.notifiedId, userID))
-        .groupBy(sql<Date>`DATE(${notification.created_at})`, notification.type, post.id, notification.notifiedId, user.id)
-        .orderBy(desc(sql<Date>`DATE(${notification.created_at})`))
-        .limit(10)
+export async function GET(request: Request) {
+    const isLogged = await apiCheckAuth(headers())
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
+    }
+    const userID: number = Number(isLogged.id)
+
+    const notifications = await db.execute(sql`
+        WITH latest_notif AS (
+            SELECT n.*, DATE(n.created_at) as notif_date,
+            ROW_NUMBER() OVER(PARTITION BY DATE(n.created_at), n.post_id ORDER BY n.created_at DESC) AS rnum,
+            COUNT(*) OVER(PARTITION BY DATE(n.created_at), n.post_id) AS total
+            FROM notification n
+            WHERE n.notified_id = ${userID}
+        )
+
+        SELECT json_build_object('postId', post.id, 'text', post.text) as post,
+               json_build_object('userId', u.id, 'username', u.name) as latestNotifier,
+               ln.notified_id AS notifiedId,
+               ln.type,
+               ln.created_at, 
+               ln.total
+        FROM latest_notif ln
+        INNER JOIN post ON ln.post_id = post.id
+        LEFT JOIN public.user u ON u.id = ln.notifier_id 
+        WHERE ln.rnum = 1
+        ORDER BY ln.notif_date DESC, ln.post_id
+    `)
 
     if (notifications.length > 0) {
         return NextResponse.json(notifications, { status: 200 });

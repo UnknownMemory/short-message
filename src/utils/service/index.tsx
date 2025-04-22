@@ -3,8 +3,21 @@ import { getCookie } from "../utils";
 
 const URL = process.env.NEXT_PUBLIC_HOST
 
+const setHeaders = () => {
+    let headers = new Headers()
+    let accessToken = getCookie('accessToken')
+
+    headers.append('Content-Type', 'application/json')
+    if(accessToken != undefined){
+        headers.append('Authorization', `Bearer ${getCookie('accessToken')}`)
+    }
+
+    return headers
+}
+
 export const getCurrentUser = async () => {
-    const res = await fetch(`${URL}/api/user/me`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}});
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/user/me`, {method: 'GET', headers: reqHeaders});
     
     if(res.status != 200){
         const response = await res.json()
@@ -15,7 +28,8 @@ export const getCurrentUser = async () => {
 };
 
 export const getUser = async (username: string | string[]) => {
-    const res = await fetch(`${URL}/api/user/${username}`, {method: 'GET', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${getCookie('accessToken')}`}});
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/user/${username}`, {method: 'GET', headers: reqHeaders});
     
     if(res.status != 200){
         const response = await res.json()
@@ -26,7 +40,8 @@ export const getUser = async (username: string | string[]) => {
 };
 
 export const getPost = async (postId: number) => {
-    const res = await fetch(`${URL}/api/post/${postId}`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/post/${postId}`, {method: 'GET', headers: reqHeaders})
 
     if(res.status != 200){
         const response = await res.json()
@@ -38,7 +53,8 @@ export const getPost = async (postId: number) => {
 
 
 export const getTimeline = async (cursor?: string | boolean) => {
-    const res = await fetch(`${URL}/api/post/timeline${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/post/timeline${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: reqHeaders})
 
     if(res.status != 200){
         const response = await res.json()
@@ -49,7 +65,8 @@ export const getTimeline = async (cursor?: string | boolean) => {
 }
 
 export const userTimeline = async (userId: number, cursor?: string | boolean) => {
-    const res = await fetch(`${URL}/api/post/user-timeline/${userId}/${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/post/user-timeline/${userId}/${cursor ? '?cursor='+cursor : ''}`, {method: 'GET', headers: reqHeaders})
 
     if(res.status != 200){
         const response = await res.json()
@@ -60,7 +77,8 @@ export const userTimeline = async (userId: number, cursor?: string | boolean) =>
 }
 
 export const getNotifications = async () => {
-    const res = await fetch(`${URL}/api/notification`, {method: 'GET', headers: {'Authorization': `Bearer ${getCookie('accessToken')}`, 'Content-Type': 'application/json'}})
+    let reqHeaders = setHeaders()
+    const res = await fetch(`${URL}/api/notification`, {method: 'GET', headers: reqHeaders})
 
     if(res.status != 200){
         const response = await res.json()
