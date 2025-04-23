@@ -43,5 +43,5 @@ export async function GET(request: NextRequest, { params }: { params: { profileI
     if (posts.length > 0) {
         return NextResponse.json({ posts, cursor: posts[posts.length - 1].created_at }, { status: 200 });
     }
-    return NextResponse.json({ 'error': 'No posts found' }, { status: 401 });
+    return NextResponse.json({ 'error': 'No posts found' }, { status: 404 });
 }

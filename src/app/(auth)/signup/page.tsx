@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
+import Image from 'next/image';
 import Link from "next/link";
 
 import signUp from "./actions";
@@ -11,7 +12,9 @@ export default function SignUp() {
 
   return (
     <div className="h-dvh w-full flex flex-col items-center justify-center">
-      <div className="mb-9 text-3xl font-bold text-sm-primary">Short Message</div>
+      <div className="mb-9">
+        <Image src="/logo.svg" alt="Short Message logo" width={108} height={108}/>
+      </div>
       <form className="w-[90%] md:w-[35%] flex flex-col" action={signUpAction}>
         <FormInput name="email" type="email" error={state?.errors.email}></FormInput>
         <FormInput name="username" type="text" error={state?.errors.username}></FormInput>

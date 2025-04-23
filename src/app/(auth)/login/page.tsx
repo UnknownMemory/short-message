@@ -1,5 +1,6 @@
 "use client";
 import { useFormState } from "react-dom";
+import Image from 'next/image';
 import Link from "next/link";
 
 import login from "./actions";
@@ -9,7 +10,9 @@ export default function Login() {
   const [state, loginAction] = useFormState(login, null);
   return (
     <div className="h-dvh w-full flex flex-col items-center justify-center">
-      <div className="mb-9 text-3xl font-bold text-sm-primary">Short Message</div>
+      <div className="mb-9">
+        <Image src="/logo.svg" alt="Short Message logo" width={108} height={108}/>
+      </div>
       <form className="w-[90%] md:w-[35%] flex flex-col" action={loginAction}>
         <FormInput name="email" type="email" error={undefined}></FormInput>
         <FormInput name="password" type="password" error={undefined}></FormInput>
