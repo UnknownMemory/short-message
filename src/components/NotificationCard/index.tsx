@@ -4,7 +4,7 @@ import { HeartIcon as SolidHeartIcon } from "@heroicons/react/16/solid"
 
 export const NotificationCard = ({notification}: any) => {
     return (
-        <div className="md:p-2 px-3 py-3 flex border-b-[1px]">
+        <div className="md:p-2 px-3 py-3 flex border-b-[1px] ">
             <div className="md:w-14 md:pr-1 text-sm-primary flex justify-end"><SolidHeartIcon className="size-8"/></div>
             <div className="w-full">
                 <div className="h-[32px] w-[32px] relative">

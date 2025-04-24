@@ -95,6 +95,24 @@ body {
   .word-break-words {
     word-break: break-word;
   }
+
+  @media (prefers-color-scheme: dark) {
+    @layer base {
+      html {
+        background-color: #000000;
+        color: theme(colors.sm-white);
+      }
+
+      * {
+        border-color: theme(colors.sm-border-dark);
+      }
+
+      a.post {
+        color: theme(colors.sm-white);
+      }
+    }
+  }
+  
 }
 
 @layer components {
@@ -117,15 +135,15 @@ body {
     @apply rounded px-4 md:px-6 py-1.5 border-[1px];
   }
 
-  .input-light {
+  .sm-input {
     @apply bg-sm-light-gray;
   }
 
-  .input-light::placeholder {
+  .sm-input::placeholder {
     @apply text-sm-dark-gray;
   }
 
-  .input-light:focus {
+  .sm-input:focus {
     outline-color: theme(colors.sm-primary);
     @apply text-black;
   }
@@ -137,6 +155,20 @@ body {
   .nav-link:hover {
     background-color: rgba(0, 0, 0, 0.15);
   }
+
+  @media (prefers-color-scheme: dark) {
+    .sm-input {
+      background-color: theme(colors.sm-primary-dark);
+    }
+
+    .sm-input::placeholder {
+      color: theme(colors.sm-white)
+    }
+
+    .sm-input:focus {
+      color: theme(colors.sm-white)
+    }
+  }
 }
 
 @layer utilities {
@@ -144,10 +176,3 @@ body {
     text-wrap: balance;
   }
 }
-/* @media (prefers-color-scheme: dark) {
-  @layer base {
-    html {
-      @apply bg-sm-dark;
-    }
-  }
-} */
