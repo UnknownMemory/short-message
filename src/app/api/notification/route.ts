@@ -1,9 +1,10 @@
-import { sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { NextResponse } from "next/server";
 
 import { apiCheckAuth } from "@/utils/auth";
+import { notification_last_read } from '@/db/schema/notification_last_read';
 
 export async function GET(request: Request) {
     const isLogged = await apiCheckAuth()
@@ -33,6 +34,8 @@ export async function GET(request: Request) {
         WHERE ln.rnum = 1
         ORDER BY ln.notif_date DESC, ln.post_id
     `)
+
+    await db.update(notification_last_read).set({ last_read: new Date() }).where(eq(notification_last_read.userId, userID))
 
     if (notifications.length > 0) {
         return NextResponse.json(notifications, { status: 200 });
