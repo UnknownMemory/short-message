@@ -12,6 +12,7 @@ import { authAction } from "@/utils/auth"
 
 import { Post } from "@/types/Post";
 import { UserJWTPayload } from "@/types/User";
+import { RowList } from "postgres";
 
 const schema = z.object({
     postId: z.number()
@@ -22,7 +23,7 @@ interface Error {
 }
 
 
-async function action(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<boolean | Error> {
+async function action(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<{ notifiedId: number | null; }[] | false> {
     const validatedFields = schema.safeParse({
         postId: postId
     })
@@ -47,24 +48,23 @@ async function action(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<b
             })
         } catch (error) {
             console.error(error)
-            return { 'errors': 'An error occured' }
+            return false
         }
 
         const result = await db.select({ authorID: post.authorID }).from(post).where(eq(post.id, Number(postId)))
         if (result.length > 0 && result[0].authorID != Number(loggedUser.id))
-            await db.insert(notification).values({
+            return await db.insert(notification).values({
                 type: "like",
                 notifierId: Number(loggedUser.id),
                 notifiedId: result[0].authorID,
                 postId: validatedFields.data.postId,
                 created_at: new Date()
-            })
+            }).returning({ "notifiedId": notification.notifiedId })
 
-        return true
     }
     return false
 }
 
-export async function likeAction(postId: Post["id"]): Promise<boolean | Error> {
+export async function likeAction(postId: Post["id"]): Promise<RowList<never[]> | false> {
     return authAction(cookies().get('accessToken'), action, postId)
 }

@@ -110,6 +110,10 @@ body {
       a.post {
         color: theme(colors.sm-white);
       }
+
+      .loader::before {
+        color: theme(colors.sm-white);
+      }
     }
   }
   

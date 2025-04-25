@@ -18,13 +18,13 @@ export const BottomNavbar = () => {
     })
 
     return (
-        <div className="max-sm:flex hidden w-full border-t-[1px] sticky bottom-0 bg-sm-white items-center justify-between px-[25%]">
-            <Link prefetch={false} className="p-3 text-sm-primary-dark" href='/'><HomeIcon className="size-7"/></Link>
-            <Link prefetch={false} className="p-3 text-sm-primary-dark relative" href='/notifications'>
+        <div className="max-sm:flex hidden w-full border-t-[1px] sticky bottom-0 bg-sm-white dark:bg-black items-center justify-between px-[25%]">
+            <Link prefetch={false} className="p-3 text-sm-primary-dark dark:text-sm-white" href='/'><HomeIcon className="size-7"/></Link>
+            <Link prefetch={false} className="p-3 text-sm-primary-dark dark:text-sm-white relative" href='/notifications'>
                 {notificationBadge ? <div className="w-3 h-3 rounded-full bg-sm-primary absolute text-[0.50rem] flex justify-center items-center top-[20%] right-[25%]">{notificationBadge}</div> : null}
                 <BellIcon className="size-7"/>
             </Link>
-            <Link prefetch={false} className="p-3  text-sm-primary-dark" href={`/${user?.username}`}><UserCircleIcon className="size-7"/></Link>
+            <Link prefetch={false} className="p-3  text-sm-primary-dark dark:text-sm-white" href={`/${user?.username}`}><UserCircleIcon className="size-7"/></Link>
         </div>
     )
 }

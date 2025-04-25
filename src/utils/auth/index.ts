@@ -1,6 +1,7 @@
 import { UserJWTPayload } from "@/types/User"
 import * as jose from "jose"
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies"
+import { cookies } from "next/headers"
 
 export const generateTokens = async (userID: unknown, expires: { 'expireAccess': string, 'expireRefresh': string }) => {
     const accessSecret = new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET)
@@ -46,10 +47,10 @@ export const authAction = async (accessToken: RequestCookie | undefined, action:
 }
 
 
-export const apiCheckAuth = async (headers: Headers) => {
-    let token: string | null = headers.get('Authorization')
+export const apiCheckAuth = async () => {
+    // let token: string | null = headers.get('Authorization')
+    let token: string | undefined = cookies().get('accessToken')?.value
     if (token) {
-        token = token.replace('Bearer ', "")
         return await checkJWT(token)
     }
 

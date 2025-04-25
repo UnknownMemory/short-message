@@ -1,28 +1,28 @@
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { desc, eq, count, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
 import { db } from "@/db/db";
-import { post } from "@/db/schema/post";
-import { user } from "@/db/schema/user";
 import { notification_last_read } from "@/db/schema/notification_last_read";
 import { notification } from "@/db/schema/notification";
+import { apiCheckAuth } from "@/utils/auth";
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-let clients = new Map()
+let clients = new Map();
 
 export async function GET(request: NextRequest) {
-    const headersList = headers()
-    const userId = Number(<string>headersList.get('userID'))
+    const isLogged = await apiCheckAuth()
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
+    }
+
+    const userId: number = Number(isLogged.id)
 
     let responseStream = new TransformStream();
     const writer = responseStream.writable.getWriter();
-    // const encoder = new TextEncoder();
 
     clients.set(userId, writer)
-
     request.signal.addEventListener('abort', (e) => {
         clients.delete(userId)
     })
@@ -35,6 +35,7 @@ const lastRead = async (userId: number) => {
     const encoder = new TextEncoder();
 
     const lastTimeline = await db.select().from(notification_last_read).where(eq(notification_last_read.userId, userId))
+
     if (lastTimeline.length > 0) {
         const notifications = await db.select({
             "notifiedId": notification.notifiedId,
@@ -43,9 +44,8 @@ const lastRead = async (userId: number) => {
         })
             .from(notification)
             .where(eq(notification.notifiedId, userId))
-            .groupBy(sql<Date>`DATE(${notification.created_at})`, notification.type, notification.notifiedId)
             .orderBy(desc(sql<Date>`DATE(${notification.created_at})`))
-        console.log(notifications.length)
+
         await writer.write(encoder.encode(`data: {"newNotifications": ${notifications.length}}\n\n`))
     }
 }
@@ -53,11 +53,14 @@ const lastRead = async (userId: number) => {
 
 
 export async function POST(request: NextRequest) {
-    // const headersList = headers()
-    // const userId = Number(<string>headersList.get('userID'))
-    const data = await request.json()
-    if (clients.get(data.userId)) {
-        await lastRead(data.userId)
+    const isLogged = await apiCheckAuth()
+    if (!isLogged) {
+        return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
+    }
+
+    const data = await request.json();
+    if (clients.has(data.notifiedId)) {
+        await lastRead(data.notifiedId)
     }
 
     return NextResponse.json({ 'status': true }, { status: 200 });

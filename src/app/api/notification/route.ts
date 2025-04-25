@@ -1,16 +1,12 @@
-import { headers } from "next/headers"
-import { eq, sql, count, desc, max, and } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 
 import { db } from "@/db/db"
-import { notification } from "@/db/schema/notification"
-import { user } from "@/db/schema/user"
 import { NextResponse } from "next/server";
-import { post } from "@/db/schema/post";
 
 import { apiCheckAuth } from "@/utils/auth";
 
 export async function GET(request: Request) {
-    const isLogged = await apiCheckAuth(headers())
+    const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
     }
