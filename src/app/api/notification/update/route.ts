@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq, sql, and, gt } from "drizzle-orm";
 
 import { db } from "@/db/db";
 import { notification_last_read } from "@/db/schema/notification_last_read";
@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
         clients.delete(userId)
     })
 
+    lastRead(userId)
     return new Response(responseStream.readable, { status: 200, headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' } })
 }
 
@@ -43,7 +44,7 @@ const lastRead = async (userId: number) => {
             "created_at": sql<Date>`DATE(${notification.created_at})`.as("notification_date"),
         })
             .from(notification)
-            .where(eq(notification.notifiedId, userId))
+            .where(and(eq(notification.notifiedId, userId), gt(notification.created_at, lastTimeline[0].last_read)))
             .orderBy(desc(sql<Date>`DATE(${notification.created_at})`))
 
         await writer.write(encoder.encode(`data: {"newNotifications": ${notifications.length}}\n\n`))
