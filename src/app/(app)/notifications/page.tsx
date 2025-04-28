@@ -8,7 +8,7 @@ import { useSidebarStore } from "@/stores/sidebar-store";
 import { Virtuoso } from "react-virtuoso";
 
 export default function Notification() {
-    const {setIsOpen, notificationBadge, setNotificationBadge} = useSidebarStore((state) => state)
+    const {setIsOpen} = useSidebarStore((state) => state)
     const qClient = useQueryClient()
     
     const {data: me} = useQuery({
@@ -20,7 +20,7 @@ export default function Notification() {
         staleTime: Infinity,
     })
 
-    const {data: notificationsPages, fetchNextPage, refetch, isSuccess} = useInfiniteQuery({
+    const {data: notificationsPages, fetchNextPage, refetch} = useInfiniteQuery({
         queryKey: ['notifications'],
         queryFn: ({pageParam}) => getNotifications(),
         initialPageParam: false,
@@ -33,10 +33,6 @@ export default function Notification() {
     const notifications = notificationsPages?.pages.flatMap(page => {
         return page
     })
-
-    if(isSuccess && notificationBadge != null){
-        setNotificationBadge(0)
-    }
     
     return (
         <div className="min-h-full border-x-[1px]">
