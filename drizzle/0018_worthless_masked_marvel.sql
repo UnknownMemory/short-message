@@ -1,0 +1,1 @@
+ALTER TABLE "notification" ADD CONSTRAINT "notification_post_id_notifier_id_type_unique" UNIQUE("post_id","notifier_id","type");
