@@ -1,7 +1,7 @@
 import { JWTPayload } from "jose"
 
 export interface User {
-    id?: number
+    id: number
     username: string,
     email?: string,
     password?: string,
@@ -13,5 +13,13 @@ export interface User {
 }
 
 export interface UserJWTPayload extends JWTPayload {
-    id: string
+    id: string,
+    username: string
+}
+
+declare module "jose" {
+    export interface JWTPayload {
+        id: string,
+        username: string
+    }
 }

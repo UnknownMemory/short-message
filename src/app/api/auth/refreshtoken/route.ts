@@ -25,7 +25,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ 'error': { 'type': 'TokenError' } }, { status: 400 })
     }
 
-    const [accessToken, newRefreshToken] = await generateTokens(jwt.payload.id, { 'expireAccess': '8h', 'expireRefresh': '30d' })
+    const [accessToken, newRefreshToken] = await generateTokens(jwt.payload.id, jwt.payload.username, { 'expireAccess': '8h', 'expireRefresh': '30d' })
 
     const expireDate: number = getFutureDate(30)
 

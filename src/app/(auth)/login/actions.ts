@@ -33,7 +33,7 @@ export default async function login(prevState: any, formData: FormData) {
     const users: User[] = await db.select().from(user).where(eq(user.email, validatedFields.data.email))
 
     if (users[0] && users[0].password) {
-        const [accessToken, refreshToken] = await generateTokens(users[0].id, { 'expireAccess': '8h', 'expireRefresh': '30d' })
+        const [accessToken, refreshToken] = await generateTokens(users[0].id.toString(), users[0].username, { 'expireAccess': '8h', 'expireRefresh': '30d' })
         const expireDate: number = getFutureDate(30)
 
         const passwordsMatch = await bcrypt.compare(validatedFields.data.password, users[0].password);
