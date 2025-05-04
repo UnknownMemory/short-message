@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers"
-import { eq, and } from 'drizzle-orm';
+import { eq, and, aliasedTable, count, isNotNull, countDistinct } from 'drizzle-orm';
 
 import { db } from "@/db/db"
 import { post } from "@/db/schema/post"
@@ -17,6 +16,7 @@ export async function GET(request: Request, { params }: { params: { postId: numb
     }
     const userID: number = Number(isLogged.id)
 
+    const likes = aliasedTable(like, "likes")
     const userPost = await db.select({
         "id": post.id,
         "text": post.text,
@@ -25,12 +25,15 @@ export async function GET(request: Request, { params }: { params: { postId: numb
         "display_name": user.display_name,
         "username": user.username,
         "image": user.image,
-        "isLiked": like.userID
+        "isLiked": like.userID,
+        "likes": countDistinct(likes)
     })
         .from(post)
         .leftJoin(user, eq(post.authorID, user.id))
         .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
+        .leftJoin(likes, eq(post.id, likes.postID))
         .where(eq(post.id, params.postId))
+        .groupBy(post.id, like.userID, user.id)
 
     if (userPost.length > 0) {
         return NextResponse.json(userPost[0], { status: 200 });

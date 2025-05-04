@@ -74,8 +74,8 @@ export const Post = ({post, isTimeline}: Props) => {
                         </div>
                     </div>
                     {isLiked ?
-                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={(e) => {e.stopPropagation(); removeLike()}}><SolidHeartIcon/></div> :
-                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={(e) => {e.stopPropagation(); addLike()}}><HeartIcon/></div>
+                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={(e) => {e.stopPropagation(); removeLike()}}><SolidHeartIcon/>{post.likes}</div> :
+                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={(e) => {e.stopPropagation(); addLike()}}><HeartIcon/>{post.likes}</div>
                     }
 
                 </div>
