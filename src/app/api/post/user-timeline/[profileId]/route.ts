@@ -12,7 +12,7 @@ import { apiCheckAuth } from "@/utils/auth";
 
 
 export async function GET(request: NextRequest, { params }: { params: { profileId: number } }) {
-    const isLogged = await apiCheckAuth(headers())
+    const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
     }
@@ -43,5 +43,5 @@ export async function GET(request: NextRequest, { params }: { params: { profileI
     if (posts.length > 0) {
         return NextResponse.json({ posts, cursor: posts[posts.length - 1].created_at }, { status: 200 });
     }
-    return NextResponse.json({ 'error': 'No posts found' }, { status: 401 });
+    return NextResponse.json({ 'error': 'No posts found' }, { status: 404 });
 }

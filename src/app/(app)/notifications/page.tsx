@@ -8,7 +8,7 @@ import { useSidebarStore } from "@/stores/sidebar-store";
 import { Virtuoso } from "react-virtuoso";
 
 export default function Notification() {
-    const {setIsOpen} = useSidebarStore((state) => state)
+    const {setIsOpen, notificationBadge, setNotificationBadge} = useSidebarStore((state) => state)
     const qClient = useQueryClient()
     
     const {data: me} = useQuery({
@@ -20,7 +20,7 @@ export default function Notification() {
         staleTime: Infinity,
     })
 
-    const {data: notificationsPages, fetchNextPage, refetch} = useInfiniteQuery({
+    const {data: notificationsPages, fetchNextPage, refetch, isSuccess} = useInfiniteQuery({
         queryKey: ['notifications'],
         queryFn: ({pageParam}) => getNotifications(),
         initialPageParam: false,
@@ -33,10 +33,14 @@ export default function Notification() {
     const notifications = notificationsPages?.pages.flatMap(page => {
         return page
     })
+
+    if(isSuccess && notificationBadge){
+        setNotificationBadge(0)
+    }
     
     return (
         <div className="min-h-full border-x-[1px]">
-            <nav className="grid grid-cols-3 w-full h-14 border-x-[1px] border-b-[1px]">
+            <nav className="grid grid-cols-3 w-full h-14 border-b-[1px]">
                 <Bars3Icon className="size-6 self-center ml-4 md:hidden" onClick={() => setIsOpen(true)}/>
                 <div className="text-center self-center md:col-span-3 cursor-pointer">Notifications</div>
             </nav>

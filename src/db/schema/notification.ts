@@ -1,4 +1,4 @@
-import { boolean, pgTable, serial, integer, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, serial, integer, timestamp, pgEnum, unique } from "drizzle-orm/pg-core";
 import { user } from "./user";
 import { post } from "./post";
 
@@ -12,4 +12,6 @@ export const notification = pgTable('notification', {
     notifiedId: integer("notified_id").references(() => user.id, { onDelete: 'cascade' }),
     postId: integer("post_id").references(() => post.id, { onDelete: 'cascade' }),
     created_at: timestamp('created_at').defaultNow().notNull()
-})
+}, (t) => ({
+    uni: unique().on(t.postId, t.notifierId, t.type)
+}))

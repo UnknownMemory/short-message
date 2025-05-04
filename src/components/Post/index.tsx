@@ -7,9 +7,10 @@ import Link from "next/link"
 import { HeartIcon } from "@heroicons/react/24/outline"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/16/solid"
 
-import { likeAction } from "./actions"
+import { addLikeAction, removeLikeAction } from "./actions"
 import { User } from "@/types/User"
 import { Post as PostT } from "@/types/Post"
+import { useMutation } from "@tanstack/react-query"
 
 
 interface Props {
@@ -28,14 +29,27 @@ export const Post = ({post, isTimeline}: Props) => {
     const dayPosted = postDate.toLocaleTimeString('fr-FR', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'})
     const createdAt = dayLater < new Date().getTime() ? dayPosted : hourPosted
 
-    const handleLike = async () => {
-        const newLike = await likeAction(post.id)
 
-        if(typeof newLike === "object"){
-            return newLike.errors
+    const notificationPush = useMutation({
+        mutationFn: (notifiedId: number) => {
+            return fetch(`${process.env.NEXT_PUBLIC_HOST}/api/notification/update`, {method: "POST", body: JSON.stringify({"notifiedId": notifiedId})})
+        }
+    })
+
+
+    const addLike = async () => {
+        const newLike = await addLikeAction(post.id)
+
+        if(typeof newLike === "number"){
+            notificationPush.mutate(newLike)
         }
 
-        setIsLiked(newLike)
+        return setIsLiked(true)
+    }
+
+    const removeLike = async () => {
+        await removeLikeAction(post.id)
+        return setIsLiked(false)
     }
 
     return (
@@ -60,8 +74,8 @@ export const Post = ({post, isTimeline}: Props) => {
                         </div>
                     </div>
                     {isLiked ?
-                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={(e) => {e.stopPropagation(); handleLike()}}><SolidHeartIcon/></div> :
-                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={(e) => {e.stopPropagation(); handleLike()}}><HeartIcon/></div>
+                        <div className="w-[16px] md:w-[18px]  text-sm-primary cursor-pointer" onClick={(e) => {e.stopPropagation(); removeLike()}}><SolidHeartIcon/></div> :
+                        <div className="w-[16px] md:w-[18px] text-sm-dark-gray cursor-pointer" onClick={(e) => {e.stopPropagation(); addLike()}}><HeartIcon/></div>
                     }
 
                 </div>
