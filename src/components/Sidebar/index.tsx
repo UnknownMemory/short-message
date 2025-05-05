@@ -49,16 +49,20 @@ export const Sidebar = () => {
                     setIsOpen(false)
                 }}
             }>
-            <nav className="md:text-lg md:static fixed top-0 left-0 flex flex-col md:mt-5 bg-sm-white h-full text-xl dark:bg-black">
-                <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 pt-3 md:rounded-md flex items-center text-sm-primary-dark dark:text-sm-white"  href={`/${user?.username}`}>
-                    <div className="h-[44px] w-[44px] relative mr-2">
-                        <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
+            <nav className="md:text-lg md:static md:w-full w-[60%] fixed top-0 left-0 flex flex-col md:mt-5 bg-sm-white h-full text-xl dark:bg-black">
+                <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 pt-3 md:flex md:items-center md:rounded-md text-sm-primary-dark dark:text-sm-white"  href={`/${user?.username}`}>
+                    <div className="flex items-center md:pb-0 pb-3">
+                        <div className="h-[44px] w-[44px] relative mr-2">
+                            <Image className="rounded-full" src="/default_avatar.jpg" fill style={{objectFit: "cover"}} alt="Profile Picture" loading="lazy"></Image>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="md:text-sm md:max-w-[104px] truncate text-base font-bold">{user?.display_name}</span>
+                            <span className="text-sm md:max-w-[108px] truncate text-sm-dark-gray">@{user?.username}</span>
+                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <span className="md:text-sm md:max-w-[104px] truncate text-lg font-bold">{user?.display_name}</span>
-                        <span className="text-sm md:max-w-[108px] truncate text-sm-dark-gray">@{user?.username}</span>
-                    </div>
+                    <div className="md:hidden my-1 w-full border-t-[1px]"></div>
                 </Link>
+
                 <Link prefetch={false} onClick={() => setIsOpen(false)} className="md:h-11 md:px-2 px-5 py-3 md:mt-4 md:rounded-md flex items-center text-sm-primary-dark dark:text-sm-white nav-link" href="/">
                     {pathname == '/' ? <HomeIconSolid className="size-6 mr-1"/> : <HomeIcon className="size-6 mr-1"/>}
                     {pathname == '/' ? <span className="font-bold">Home</span> : <span>Home</span>}

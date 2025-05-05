@@ -73,7 +73,7 @@ export const Post = ({post, isTimeline}: Props) => {
                             <span className="truncate inline-block max-w-16 md:max-w-full">{createdAt}</span>
                         </div>
                     </div>
-                    <div className={`flex items-center text-sm-primary cursor-pointer ${isLiked ? 'text-sm-primary': 'text-sm-dark-gray'}`} onClick={(e) => {e.stopPropagation(); isLiked ? removeLike() : addLike()}}>
+                    <div className={`flex items-center cursor-pointer ${isLiked ? 'text-sm-primary': 'text-sm-dark-gray'}`} onClick={(e) => {e.stopPropagation(); isLiked ? removeLike() : addLike()}}>
                         {isLiked ? <SolidHeartIcon width={18} height={18}/> : <HeartIcon width={18} height={18}/>}
                         <span className="pl-1">{post.likes}</span>
                     </div> 

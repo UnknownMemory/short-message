@@ -77,11 +77,13 @@ export default function Profile() {
                     <div className="flex flex-col items-center">
                         <div className="md:text-xl">{user?.display_name}</div>
                         <div className="md:text-sm text-sm-dark-gray">@{user?.username}</div>
+                        <div className="md:text-sm flex justify-center mt-1">
+                            <div className="mr-2">{user?.following} <span className="text-sm-dark-gray">followings</span></div>
+                            <div>{user?.follower} <span className="text-sm-dark-gray">followers</span></div>
+                        </div>
+                        <div className="text-sm mt-2">{user?.description}</div>
                     </div>
-                    <div className="md:text-sm flex justify-center mt-1">
-                        <div className="mr-2">{user?.following} <span className="text-sm-dark-gray">followings</span></div>
-                        <div>{user?.follower} <span className="text-sm-dark-gray">followers</span></div>
-                    </div>
+
                 </div>
             </div>
             <div>
