@@ -48,7 +48,7 @@ export default function Notification() {
                 useWindowScroll
                 style={{height: '100%'}}
                 data={notifications} 
-                itemContent={(index, notification) =>{ return <NotificationCard key={index} notification={notification}/>}}
+                itemContent={(index, notification) =>{ return <NotificationCard key={index} notification={notification} username={me.username}/>}}
                 endReached={(_) => fetchNextPage()}
                 />
         </div>

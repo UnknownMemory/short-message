@@ -53,7 +53,7 @@ export const Post = ({post, isTimeline}: Props) => {
     }
 
     return (
-        <div className={`flex px-3 py-5 border-b-[1px] relative ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={(e) => {
+        <div className={`flex px-3 py-5 border-b-[1px] relative cursor-pointer ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={(e) => {
             if(isTimeline){
                 router.push(`/${post.username}/post/${post.id}`)
             }

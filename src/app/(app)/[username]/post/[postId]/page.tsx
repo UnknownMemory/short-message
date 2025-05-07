@@ -1,14 +1,16 @@
 "use client"
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getCurrentUser, getPost } from "@/utils/service";
 import { Post } from "@/components/Post";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 
 export default function UserPost() {
     const params = useParams()
     const qClient = useQueryClient()
+    const router = useRouter()
     
     const {data: me} = useQuery({
         queryKey: ['me'],
@@ -28,13 +30,15 @@ export default function UserPost() {
         staleTime: Infinity,
     })
 
-
-
     return (
         <div id="feed" className="border-x-[1px]">
         <nav className="grid grid-cols-3 w-full h-14 border-x-[1px] border-b-[1px]">
-
-            <div className="text-center self-center md:col-span-1">Post</div>
+            <div className="self-center ml-4">
+                <button type="button" onClick={router.back} >
+                    <ArrowLeftIcon className="size-5 inline"></ArrowLeftIcon>
+                </button>
+                <div className="md:text-lg md:col-span-1 inline md:ml-4">Post</div>
+            </div>
         </nav> 
         <div>
             {post ? <Post post={post} isTimeline={false}></Post> : null}
