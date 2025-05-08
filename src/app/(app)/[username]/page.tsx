@@ -60,10 +60,10 @@ export default function Profile() {
     }
 
     return (
-        <div id="profile" className="min-h-full border-x-[1px]">
+        <div id="profile" className="min-h-full md:border-x-[1px]">
             <div className="relative">
                 <div className="h-[150px] w-full">
-                    <div className="w-full h-full bg-slate-500"></div>
+                    <div className="w-full h-full bg-white"></div>
                 </div>
                 <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none">
                     <div className="h-[90px] w-[90px] relative">

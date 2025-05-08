@@ -39,7 +39,7 @@ export default function Notification() {
     }
     
     return (
-        <div className="min-h-full border-x-[1px]">
+        <div className="min-h-full md:border-x-[1px]">
             <nav className="grid grid-cols-3 w-full h-14 border-b-[1px]">
                 <Bars3Icon className="size-6 self-center ml-4 md:hidden" onClick={() => setIsOpen(true)}/>
                 <div className="text-center self-center md:col-span-3 cursor-pointer">Notifications</div>

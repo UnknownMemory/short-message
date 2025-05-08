@@ -22,7 +22,7 @@ export default function Settings() {
     })
 
     return (
-        <div id="settings" className="min-h-full border-x-[1px] px-6">
+        <div id="settings" className="min-h-full md:border-x-[1px] px-6">
             <AccountSetting user={me}/>
             <div className="pl-2 mt-2 flex justify-center">
                 <button className="flex items-center text-red-600" onClick={() => deleteUserAction()}>

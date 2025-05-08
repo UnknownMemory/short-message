@@ -43,7 +43,7 @@ export default function Home() {
 
     return (
         <>
-            <div id="feed" className="min-h-full border-x-[1px]">
+            <div id="feed" className="min-h-full md:border-x-[1px]">
                 <nav className="grid grid-cols-3 w-full h-14 border-b-[1px]">
                     <Bars3Icon className="size-6 self-center ml-4 md:hidden" onClick={() => setIsOpen(true)}/>
                     <div className="flex justify-center md:col-span-3 cursor-pointer" onClick={() => refetch()}>

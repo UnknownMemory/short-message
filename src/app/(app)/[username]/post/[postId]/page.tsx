@@ -31,8 +31,8 @@ export default function UserPost() {
     })
 
     return (
-        <div id="feed" className="border-x-[1px]">
-        <nav className="grid grid-cols-3 w-full h-14 border-x-[1px] border-b-[1px]">
+        <div id="feed" className="md:border-x-[1px]">
+        <nav className="grid grid-cols-3 w-full h-14 md:border-x-[1px] border-b-[1px]">
             <div className="self-center ml-4">
                 <button type="button" onClick={router.back} >
                     <ArrowLeftIcon className="size-5 inline"></ArrowLeftIcon>
