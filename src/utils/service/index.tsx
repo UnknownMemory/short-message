@@ -15,18 +15,6 @@ const setHeaders = () => {
     return headers
 }
 
-export const getCurrentUser = async () => {
-    let reqHeaders = setHeaders()
-    const res = await fetch(`${URL}/api/user/me`, {method: 'GET', headers: reqHeaders});
-    
-    if(res.status != 200){
-        const response = await res.json()
-        throw new RequestError(response.error, res.status)
-    }
-    
-    return await res.json();
-};
-
 export const getUser = async (username: string | string[]) => {
     let reqHeaders = setHeaders()
     const res = await fetch(`${URL}/api/user/${username}`, {method: 'GET', headers: reqHeaders});
@@ -38,19 +26,6 @@ export const getUser = async (username: string | string[]) => {
     
     return await res.json();
 };
-
-export const getPost = async (postId: number) => {
-    let reqHeaders = setHeaders()
-    const res = await fetch(`${URL}/api/post/${postId}`, {method: 'GET', headers: reqHeaders})
-
-    if(res.status != 200){
-        const response = await res.json()
-        throw new RequestError(response.error, res.status)
-    }
-    
-    return await res.json();
-}
-
 
 export const getTimeline = async (cursor?: string | boolean) => {
     let reqHeaders = setHeaders()

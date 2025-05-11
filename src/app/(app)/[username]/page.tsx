@@ -10,14 +10,14 @@ import { getUser, userTimeline } from "@/utils/service";
 import { Post } from '@/components/Post';
 import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
-import { useCurrentInfoQuery } from "@/queries/user";
+import { useCurrentUserQuery } from "@/queries/user";
 
 
 export default function Profile() {
     const params = useParams()
     const qClient = useQueryClient()
 
-    const {data: me} = useCurrentInfoQuery()
+    const {data: me} = useCurrentUserQuery()
 
     const {data: user} = useQuery({
         queryKey: ['profile', params.username],

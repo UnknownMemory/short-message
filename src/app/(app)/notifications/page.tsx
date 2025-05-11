@@ -4,7 +4,7 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getNotifications } from "@/utils/service";
-import { useCurrentInfoQuery } from "@/queries/user";
+import { useCurrentUserQuery } from "@/queries/user";
 import { useSidebarStore } from "@/stores/sidebar-store";
 import { NotificationCard } from "@/components/NotificationCard";
 
@@ -12,7 +12,7 @@ import { NotificationCard } from "@/components/NotificationCard";
 export default function Notification() {
     const {setIsOpen, notificationBadge, setNotificationBadge} = useSidebarStore((state) => state)
     
-    const {data: me} = useCurrentInfoQuery()
+    const {data: me} = useCurrentUserQuery()
 
     const {data: notificationsPages, fetchNextPage, refetch, isSuccess} = useInfiniteQuery({
         queryKey: ['notifications'],

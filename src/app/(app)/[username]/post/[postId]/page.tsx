@@ -1,28 +1,20 @@
 "use client"
 import { useParams, useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getPost } from "@/utils/service";
+import { useCurrentUserQuery } from "@/queries/user";
+import { usePostQuery } from "@/queries/post";
 import { Post } from "@/components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { useCurrentInfoQuery } from "@/queries/user";
+
 
 
 export default function UserPost() {
     const params = useParams()
-    const qClient = useQueryClient()
     const router = useRouter()
     
-    const {data: me} = useCurrentInfoQuery()
+    const {data: me} = useCurrentUserQuery()
 
-    const {data: post} = useQuery({
-        queryKey: ['post', params.postId],
-        queryFn: () => getPost(Number(params.postId)),
-        initialData: () => {
-            return qClient.getQueryData(['post', params.postId])
-        },
-        staleTime: Infinity,
-    })
+    const {data: post} = usePostQuery(Number(params.postId))
 
     return (
         <div id="feed" className="md:border-x-[1px]">

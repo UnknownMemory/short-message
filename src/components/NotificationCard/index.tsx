@@ -6,7 +6,6 @@ import Link from "next/link"
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/16/solid"
 
 
-
 export const NotificationCard = ({notification, username}: any) => {
    const router = useRouter()
     return (

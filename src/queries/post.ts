@@ -1,17 +1,17 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { URL, setHeaders } from "."
 import { RequestError } from "@/utils/error";
+import { setHeaders } from ".";
 
 
-export function useCurrentUserQuery() {
+export const usePostQuery = (postId: number) => {
     const qClient = useQueryClient()
 
     return useQuery({
-        queryKey: ['me'],
+        queryKey: ['post', postId],
         queryFn: async () => {
             try {
-                const res = await fetch(`${URL}/api/user/me`, { method: 'GET', headers: setHeaders() });
+                const res = await fetch(`${URL}/api/post/${postId}`, { method: 'GET', headers: setHeaders() })
                 if (res.status != 200) {
                     const response = await res.json()
                     throw new RequestError(response.error, res.status)
@@ -22,7 +22,7 @@ export function useCurrentUserQuery() {
             }
         },
         initialData: () => {
-            return qClient.getQueryData(['me'])
+            return qClient.getQueryData(['post', postId])
         },
         staleTime: Infinity,
     })
