@@ -2,9 +2,10 @@
 import { useParams, useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getCurrentUser, getPost } from "@/utils/service";
+import { getPost } from "@/utils/service";
 import { Post } from "@/components/Post";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { useCurrentInfoQuery } from "@/queries/user";
 
 
 export default function UserPost() {
@@ -12,14 +13,7 @@ export default function UserPost() {
     const qClient = useQueryClient()
     const router = useRouter()
     
-    const {data: me} = useQuery({
-        queryKey: ['me'],
-        queryFn: () => getCurrentUser(),
-        initialData: () => {
-            return qClient.getQueryData(['me'])
-        },
-        staleTime: Infinity,
-    })
+    const {data: me} = useCurrentInfoQuery()
 
     const {data: post} = useQuery({
         queryKey: ['post', params.postId],

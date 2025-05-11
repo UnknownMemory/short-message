@@ -1,25 +1,15 @@
 "use client"
 
-import { getCurrentUser } from "@/utils/service";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { useCurrentInfoQuery } from "@/queries/user";
 import deleteUserAction from "./actions";
 import { AccountSetting } from "@/components/AccountSetting";
 
 
-
-
 export default function Settings() {
-    const qClient = useQueryClient()
     
-    const {data: me} = useQuery({
-        queryKey: ['me'],
-        queryFn: () => getCurrentUser(),
-        initialData: () => {
-            return qClient.getQueryData(['me'])
-        },
-        staleTime: Infinity,
-    })
+    const {data: me} = useCurrentInfoQuery()
 
     return (
         <div id="settings" className="min-h-full md:border-x-[1px] px-6">

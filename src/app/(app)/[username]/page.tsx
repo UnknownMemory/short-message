@@ -5,30 +5,24 @@ import { useParams } from 'next/navigation'
 import { Virtuoso } from 'react-virtuoso';
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUser, getCurrentUser, userTimeline } from "@/utils/service";
+import { getUser, userTimeline } from "@/utils/service";
 
 import { Post } from '@/components/Post';
 import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
+import { useCurrentInfoQuery } from "@/queries/user";
 
 
 export default function Profile() {
     const params = useParams()
     const qClient = useQueryClient()
 
-    const {data: me} = useQuery({
-        queryKey: ['me'],
-        queryFn: () => getCurrentUser(),
-        initialData: () => {
-            return qClient.getQueryData(['me'])
-        },
-        staleTime: Infinity,
-    })
+    const {data: me} = useCurrentInfoQuery()
 
     const {data: user} = useQuery({
         queryKey: ['profile', params.username],
         queryFn: () => getUser(params.username),
-        staleTime: Infinity,
+        staleTime: 1000 * 20,
     })
     
     const userId = user?.id

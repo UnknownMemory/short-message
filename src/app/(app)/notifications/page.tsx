@@ -1,24 +1,18 @@
 "use client"
-import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { NotificationCard } from "@/components/NotificationCard";
-import { getCurrentUser, getNotifications } from "@/utils/service";
-import { useSidebarStore } from "@/stores/sidebar-store";
 import { Virtuoso } from "react-virtuoso";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+import { getNotifications } from "@/utils/service";
+import { useCurrentInfoQuery } from "@/queries/user";
+import { useSidebarStore } from "@/stores/sidebar-store";
+import { NotificationCard } from "@/components/NotificationCard";
+
 
 export default function Notification() {
     const {setIsOpen, notificationBadge, setNotificationBadge} = useSidebarStore((state) => state)
-    const qClient = useQueryClient()
     
-    const {data: me} = useQuery({
-        queryKey: ['me'],
-        queryFn: () => getCurrentUser(),
-        initialData: () => {
-            return qClient.getQueryData(['me'])
-        },
-        staleTime: Infinity,
-    })
+    const {data: me} = useCurrentInfoQuery()
 
     const {data: notificationsPages, fetchNextPage, refetch, isSuccess} = useInfiniteQuery({
         queryKey: ['notifications'],
@@ -27,7 +21,7 @@ export default function Notification() {
         getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
         enabled: !!me?.id,
-        staleTime: Infinity
+        staleTime: 1000 * 60
     })
 
     const notifications = notificationsPages?.pages.flatMap(page => {
