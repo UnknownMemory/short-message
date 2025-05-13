@@ -1,6 +1,6 @@
 import { getCookie } from "@/utils/utils"
 
-export const URL = process.env.NEXT_PUBLIC_HOST
+export const HOST = process.env.NEXT_PUBLIC_HOST
 
 export const setHeaders = () => {
     let headers = new Headers()

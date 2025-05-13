@@ -3,14 +3,13 @@
 import Image from "next/image"
 import { useParams } from 'next/navigation'
 import { Virtuoso } from 'react-virtuoso';
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { getUser, userTimeline } from "@/utils/service";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Post } from '@/components/Post';
 import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
-import { useCurrentUserQuery } from "@/queries/user";
+import { useCurrentUserQuery, useUserProfileQuery } from "@/queries/user";
+import { useUserTimelineQuery } from "@/queries/post";
 
 
 export default function Profile() {
@@ -19,27 +18,13 @@ export default function Profile() {
 
     const {data: me} = useCurrentUserQuery()
 
-    const {data: user} = useQuery({
-        queryKey: ['profile', params.username],
-        queryFn: () => getUser(params.username),
-        staleTime: 1000 * 20,
-    })
-    
+    const {data: user} = useUserProfileQuery(params.username)
     const userId = user?.id
-
-    const {data: postsPages, fetchNextPage} = useInfiniteQuery({
-        queryKey: ['profile_posts', params.username],
-        queryFn: ({pageParam}) => userTimeline(userId, pageParam),
-        initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.cursor,
-        getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
-        enabled: !!userId,
-    })
-
+ 
+    const {data: postsPages, fetchNextPage} = useUserTimelineQuery(params.username, userId) 
     const posts = postsPages?.pages.flatMap(page => {
         return page.posts
     })
-
 
     const profileButton = () => {
         if(me?.username == params.username){
