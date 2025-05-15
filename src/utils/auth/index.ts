@@ -48,11 +48,9 @@ export const authAction = async (accessToken: RequestCookie | undefined, action:
 
 
 export const apiCheckAuth = async () => {
-    // let token: string | null = headers.get('Authorization')
     let token: string | undefined = cookies().get('accessToken')?.value
     if (token) {
         return await checkJWT(token)
     }
-
     return false
 }

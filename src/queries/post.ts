@@ -1,7 +1,5 @@
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
-
-import { RequestError } from "@/utils/error";
-import { setHeaders, HOST } from ".";
+import { tFetch } from ".";
 
 
 export const usePostQuery = (postId: number) => {
@@ -9,18 +7,7 @@ export const usePostQuery = (postId: number) => {
 
     return useQuery({
         queryKey: ['post', postId],
-        queryFn: async () => {
-            try {
-                const res = await fetch(`${HOST}/api/post/${postId}`, { method: 'GET', headers: setHeaders() })
-                if (res.status != 200) {
-                    const response = await res.json()
-                    throw new RequestError(response.error, res.status)
-                }
-                return await res.json();
-            } catch (error) {
-                console.error(error)
-            }
-        },
+        queryFn: async () => await tFetch(`/api/post/${postId}`, 'GET'),
         initialData: () => {
             return qClient.getQueryData(['post', postId])
         },
@@ -33,16 +20,7 @@ export const useTimelineQuery = (enabled: boolean) => {
         queryKey: ['posts'],
         queryFn: async ({ pageParam }) => {
             const cursor = pageParam ? '?cursor=' + pageParam : ''
-            try {
-                const res = await fetch(`${HOST}/api/post/timeline${cursor}`, { method: 'GET', headers: setHeaders() })
-                if (res.status != 200) {
-                    const response = await res.json()
-                    throw new RequestError(response.error, res.status)
-                }
-                return await res.json();
-            } catch (error) {
-                console.error(error)
-            }
+            return await tFetch('/api/post/timeline' + cursor, 'GET')
         },
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.pageParam,
@@ -57,17 +35,7 @@ export const useUserTimelineQuery = (username: string | string[], userId: number
         queryKey: ['profile_posts', username],
         queryFn: async ({ pageParam }) => {
             const cursor = pageParam ? '?cursor=' + pageParam : ''
-            console.log(cursor)
-            try {
-                const res = await fetch(`${HOST}/api/post/user-timeline/${userId}/${cursor}`, { method: 'GET', headers: setHeaders() })
-                if (res.status != 200) {
-                    const response = await res.json()
-                    throw new RequestError(response.error, res.status)
-                }
-                return await res.json();
-            } catch (error) {
-                console.error(error)
-            }
+            return await tFetch(`/api/post/user-timeline/${userId}/${cursor}` + cursor, 'GET')
         },
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.pageParam,

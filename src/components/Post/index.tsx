@@ -11,16 +11,20 @@ import { addLikeAction, removeLikeAction } from "./actions"
 import { User } from "@/types/User"
 import { Post as PostT } from "@/types/Post"
 import { useMutation } from "@tanstack/react-query"
+import { EllipsisVerticalIcon } from "@heroicons/react/16/solid"
+import { Tooltip } from "../Tooltip"
 
 
 interface Props {
     post: PostT & Partial<User>,
     isTimeline: boolean
+    currentUserId: number
 }
 
-export const Post = ({post, isTimeline}: Props) => {
+export const Post = ({post, isTimeline, currentUserId}: Props) => {
     const router = useRouter()
     const [isLiked, setIsLiked] = useState<boolean>(!post.isLiked || post.isLiked == null ? false : true )
+    const [isOpen, setIsOpen] = useState(false)
 
     const postDate = new Date(post?.created_at)
     const dayLater = postDate.getTime() + (24*60*60*1000)
@@ -52,6 +56,10 @@ export const Post = ({post, isTimeline}: Props) => {
         return setIsLiked(false)
     }
 
+    const openTooltip = () => {
+        setIsOpen(true)
+    }
+
     return (
         <div className={`flex px-3 py-5 border-b-[1px] relative cursor-pointer ${isTimeline ? 'hover:bg-sm-primary/[0.2]' : ''}`} onClick={(e) => {
             if(isTimeline){
@@ -73,10 +81,18 @@ export const Post = ({post, isTimeline}: Props) => {
                             <span className="truncate inline-block max-w-16 md:max-w-full">{createdAt}</span>
                         </div>
                     </div>
-                    <div className={`flex items-center cursor-pointer ${isLiked ? 'text-sm-primary': 'text-sm-dark-gray'}`} onClick={(e) => {e.stopPropagation(); isLiked ? removeLike() : addLike()}}>
-                        {isLiked ? <SolidHeartIcon width={18} height={18}/> : <HeartIcon width={18} height={18}/>}
-                        <span className="pl-1">{post.likes}</span>
-                    </div> 
+                    <div className="flex">
+                        <div className={`flex items-center cursor-pointer ${isLiked ? 'text-sm-primary': 'text-sm-dark-gray'}`} onClick={(e) => {e.stopPropagation(); isLiked ? removeLike() : addLike()}}>
+                            {isLiked ? <SolidHeartIcon width={18} height={18}/> : <HeartIcon width={18} height={18}/>}
+                            <span className="pl-1">{post.likes}</span>
+                        </div>
+                        <div className="p-1 text-sm-dark-gray relative min-w-max" onClick={(e) => {e.stopPropagation(); openTooltip()}}>
+                            <EllipsisVerticalIcon width={16} height={16}/>
+                            {post.authorID == currentUserId && post.id && isOpen && (
+                                <Tooltip postId={post.id} setIsOpen={setIsOpen}/>
+                            )}
+                        </div>
+                    </div>
 
                 </div>
                 <span className="whitespace-pre-wrap break-words word-break-words">{post.text}</span>
