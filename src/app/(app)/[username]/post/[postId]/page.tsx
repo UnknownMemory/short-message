@@ -27,7 +27,7 @@ export default function UserPost() {
             </div>
         </nav> 
         <div>
-            {post ? <Post post={post} isTimeline={false}></Post> : null}
+            {post ? <Post post={post} currentUserId={me.id} isTimeline={false} onDelete={() => router.replace('/')}></Post> : null}
         </div>
         </div>
     );

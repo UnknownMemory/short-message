@@ -12,16 +12,17 @@ import { User } from "@/types/User"
 import { Post as PostT } from "@/types/Post"
 import { useMutation } from "@tanstack/react-query"
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid"
-import { Tooltip } from "../Tooltip"
+import { PostTooltip } from "./PostTooltip"
 
 
 interface Props {
     post: PostT & Partial<User>,
     isTimeline: boolean
     currentUserId: number
+    onDelete: Function
 }
 
-export const Post = ({post, isTimeline, currentUserId}: Props) => {
+export const Post = ({post, isTimeline, currentUserId, onDelete}: Props) => {
     const router = useRouter()
     const [isLiked, setIsLiked] = useState<boolean>(!post.isLiked || post.isLiked == null ? false : true )
     const [isOpen, setIsOpen] = useState(false)
@@ -40,7 +41,6 @@ export const Post = ({post, isTimeline, currentUserId}: Props) => {
         }
     })
 
-
     const addLike = async () => {
         const newLike = await addLikeAction(post.id)
 
@@ -58,6 +58,11 @@ export const Post = ({post, isTimeline, currentUserId}: Props) => {
 
     const openTooltip = () => {
         setIsOpen(true)
+    }
+
+    const closeTooltip = () => {
+        setIsOpen(false)
+        onDelete()
     }
 
     return (
@@ -86,10 +91,10 @@ export const Post = ({post, isTimeline, currentUserId}: Props) => {
                             {isLiked ? <SolidHeartIcon width={18} height={18}/> : <HeartIcon width={18} height={18}/>}
                             <span className="pl-1">{post.likes}</span>
                         </div>
-                        <div className="p-1 text-sm-dark-gray relative min-w-max" onClick={(e) => {e.stopPropagation(); openTooltip()}}>
-                            <EllipsisVerticalIcon width={16} height={16}/>
+                        <div className="p-1 text-sm-dark-gray relative min-w-max">
+                            <EllipsisVerticalIcon width={16} height={16} onClick={(e) => {e.stopPropagation(); isOpen ? closeTooltip() : openTooltip()}}/>
                             {post.authorID == currentUserId && post.id && isOpen && (
-                                <Tooltip postId={post.id} setIsOpen={setIsOpen}/>
+                                <PostTooltip postId={post.id} closeTooltip={closeTooltip}/>
                             )}
                         </div>
                     </div>

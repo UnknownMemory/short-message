@@ -1,8 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 
-import { HOST, setHeaders, tFetch } from "."
-import { RequestError } from "@/utils/error"
-
+import { tFetch } from "."
 
 export const useNotificationQuery = (enabled: boolean) => {
     return useInfiniteQuery({

@@ -37,9 +37,6 @@ export async function GET(request: Request) {
 
     await db.update(notification_last_read).set({ last_read: new Date() }).where(eq(notification_last_read.userId, userID))
 
-    if (notifications.length > 0) {
-        return NextResponse.json(notifications, { status: 200 });
-    }
 
-    return NextResponse.json({ 'error': 'Notifications not found' }, { status: 404 });
+    return NextResponse.json(notifications, { status: 200 });
 }

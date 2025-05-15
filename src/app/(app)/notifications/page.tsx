@@ -16,7 +16,7 @@ export default function Notification() {
 
     const notifications = notificationsPages?.pages.flatMap(page => {
         return page
-    })
+    }) 
 
     if(isSuccess && notificationBadge){
         setNotificationBadge(0)

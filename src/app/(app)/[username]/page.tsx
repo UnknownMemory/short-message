@@ -21,7 +21,8 @@ export default function Profile() {
     const {data: user} = useUserProfileQuery(params.username)
     const userId = user?.id
  
-    const {data: postsPages, fetchNextPage} = useUserTimelineQuery(params.username, userId) 
+    const {data: postsPages, fetchNextPage, refetch} = useUserTimelineQuery(params.username, userId)
+
     const posts = postsPages?.pages.flatMap(page => {
         return page.posts
     })
@@ -71,7 +72,7 @@ export default function Profile() {
                     useWindowScroll
                     style={{height: '100%', borderTopWidth: '1px'}}
                     data={posts} 
-                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true} currentUserId={me.id} onDelete={refetch}/>}}
                     endReached={(_) => fetchNextPage()}
                 />
             </div>
