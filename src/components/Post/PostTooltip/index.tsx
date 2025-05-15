@@ -15,7 +15,7 @@ export const PostTooltip = ({postId, closeTooltip}: Props) => {
         }
     }
     return (
-        <div className="absolute top-full right-0 md:top-6 md:p-2 min-w-max bg-black border-sm-border-dark border-[0.2px] rounded-md text-sm" onClick={(e) => {e.stopPropagation(); deletePost(postId)}}>
+        <div className="absolute right-0 top-6 p-2 min-w-max bg-black border-sm-border-dark border-[0.2px] rounded-md" onClick={(e) => {e.stopPropagation(); deletePost(postId)}}>
             <div className="flex justify-center items-center w-full text-red-600">
                 <TrashIcon width={20} height={20}/>Delete post
             </div>

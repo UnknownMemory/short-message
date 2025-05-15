@@ -72,7 +72,7 @@ export default function Profile() {
                     useWindowScroll
                     style={{height: '100%', borderTopWidth: '1px'}}
                     data={posts} 
-                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true} currentUserId={me.id} onDelete={refetch}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true} currentUserId={me?.id} onDelete={refetch}/>}}
                     endReached={(_) => fetchNextPage()}
                 />
             </div>
