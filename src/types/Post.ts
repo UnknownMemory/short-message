@@ -4,4 +4,5 @@ export interface Post {
     authorID: number,
     created_at: Date,
     isLiked: number | null
+    likes: number
 }

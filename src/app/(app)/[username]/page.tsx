@@ -3,49 +3,29 @@
 import Image from "next/image"
 import { useParams } from 'next/navigation'
 import { Virtuoso } from 'react-virtuoso';
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-
-import { getUser, getCurrentUser, userTimeline } from "@/utils/service";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Post } from '@/components/Post';
 import { Post as PostT } from "@/types/Post";
 import followAction from './actions';
+import { useCurrentUserQuery, useUserProfileQuery } from "@/queries/user";
+import { useUserTimelineQuery } from "@/queries/post";
 
 
 export default function Profile() {
     const params = useParams()
     const qClient = useQueryClient()
 
-    const {data: me} = useQuery({
-        queryKey: ['me'],
-        queryFn: () => getCurrentUser(),
-        initialData: () => {
-            return qClient.getQueryData(['me'])
-        },
-        staleTime: Infinity,
-    })
+    const {data: me} = useCurrentUserQuery()
 
-    const {data: user} = useQuery({
-        queryKey: ['profile', params.username],
-        queryFn: () => getUser(params.username),
-        staleTime: Infinity,
-    })
-    
+    const {data: user} = useUserProfileQuery(params.username)
     const userId = user?.id
-
-    const {data: postsPages, fetchNextPage} = useInfiniteQuery({
-        queryKey: ['profile_posts', params.username],
-        queryFn: ({pageParam}) => userTimeline(userId, pageParam),
-        initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.cursor,
-        getPreviousPageParam: (firstPage, pages) => firstPage.cursor,
-        enabled: !!userId,
-    })
+ 
+    const {data: postsPages, fetchNextPage, refetch} = useUserTimelineQuery(params.username, userId)
 
     const posts = postsPages?.pages.flatMap(page => {
         return page.posts
     })
-
 
     const profileButton = () => {
         if(me?.username == params.username){
@@ -60,10 +40,10 @@ export default function Profile() {
     }
 
     return (
-        <div id="profile" className="min-h-full border-x-[1px]">
+        <div id="profile" className="min-h-full md:border-x-[1px]">
             <div className="relative">
                 <div className="h-[150px] w-full">
-                    <div className="w-full h-full bg-slate-500"></div>
+                    <div className="w-full h-full bg-white"></div>
                 </div>
                 <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none">
                     <div className="h-[90px] w-[90px] relative">
@@ -77,11 +57,13 @@ export default function Profile() {
                     <div className="flex flex-col items-center">
                         <div className="md:text-xl">{user?.display_name}</div>
                         <div className="md:text-sm text-sm-dark-gray">@{user?.username}</div>
+                        <div className="md:text-sm flex justify-center mt-1">
+                            <div className="mr-2">{user?.following} <span className="text-sm-dark-gray">followings</span></div>
+                            <div>{user?.follower} <span className="text-sm-dark-gray">followers</span></div>
+                        </div>
+                        <div className="text-sm mt-2">{user?.description}</div>
                     </div>
-                    <div className="md:text-sm flex justify-center mt-1">
-                        <div className="mr-2">{user?.following} <span className="text-sm-dark-gray">followings</span></div>
-                        <div>{user?.follower} <span className="text-sm-dark-gray">followers</span></div>
-                    </div>
+
                 </div>
             </div>
             <div>
@@ -90,7 +72,7 @@ export default function Profile() {
                     useWindowScroll
                     style={{height: '100%', borderTopWidth: '1px'}}
                     data={posts} 
-                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true}/>}}
+                    itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true} currentUserId={me?.id} onDelete={refetch}/>}}
                     endReached={(_) => fetchNextPage()}
                 />
             </div>

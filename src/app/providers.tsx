@@ -1,39 +1,27 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { RequestError } from '@/utils/error'
 import { getCookie } from '@/utils/utils'
 
-export default function Providers({ children }: {children: React.ReactNode}) {
-    const router =  useRouter()
 
-    const setHeaders = () => {
-        let headers = new Headers()
-        let accessToken = getCookie('accessToken')
-    
-        headers.append('Content-Type', 'application/json')
-        if(accessToken != undefined){
-            headers.append('Authorization', `Bearer ${getCookie('accessToken')}`)
-        }
-    
-        return headers
+const setHeaders = () => {
+    let headers = new Headers()
+    let accessToken = getCookie('accessToken')
+
+    headers.append('Content-Type', 'application/json')
+    if(accessToken != undefined){
+        headers.append('Authorization', `Bearer ${getCookie('accessToken')}`)
     }
 
-    const refreshTokenService = async () => {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/auth/refreshtoken`, {method: 'GET', headers: setHeaders()});
-        
-        if(res.status === 400){
-            router.push('/login')
-        }
+    return headers
+}
 
-        return await res.json()
-    }
-
-    const [queryClient] = useState(() => new QueryClient({
+function makeQC() {
+    return new QueryClient({
         defaultOptions: {
             queries: {
                 staleTime: 30000,
@@ -45,15 +33,11 @@ export default function Providers({ children }: {children: React.ReactNode}) {
                 },
             },
         },
-        queryCache: new QueryCache({
-            onError: async (error: RequestError) => {
-                if(error.status === 401){
-                    refreshTokenService()
-                }
-            }
-        })
-    }))
-  
+    })
+}
+
+export default function Providers({ children }: {children: React.ReactNode}) {
+    const queryClient = makeQC()
     return (
         <QueryClientProvider client={queryClient}>
             {children}

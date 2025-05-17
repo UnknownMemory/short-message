@@ -1,5 +1,4 @@
-import { desc, eq, or, and, lt, isNotNull } from "drizzle-orm";
-import { headers } from "next/headers";
+import { desc, eq, or, and, lt, isNotNull, aliasedTable, countDistinct } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 import { db } from "@/db/db"
@@ -20,6 +19,7 @@ export async function GET(request: NextRequest) {
     }
     const userID: number = Number(isLogged.id)
 
+    const likes = aliasedTable(like, "likes")
     const posts = await db.select({
         "id": post.id,
         "text": post.text,
@@ -29,17 +29,20 @@ export async function GET(request: NextRequest) {
         "username": user.username,
         "image": user.image,
         "isLiked": like.userID,
+        "likes": countDistinct(likes)
     })
         .from(post)
         .leftJoin(follow, and(eq(follow.userID, userID), eq(follow.followingID, post.authorID)))
         .leftJoin(user, eq(post.authorID, user.id))
         .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
+        .leftJoin(likes, eq(post.id, likes.postID))
         .where(
             and(
                 or(eq(post.authorID, userID), isNotNull(follow.followingID)),
                 request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, new Date(<string>request.nextUrl.searchParams.get("cursor"))) : undefined
             ))
         .orderBy(desc(post.created_at))
+        .groupBy(post.id, user.id, like.userID)
         .limit(20)
 
 
