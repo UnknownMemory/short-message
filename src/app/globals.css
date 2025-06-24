@@ -82,6 +82,14 @@ body {
     text-decoration: underline;
   }
 
+  dialog::backdrop {
+    background: rgba(190, 173, 250, 0.20);
+  }
+
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+
   .sm-grid {
     grid-template-columns: 1fr 1.3fr 1fr;
   }
