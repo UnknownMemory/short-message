@@ -83,7 +83,7 @@ body {
   }
 
   dialog::backdrop {
-    background: rgba(190, 173, 250, 0.20);
+    background: rgba(0, 0, 0, 0.50);
   }
 
   body:has(dialog[open]) {
@@ -171,6 +171,7 @@ body {
   @media (prefers-color-scheme: dark) {
     .sm-input {
       background-color: theme(colors.sm-primary-dark);
+      color: theme(colors.sm-white);
     }
 
     .sm-input::placeholder {
