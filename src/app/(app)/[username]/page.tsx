@@ -33,7 +33,7 @@ export default function Profile() {
 
     const profileButton = () => {
         if(me?.username == params.username){
-            return <button className="btn-light-outline" onClick={() => setIsOpen(!isOpen)}>Edit Profile</button>
+            return <button className="btn-light-outline" onClick={() => setIsOpen(true)}>Edit Profile</button>
         } else {
             if (user?.is_following) {
                 return <button onClick={() => followAction(user.id).then(() => qClient.setQueryData(['profile', params.username], {...user, "is_following": false}))} className="btn-light-outline">Following</button>
@@ -88,7 +88,7 @@ export default function Profile() {
                     />
                 </div>
             </div>
-            <EditProfileDialog user={me} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            {isOpen && <EditProfileDialog user={me} isOpen={isOpen} onClose={() => setIsOpen(false)} />}
         </>
     );
 }
