@@ -40,8 +40,14 @@ export default async function login(prevState: any, formData: FormData) {
         if (passwordsMatch) {
             const cookiesStore = cookies();
 
-            await cookiesStore.set('accessToken', accessToken, { sameSite: 'strict', expires: getFutureDate(8) })
-            await cookiesStore.set('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', domain: process.env.DOMAIN, path: '/api/auth/refreshtoken', expires: expireDate })
+            cookiesStore.set('accessToken', accessToken, {sameSite: 'strict', expires: getFutureDate(8)})
+            cookiesStore.set('refreshToken', refreshToken, {
+                httpOnly: true,
+                sameSite: 'strict',
+                domain: process.env.DOMAIN,
+                path: '/api/auth/refreshtoken',
+                expires: expireDate
+            })
 
             redirect('/')
         }
