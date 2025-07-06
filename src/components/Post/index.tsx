@@ -10,9 +10,8 @@ import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid"
 import { addLikeAction, removeLikeAction } from "./actions"
 import { User } from "@/types/User"
 import { Post as PostT } from "@/types/Post"
-import { useMutation } from "@tanstack/react-query"
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid"
-import { PostTooltip } from "./PostTooltip"
+import { PostTooltip} from "./PostTooltip"
 
 
 interface Props {
@@ -35,18 +34,8 @@ export const Post = ({post, isTimeline, currentUserId, onDelete}: Props) => {
     const createdAt = dayLater < new Date().getTime() ? dayPosted : hourPosted
 
 
-    const notificationPush = useMutation({
-        mutationFn: (notifiedId: number) => {
-            return fetch(`${process.env.NEXT_PUBLIC_HOST}/api/notification/update`, {method: "POST", body: JSON.stringify({"notifiedId": notifiedId})})
-        }
-    })
-
     const addLike = async () => {
-        const newLike = await addLikeAction(post.id)
-
-        if(typeof newLike === "number"){
-            notificationPush.mutate(newLike)
-        }
+        await addLikeAction(post.id)
 
         return setIsLiked(true)
     }

@@ -30,15 +30,15 @@ export default function Home() {
                     <div className="flex justify-center md:col-span-3 cursor-pointer" onClick={() => refetch()}>
                         <Image src="/logo.svg" alt="Short Message logo" width={28} height={28}/>
                     </div>
-                </nav> 
+                </nav>
                 <PostInput refetch={refetch}/>
-                <Virtuoso 
+                <Virtuoso
                     useWindowScroll
                     style={{height: '100%'}}
-                    data={posts} 
+                    data={posts}
                     itemContent={(_, post: PostT) =>{ return <Post key={post.id} post={post} isTimeline={true} currentUserId={me.id} onDelete={refetch}/>}}
                     endReached={(_) => fetchNextPage()}
-                    />
+                />
             </div>
         </>
     );
