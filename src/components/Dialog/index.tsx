@@ -22,8 +22,9 @@ export const Dialog = ({children, onClose, isOpen, customStyle}: DialogProps) =>
             dialogRef.current?.showModal();
         }
     }, [isOpen, onClose]);
-
+    
     return (
+        // @ts-ignore
         <dialog className={`z-10 ${customStyle} dark:bg-black rounded-xl border-sm-dark-gray border`} closedby="any" ref={dialogRef} onClose={onClose}>
             {children}
         </dialog>
