@@ -11,7 +11,7 @@ export const usePostQuery = (postId: number) => {
         initialData: () => {
             return qClient.getQueryData(['post', postId])
         },
-        staleTime: Infinity,
+        staleTime: 1000 * 10,
     })
 }
 
