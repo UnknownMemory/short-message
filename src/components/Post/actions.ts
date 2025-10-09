@@ -56,7 +56,7 @@ async function addLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<
         }).returning({ "notifiedId": notification.notifiedId })
 
         if (newLike[0].notifiedId != null) {
-            await redisServer.publish(`user:${newLike[0].notifiedId}`, JSON.stringify({'userId': newLike[0].notifiedId}))
+            await redisServer.publish(`user:${newLike[0].notifiedId}`, JSON.stringify({ 'userId': newLike[0].notifiedId }))
             return newLike[0].notifiedId
         }
     }
@@ -90,7 +90,8 @@ async function removeLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promi
         try {
             await db.delete(notification).where(and(
                 eq(notification.postId, Number(postId)),
-                eq(notification.type, "like")
+                eq(notification.type, "like"),
+                eq(notification.notifierId, Number(loggedUser.id))
             ))
         } catch (e) {
             return { errors: "An error occurred on the server" }
