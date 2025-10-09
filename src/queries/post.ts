@@ -32,7 +32,7 @@ export const useTimelineQuery = (enabled: boolean) => {
 
 export const useUserTimelineQuery = (username: string | string[], userId: number) => {
     return useInfiniteQuery({
-        queryKey: ['profile_posts', username],
+        queryKey: ['posts', username],
         queryFn: async ({ pageParam }) => {
             const cursor = pageParam ? '?cursor=' + pageParam : ''
             return await tFetch(`/api/post/user-timeline/${userId}/${cursor}` + cursor, 'GET')

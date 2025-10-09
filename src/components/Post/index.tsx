@@ -47,7 +47,7 @@ export const Post = ({ post, isTimeline, currentUserId, onDelete }: Props) => {
 
   const addLike = async () => {
     await addLikeAction(post.id);
-    queryClient.setQueryData(["posts"], (previous: InfiniteData<any, unknown>) => {
+    queryClient.setQueriesData({queryKey: ["posts"]}, (previous: InfiniteData<any, unknown>) => {
       previous.pages[0].posts.map((data: PostT & Partial<User>) =>{
           if(data.id === post.id){
               data.likes++;
@@ -65,7 +65,7 @@ export const Post = ({ post, isTimeline, currentUserId, onDelete }: Props) => {
 
   const removeLike = async () => {
     await removeLikeAction(post.id);
-    queryClient.setQueryData(["posts"], (previous: InfiniteData<any, unknown>) => {
+    queryClient.setQueriesData({queryKey: ["posts"]}, (previous: InfiniteData<any, unknown>) => {
       previous.pages[0].posts.map((data: PostT & Partial<User>) => {
           if(data.id === post.id){
               data.likes--;
