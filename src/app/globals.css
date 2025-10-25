@@ -17,175 +17,161 @@
 } */
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 .loader {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  position: relative;
-  animation: rotate 1s linear infinite
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position: relative;
+    animation: rotate 1s linear infinite;
 }
 .loader::before {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  inset: 0px;
-  border-radius: 50%;
-  border: 5px solid #000000;
-  animation: prixClipFix 2s linear infinite ;
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0px;
+    border-radius: 50%;
+    border: 5px solid #000000;
+    color: theme(colors.sm-white);
+    animation: prixClipFix 2s linear infinite;
 }
 
 @keyframes rotate {
-  100%   {transform: rotate(360deg)}
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes prixClipFix {
-    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-    25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-    75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-    100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+    0% {
+        clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+    }
+    25% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+    }
+    50% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+    }
+    75% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+    }
+    100% {
+        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+    }
 }
 
 @layer base {
-  html {
-    @apply bg-sm-white;
-  }
-
-  [contenteditable="true"]:empty::before {
-    content: attr(data-placeholder);
-    display: block;
-    color: theme(colors.sm-dark-gray);
-  }
-
-  input::placeholder {
-    text-transform: capitalize;
-  }
-
-  a {
-    color: theme(colors.sm-primary);
-  }
-
-  a.post {
-    color: initial;
-  }
-
-  a.post:hover {
-    text-decoration: underline;
-  }
-
-  dialog::backdrop {
-    background: rgba(0, 0, 0, 0.50);
-  }
-
-  body:has(dialog[open]) {
-    overflow: hidden;
-  }
-
-  .sm-grid {
-    grid-template-columns: 1fr 1.3fr 1fr;
-  }
-
-  #feed,
-  #profile,
-  #settings {
-    grid-column: 2 / 3;
-  }
-
-  .word-break-words {
-    word-break: break-word;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    @layer base {
-      html {
+    html {
         background-color: #000000;
         color: theme(colors.sm-white);
-      }
-
-      * {
-        border-color: theme(colors.sm-border-dark);
-      }
-
-      a.post {
-        color: theme(colors.sm-white);
-      }
-
-      .loader::before {
-        color: theme(colors.sm-white);
-      }
     }
-  }
-  
+
+    [contenteditable="true"]:empty::before {
+        content: attr(data-placeholder);
+        display: block;
+        color: theme(colors.sm-dark-gray);
+    }
+
+    * {
+        border-color: theme(colors.sm-border-dark);
+    }
+
+    input::placeholder {
+        text-transform: capitalize;
+    }
+
+    a {
+        color: theme(colors.sm-primary);
+    }
+
+    a.post {
+        color: theme(colors.sm-white);
+    }
+
+    a.post:hover {
+        text-decoration: underline;
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    body:has(dialog[open]) {
+        overflow: hidden;
+    }
+
+    .sm-grid {
+        grid-template-columns: 1fr 1.3fr 1fr;
+    }
+
+    #feed,
+    #profile,
+    #settings {
+        grid-column: 2 / 3;
+    }
+
+    .word-break-words {
+        word-break: break-word;
+    }
 }
 
 @layer components {
-  .post-input {
-    padding: 0 0.4em;
-    width: calc(100% - 42px);
-    display: block;
-  }
+    .post-input {
+        padding: 0 0.4em;
+        width: calc(100% - 42px);
+        display: block;
+    }
 
-  .post-input:focus {
-    outline: none;
-  }
+    .post-input:focus {
+        outline: none;
+    }
 
-  .btn-light {
-    background-color: theme(colors.sm-primary);
-    @apply text-white rounded px-4 md:px-6 py-1.5;
-  }
+    .btn-light {
+        background-color: theme(colors.sm-primary);
+        @apply text-white rounded px-4 md:px-6 py-1.5;
+    }
 
-  .btn-light-outline {
-    @apply rounded px-4 md:px-6 py-1.5 border-[1px];
-  }
+    .btn-light-outline {
+        @apply rounded px-4 md:px-6 py-1.5 border-[1px];
+    }
 
-  .sm-input {
-    @apply bg-sm-light-gray;
-  }
-
-  .sm-input::placeholder {
-    @apply text-sm-dark-gray;
-  }
-
-  .sm-input:focus {
-    outline-color: theme(colors.sm-primary);
-    @apply text-black;
-  }
-
-  .nav-link {
-    text-align: center;
-  }
-
-  .nav-link:hover {
-    background-color: rgba(0, 0, 0, 0.15);
-  }
-
-  @media (prefers-color-scheme: dark) {
     .sm-input {
-      background-color: theme(colors.sm-primary-dark);
-      color: theme(colors.sm-white);
+        background-color: theme(colors.sm-primary-dark);
+        color: theme(colors.sm-white);
     }
 
     .sm-input::placeholder {
-      color: theme(colors.sm-white)
+        color: theme(colors.sm-white);
     }
 
     .sm-input:focus {
-      color: theme(colors.sm-white)
+        color: theme(colors.sm-white);
     }
-  }
+
+    .nav-link {
+        text-align: center;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    /* @media (prefers-color-scheme: dark) {
+        .sm-input::placeholder {
+            color: theme(colors.sm-white);
+        }
+
+        .sm-input:focus {
+            color: theme(colors.sm-white);
+        }
+    } */
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+    .text-balance {
+        text-wrap: balance;
+    }
 }
