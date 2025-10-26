@@ -30,17 +30,18 @@ export const useTimelineQuery = (enabled: boolean) => {
     })
 }
 
-export const useUserTimelineQuery = (username: string | string[], userId: number) => {
+export const useUserTimelineQuery = (username: string | string[], userId: number, tab: "posts" | "likes") => {
+    const isTabPosts = tab == "posts"
     return useInfiniteQuery({
         queryKey: ['posts', username],
         queryFn: async ({ pageParam }) => {
             const cursor = pageParam ? '?cursor=' + pageParam : ''
-            return await tFetch(`/api/post/user-timeline/${userId}/${cursor}` + cursor, 'GET')
+            return await tFetch(`/api/post/user-timeline/${userId}` + cursor, 'GET')
         },
         initialPageParam: false,
         getNextPageParam: (lastPage, pages) => lastPage.pageParam,
         getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
-        enabled: !!userId,
+        enabled: !!userId && isTabPosts,
         staleTime: Infinity
     })
 }

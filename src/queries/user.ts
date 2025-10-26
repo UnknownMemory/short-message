@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { tFetch } from "."
 
@@ -21,5 +21,22 @@ export function useUserProfileQuery(username: string | string[]) {
         queryKey: ['profile', username],
         queryFn: async () => await tFetch(`/api/user/${username}`, 'GET'),
         staleTime: 1000 * 20,
+    })
+}
+
+
+export const useUserLikesQuery = (userId: number, tab: "posts" | "likes") => {
+    const isTabLikes = tab == "likes"
+    return useInfiniteQuery({
+        queryKey: ['likes'],
+        queryFn: async ({ pageParam }) => {
+            const cursor = pageParam ? '?cursor=' + pageParam : ''
+            return await tFetch(`/api/user/me/like` + cursor, 'GET')
+        },
+        initialPageParam: false,
+        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
+        getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
+        enabled: !!userId && isTabLikes,
+        staleTime: Infinity
     })
 }
