@@ -1,19 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import {
-    ArrowLeftIcon,
-    TrashIcon,
-    SwatchIcon,
-    SunIcon,
-    MoonIcon,
-    ComputerDesktopIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-import { useCurrentUserQuery } from "@/queries/user";
 import deleteUserAction from "./actions";
 
 export default function Settings() {
-    const { data: me } = useCurrentUserQuery();
     const router = useRouter();
 
     return (

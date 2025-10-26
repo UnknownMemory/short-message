@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { EditProfileDialog } from "@/components/EditProfileDialog";
+import { EditProfileDialog } from "@/app/(app)/[username]/_components/EditProfileDialog";
 import followAction from "./actions";
 
 import { useCurrentUserQuery, useUserLikesQuery, useUserProfileQuery } from "@/queries/user";

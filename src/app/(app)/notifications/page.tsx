@@ -4,7 +4,7 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 
 import { useCurrentUserQuery } from "@/queries/user";
 import { useSidebarStore } from "@/stores/sidebar";
-import { NotificationCard } from "@/components/NotificationCard";
+import { NotificationCard } from "@/app/(app)/notifications/_components/NotificationCard";
 import { useNotificationQuery } from "@/queries/notification";
 
 export default function Notification() {
