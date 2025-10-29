@@ -29,10 +29,14 @@ export default function Profile() {
         data: postsPages,
         fetchNextPage: postsFetchNextPage,
         refetch: postsRefetch,
+        hasNextPage: postsHasNextPage,
+        isFetching: postsIsFetching,
     } = useUserTimelineQuery(params.username, userId, tab);
     const {
         data: likesPages,
         fetchNextPage: likespostsFetchNextPage,
+        hasNextPage: likesHasNextPage,
+        isFetching: likesIsFetching,
         refetch: likesRefetch,
     } = useUserLikesQuery(userId, tab);
 
@@ -109,14 +113,20 @@ export default function Profile() {
                 </div>
                 <div>
                     <div className="flex">
-                        <div className={"w-full flex justify-center md:p-4 md:pb-0"} onClick={() => setTab("posts")}>
+                        <div
+                            className={
+                                "w-full flex justify-center md:p-4 md:pb-0 hover:bg-sm-dark-purple/[0.2] cursor-pointer"
+                            }
+                            onClick={() => setTab("posts")}>
                             <div className={`pb-2 ${tab == "posts" && "border-b-[3px] border-b-sm-dark-purple"}`}>
                                 Posts
                             </div>
                         </div>
                         {isUser && (
                             <div
-                                className={"w-full flex justify-center md:p-4 md:pb-0"}
+                                className={
+                                    "w-full flex justify-center md:p-4 md:pb-0 hover:bg-sm-dark-purple/[0.2] cursor-pointer"
+                                }
                                 onClick={() => setTab("likes")}>
                                 <div className={`pb-2 ${tab == "likes" && "border-b-[3px] border-b-sm-dark-purple"}`}>
                                     Likes
@@ -129,6 +139,8 @@ export default function Profile() {
                             dataPages={postsPages}
                             fetchNextPage={postsFetchNextPage}
                             refetch={postsRefetch}
+                            hasNextPage={postsHasNextPage}
+                            isFetching={postsIsFetching}
                             id={me?.id}
                         />
                     )}
@@ -137,6 +149,8 @@ export default function Profile() {
                             dataPages={likesPages}
                             fetchNextPage={likespostsFetchNextPage}
                             refetch={likesRefetch}
+                            hasNextPage={likesHasNextPage}
+                            isFetching={likesIsFetching}
                             id={me?.id}
                         />
                     )}

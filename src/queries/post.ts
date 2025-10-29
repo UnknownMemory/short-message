@@ -23,8 +23,7 @@ export const useTimelineQuery = (enabled: boolean) => {
             return await tFetch('/api/post/timeline' + cursor, 'GET')
         },
         initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
-        getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
         enabled: enabled,
         staleTime: Infinity
     })
@@ -39,7 +38,7 @@ export const useUserTimelineQuery = (username: string | string[], userId: number
             return await tFetch(`/api/post/user-timeline/${userId}` + cursor, 'GET')
         },
         initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
         enabled: !!userId && isTabPosts,
         staleTime: Infinity

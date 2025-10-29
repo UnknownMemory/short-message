@@ -2,15 +2,18 @@ import { Virtuoso } from "react-virtuoso";
 
 import { Post } from "@/components/Post";
 import { Post as PostT } from "@/types/Post";
+import { InfiniteData } from "@tanstack/react-query";
 
-interface UserTimelinegProps {
-    dataPages: any;
-    fetchNextPage: any;
-    refetch: any;
+interface UserTimelineProps {
+    dataPages: InfiniteData<any, unknown> | undefined;
+    fetchNextPage: Function;
+    hasNextPage: boolean;
+    isFetching: boolean;
+    refetch: Function;
     id: number;
 }
 
-export const UserTimeline = ({ dataPages, fetchNextPage, refetch, id }: UserTimelinegProps) => {
+export const UserTimeline = ({ dataPages, fetchNextPage, hasNextPage, isFetching, refetch, id }: UserTimelineProps) => {
     const posts = dataPages?.pages.flatMap((page) => {
         return page.posts;
     });
@@ -23,7 +26,7 @@ export const UserTimeline = ({ dataPages, fetchNextPage, refetch, id }: UserTime
                 itemContent={(_, post: PostT) => {
                     return <Post key={post.id} post={post} isTimeline={true} currentUserId={id} onDelete={refetch} />;
                 }}
-                endReached={(_) => fetchNextPage()}
+                endReached={(_) => hasNextPage && !isFetching && fetchNextPage()}
             />
         </>
     );

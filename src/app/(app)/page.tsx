@@ -16,11 +16,12 @@ export default function Home() {
     const { setIsOpen } = useSidebarStore((state) => state);
 
     const { data: me } = useCurrentUserQuery();
-    const { data: postsPages, fetchNextPage, refetch } = useTimelineQuery(!!me?.id);
+    const { data: postsPages, fetchNextPage, hasNextPage, isFetching, refetch } = useTimelineQuery(!!me?.id);
 
     const posts = postsPages?.pages.flatMap((page) => {
         return page.posts;
     });
+
     return (
         <>
             <div id="feed" className="min-h-full md:border-x-[1px]">
@@ -31,23 +32,24 @@ export default function Home() {
                     </div>
                 </nav>
                 <PostInput refetch={refetch} />
-                <Virtuoso
-                    useWindowScroll
-                    style={{ height: "100%" }}
-                    data={posts}
-                    itemContent={(_, post: PostT) => {
-                        return (
-                            <Post
-                                key={post.id}
-                                post={post}
-                                isTimeline={true}
-                                currentUserId={me.id}
-                                onDelete={refetch}
-                            />
-                        );
-                    }}
-                    endReached={(_) => fetchNextPage()}
-                />
+                {posts && posts?.length > 0 && (
+                    <Virtuoso
+                        useWindowScroll
+                        data={posts}
+                        itemContent={(_, post: PostT) => {
+                            return (
+                                <Post
+                                    key={post.id}
+                                    post={post}
+                                    isTimeline={true}
+                                    currentUserId={me.id}
+                                    onDelete={refetch}
+                                />
+                            );
+                        }}
+                        endReached={() => hasNextPage && !isFetching && fetchNextPage()}
+                    />
+                )}
             </div>
         </>
     );

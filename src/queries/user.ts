@@ -34,7 +34,7 @@ export const useUserLikesQuery = (userId: number, tab: "posts" | "likes") => {
             return await tFetch(`/api/user/me/like` + cursor, 'GET')
         },
         initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
         enabled: !!userId && isTabLikes,
         staleTime: Infinity
