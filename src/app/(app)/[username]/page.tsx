@@ -83,10 +83,10 @@ export default function Profile() {
                     <div className="h-[150px] w-full">
                         <div className="w-full h-full bg-white"></div>
                     </div>
-                    <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none">
+                    <div id="avatar" className="flex justify-center w-full absolute top-[107px] pointer-events-none ">
                         <div className="h-[90px] w-[90px] relative">
                             <Image
-                                className="rounded-full"
+                                className="rounded-full border-2 border-black"
                                 src="/default_avatar.jpg"
                                 fill
                                 style={{ objectFit: "cover" }}
