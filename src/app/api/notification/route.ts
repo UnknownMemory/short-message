@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 import { apiCheckAuth } from "@/utils/auth";
 import { notification_last_read } from '@/db/schema/notification_last_read';
 
-export async function GET(request: Request) {
+export async function GET() {
     const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });

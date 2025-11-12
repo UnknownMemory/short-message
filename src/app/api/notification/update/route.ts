@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
     }
 
-    const userKey = `user:${user.id}`
+    const userKey = `notfication:user:${user.id}`
 
     const encoder = new TextEncoder();
     let readableStream = new ReadableStream({
