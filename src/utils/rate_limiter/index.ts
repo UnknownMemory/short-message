@@ -1,5 +1,8 @@
 import Redis from "ioredis";
+
+import { redisClient } from "../redis";
 import { RateLimiterType } from "@/types/RateLimiter";
+
 
 export class RateLimiter implements RateLimiterType {
     private limit: number
@@ -9,32 +12,38 @@ export class RateLimiter implements RateLimiterType {
     constructor(limit: number, size: number) {
         this.limit = limit
         this.size = size
-        this.redis = new Redis(process.env.REDIS_URL!)
+        this.redis = redisClient
     }
 
     public async allow(key: string): Promise<boolean> {
-        const now = new Date()
-        const nowMs = now.getTime()
+        try {
+            const now = new Date()
+            const nowMs = now.getTime()
 
-        await this.redis.watch(key);
-        const currentWindow = await this.updateWindows(now, await this.redis.hgetall(this.key))
+            await this.redis.watch(key);
+            const currentWindow = await this.updateWindows(now, await this.redis.hgetall(key))
 
-        const timeElapsed = nowMs - currentWindow["start"]
-        const weight = (this.size - timeElapsed) / this.size
-        const limitApproximation = Math.floor((weight * currentWindow["prevCount"]) + currentWindow["currCount"])
+            const timeElapsed = nowMs - currentWindow["start"]
+            const weight = (this.size - timeElapsed) / this.size
+            const limitApproximation = Math.floor((weight * currentWindow["prevCount"]) + currentWindow["currCount"])
 
-        if (limitApproximation < this.limit) {
-            const multi = this.redis.multi();
-            multi.hset(key, {
-                "start": currentWindow['start'].toString(),
-                "currCount": currentWindow['currCount'] + 1,
-                "prevCount": currentWindow['prevCount']
-            })
-            await multi.exec()
-            return true
+            if (limitApproximation < this.limit) {
+                const multi = this.redis.multi();
+                multi.hset(key, {
+                    "start": currentWindow['start'].toString(),
+                    "currCount": currentWindow['currCount'] + 1,
+                    "prevCount": currentWindow['prevCount']
+                })
+                await multi.exec()
+                return true
+            }
+
+            return false
+        } catch (err) {
+            console.error(`Rate limiter failure: ${err}`)
+            return false
         }
 
-        return false
     }
 
     private truncate(date: number): Date {

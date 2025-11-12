@@ -6,12 +6,11 @@ import { db } from "@/db/db";
 import { notification_last_read } from "@/db/schema/notification_last_read";
 import { notification } from "@/db/schema/notification";
 import { apiCheckAuth } from "@/utils/auth";
+import { pubSubClient } from '@/utils/redis';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-
-const redisServer = new Redis(process.env.REDIS_URL!)
 
 export async function GET(request: NextRequest) {
     const user = await apiCheckAuth()
@@ -23,23 +22,23 @@ export async function GET(request: NextRequest) {
 
     const encoder = new TextEncoder();
     let readableStream = new ReadableStream({
-        start(controller){
-            redisServer.subscribe(userKey, (err) => {
+        start(controller) {
+            pubSubClient.subscribe(userKey, (err) => {
                 return NextResponse.json({ 'error': 'An error occurred.' }, { status: 401 });
             })
 
-            redisServer.on('message', async (channel, message) => {
-                if(channel == userKey){
+            pubSubClient.on('message', async (channel, message) => {
+                if (channel == userKey) {
                     const data = JSON.parse(message);
                     const newNotifications = await lastRead(data.userId)
-                    if(newNotifications != false){
+                    if (newNotifications != false) {
                         controller.enqueue(encoder.encode(`data: {"newNotifications": ${newNotifications}}\n\n`))
                     }
                 }
             })
 
             request.signal.addEventListener('abort', (e) => {
-                redisServer.unsubscribe(userKey)
+                pubSubClient.unsubscribe(userKey)
                 controller.close()
             })
         }

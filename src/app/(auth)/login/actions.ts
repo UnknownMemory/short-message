@@ -1,4 +1,6 @@
 'use server'
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { z } from "zod"
 import { eq } from 'drizzle-orm';
@@ -6,18 +8,37 @@ import bcrypt from 'bcryptjs'
 
 import { db } from "@/db/db"
 import { user } from "@/db/schema/user"
+
 import { generateTokens } from "@/utils/auth";
 import { getFutureDate } from "@/utils/utils";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { RateLimiter } from "@/utils/rate_limiter";
+
 import { User } from "@/types/User";
+
+type LoginState = {
+    errors?: {
+        request?: string;
+        email?: string[];
+        password?: string[];
+    } | null;
+};
 
 const schema = z.object({
     email: z.string({ invalid_type_error: 'Invalid Email' }).email().max(254),
     password: z.string()
 })
 
-export default async function login(prevState: any, formData: FormData) {
+const rateLimiter = new RateLimiter(10, 60000)
+
+export default async function login(prevState: any, formData: FormData): Promise<LoginState> {
+    const ip = headers().get("x-forwarded-for")
+    const isAllowed = await rateLimiter.allow(`${ip}:/login`)
+
+    if (!isAllowed) {
+        return {
+            "errors": { "request": "Too many requests. Please try again later." }
+        }
+    }
 
     const validatedFields = schema.safeParse({
         email: formData.get('email'),
@@ -40,7 +61,7 @@ export default async function login(prevState: any, formData: FormData) {
         if (passwordsMatch) {
             const cookiesStore = cookies();
 
-            cookiesStore.set('accessToken', accessToken, {sameSite: 'strict', expires: getFutureDate(8)})
+            cookiesStore.set('accessToken', accessToken, { sameSite: 'strict', expires: getFutureDate(8) })
             cookiesStore.set('refreshToken', refreshToken, {
                 httpOnly: true,
                 sameSite: 'strict',
@@ -51,5 +72,9 @@ export default async function login(prevState: any, formData: FormData) {
 
             redirect('/')
         }
+    }
+
+    return {
+        errors: { "request": "Invalid email or password." },
     }
 }
