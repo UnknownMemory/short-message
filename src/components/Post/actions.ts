@@ -103,9 +103,9 @@ async function removeLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promi
 }
 
 export async function removeLikeAction(postId: Post["id"]): Promise<true | Error> {
-    return authAction(cookies().get('accessToken'), removeLike, postId)
+    return authAction((await cookies()).get('accessToken'), removeLike, postId);
 }
 
 export async function addLikeAction(postId: Post["id"]): Promise<number | Error | false> {
-    return authAction(cookies().get('accessToken'), addLike, postId)
+    return authAction((await cookies()).get('accessToken'), addLike, postId);
 }

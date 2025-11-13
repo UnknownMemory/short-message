@@ -40,5 +40,5 @@ async function updateAccInfo(loggedUser: UserJWTPayload, formData: FormData) {
 }
 
 export async function updateAcc(prevState: any, formData: FormData) {
-    return authAction(cookies().get('accessToken'), updateAccInfo, formData)
+    return authAction((await cookies()).get('accessToken'), updateAccInfo, formData);
 }

@@ -34,5 +34,5 @@ async function action(loggedUser: UserJWTPayload, createdAt: Date, text: string)
 }
 
 export default async function savePost(createdAt: Date, text: string) {
-    return authAction(cookies().get('accessToken'), action, createdAt, text)
+    return authAction((await cookies()).get('accessToken'), action, createdAt, text);
 }

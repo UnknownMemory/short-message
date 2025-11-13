@@ -47,5 +47,5 @@ async function deletePost(loggedUser: UserJWTPayload, postId: Post["id"]): Promi
 
 
 export async function deletePostAction(postId: Post["id"]): Promise<Error | DeletePost[]> {
-    return authAction(cookies().get('accessToken'), deletePost, postId)
+    return authAction((await cookies()).get('accessToken'), deletePost, postId);
 }

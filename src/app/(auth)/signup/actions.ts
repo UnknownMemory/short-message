@@ -2,6 +2,8 @@
 
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation";
+
 
 import { z } from "zod"
 import { hash } from "bcryptjs"
@@ -29,8 +31,8 @@ const schema = z.object({
 
 const rateLimiter = new RateLimiter(10, 60000)
 
-export default async function signUp(prevState: any, formData: FormData): Promise<SignUpState | undefined> {
-    const ip = headers().get("x-forwarded-for")
+export default async function signUp(prevState: SignUpState, formData: FormData): Promise<SignUpState> {
+    const ip = (await headers()).get("x-forwarded-for")
     const isAllowed = await rateLimiter.allow(`${ip}:/signup`)
 
     if (!isAllowed) {
@@ -66,4 +68,5 @@ export default async function signUp(prevState: any, formData: FormData): Promis
     })
 
     revalidatePath('/signup')
+    redirect('login')
 }

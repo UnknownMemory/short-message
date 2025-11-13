@@ -1,5 +1,6 @@
 "use client";
-import { useFormState } from "react-dom";
+
+import { useActionState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +8,7 @@ import login from "./actions";
 import { FormInput } from "@/components/FormInput";
 
 export default function LoginPage() {
-    const [state, loginAction] = useFormState(login, null);
+    const [state, loginAction] = useActionState(login, {});
 
     return (
         <div className="h-dvh w-full flex flex-col items-center justify-center">

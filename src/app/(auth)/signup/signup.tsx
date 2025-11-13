@@ -1,6 +1,6 @@
 "use client";
+import { useActionState } from "react";
 
-import { useFormState } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ import signUp from "./actions";
 import { FormInput } from "@/components/FormInput";
 
 export default function SignUpPage() {
-    const [state, signUpAction] = useFormState(signUp, null);
+    const [state, signUpAction] = useActionState(signUp, {});
 
     return (
         <div className="h-dvh w-full flex flex-col items-center justify-center">

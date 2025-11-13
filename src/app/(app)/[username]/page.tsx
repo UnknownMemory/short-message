@@ -15,7 +15,7 @@ export default function Profile() {
     const [isOpen, setIsOpen] = useState(false);
     const [tab, setTab] = useState<"posts" | "likes">("posts");
 
-    const params = useParams();
+    const params = useParams<{ username: string }>();
     const qClient = useQueryClient();
 
     const { data: me } = useCurrentUserQuery();

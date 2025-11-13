@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useActionState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { updateAcc } from "./actions";
@@ -19,7 +18,7 @@ interface EditDialogProps {
 
 export const EditProfileDialog = ({ user, isOpen, onClose }: EditDialogProps) => {
     const queryClient = useQueryClient();
-    const [state, updateAccAction] = useFormState(updateAcc, null);
+    const [state, updateAccAction] = useActionState(updateAcc, null);
 
     useEffect(() => {
         (async () => {

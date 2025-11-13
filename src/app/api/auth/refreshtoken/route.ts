@@ -10,7 +10,7 @@ import { getFutureDate } from '@/utils/utils';
 export async function GET(request: Request) {
     let jwt: JWTVerifyResult
 
-    const cookieStore = cookies()
+    const cookieStore = await cookies()
     const refreshToken = cookieStore.get('refreshToken')
 
     if (refreshToken == undefined) {

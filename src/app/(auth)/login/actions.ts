@@ -30,8 +30,8 @@ const schema = z.object({
 
 const rateLimiter = new RateLimiter(10, 60000)
 
-export default async function login(prevState: any, formData: FormData): Promise<LoginState> {
-    const ip = headers().get("x-forwarded-for")
+export default async function login(prevState: LoginState, formData: FormData): Promise<LoginState> {
+    const ip = (await headers()).get("x-forwarded-for")
     const isAllowed = await rateLimiter.allow(`${ip}:/login`)
 
     if (!isAllowed) {
@@ -59,7 +59,7 @@ export default async function login(prevState: any, formData: FormData): Promise
 
         const passwordsMatch = await bcrypt.compare(validatedFields.data.password, users[0].password);
         if (passwordsMatch) {
-            const cookiesStore = cookies();
+            const cookiesStore = await cookies();
 
             cookiesStore.set('accessToken', accessToken, { sameSite: 'strict', expires: getFutureDate(8) })
             cookiesStore.set('refreshToken', refreshToken, {
