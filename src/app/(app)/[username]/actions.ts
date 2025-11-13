@@ -43,5 +43,5 @@ async function action(loggedUser: UserJWTPayload, profileID: User["id"]) {
 
 
 export default async function followAction(profileID: User["id"]) {
-    return authAction(cookies().get('accessToken'), action, profileID)
+    return authAction((await cookies()).get('accessToken'), action, profileID);
 }

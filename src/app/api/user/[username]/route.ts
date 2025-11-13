@@ -15,7 +15,8 @@ const withIsFollowing = <T extends PgSelect>(qb: T, userID: number) => {
     return qb.leftJoin(isFollowing, and(eq(isFollowing.userID, userID), eq(isFollowing.followingID, user.id))).groupBy(user.id, isFollowing.userID, isFollowing.followingID)
 }
 
-export async function GET(request: Request, { params }: { params: { username: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ username: string }> }) {
+    const params = await props.params;
     const loggedUser = await apiCheckAuth()
     if (!loggedUser) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });

@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 import { apiCheckAuth } from "@/utils/auth";
 import { notification_last_read } from '@/db/schema/notification_last_read';
 
-export async function GET(request: Request) {
+export async function GET() {
     const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
         INNER JOIN post ON ln.post_id = post.id
         LEFT JOIN public.user u ON u.id = ln.notifier_id 
         WHERE ln.rnum = 1
-        ORDER BY ln.notif_date DESC, ln.post_id
+        ORDER BY ln.created_at DESC, ln.post_id
     `)
 
     await db.update(notification_last_read).set({ last_read: new Date() }).where(eq(notification_last_read.userId, userID))

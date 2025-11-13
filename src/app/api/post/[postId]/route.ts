@@ -9,7 +9,8 @@ import { like } from "@/db/schema/like"
 import { apiCheckAuth } from "@/utils/auth";
 
 
-export async function GET(request: Request, { params }: { params: { postId: number } }) {
+export async function GET(request: Request, props: { params: Promise<{ postId: string }> }) {
+    const params = await props.params;
     const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
@@ -32,7 +33,7 @@ export async function GET(request: Request, { params }: { params: { postId: numb
         .leftJoin(user, eq(post.authorID, user.id))
         .leftJoin(like, and(eq(like.userID, userID), eq(like.postID, post.id)))
         .leftJoin(likes, eq(post.id, likes.postID))
-        .where(eq(post.id, params.postId))
+        .where(eq(post.id, Number(params.postId)))
         .groupBy(post.id, like.userID, user.id)
 
     if (userPost.length > 0) {

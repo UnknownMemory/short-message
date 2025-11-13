@@ -9,8 +9,8 @@ import { like } from "@/db/schema/like";
 import { apiCheckAuth } from "@/utils/auth";
 
 
-
-export async function GET(request: NextRequest, { params }: { params: { profileId: number } }) {
+export async function GET(request: NextRequest, props: { params: Promise<{ profileId: string }> }) {
+    const params = await props.params;
     const isLogged = await apiCheckAuth()
     if (!isLogged) {
         return NextResponse.json({ 'error': 'You must be authenticated to perform this action.' }, { status: 401 });
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest, { params }: { params: { profileI
         .leftJoin(likes, eq(post.id, likes.postID))
         .where(
             and(
-                eq(post.authorID, params.profileId),
+                eq(post.authorID, Number(params.profileId)),
                 request.nextUrl.searchParams.has("cursor") ? lt(post.created_at, new Date(<string>request.nextUrl.searchParams.get("cursor"))) : undefined
             ))
         .groupBy(post.id, user.id, like.userID)

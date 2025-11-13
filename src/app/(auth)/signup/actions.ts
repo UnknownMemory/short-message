@@ -1,12 +1,27 @@
 'use server'
 
+import { headers } from "next/headers"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation";
+
+
 import { z } from "zod"
+import { hash } from "bcryptjs"
+
 import { db } from "@/db/db"
 import { user } from "@/db/schema/user"
-import { revalidatePath } from "next/cache"
-import { hash } from "bcryptjs"
-import { notification_last_read } from "@/db/schema/notification_last_read"
 
+import { notification_last_read } from "@/db/schema/notification_last_read"
+import { RateLimiter } from "@/utils/rate_limiter"
+
+type SignUpState = {
+    errors?: {
+        request?: string;
+        email?: string[];
+        username?: string[];
+        password?: string[];
+    } | null;
+};
 
 const schema = z.object({
     email: z.string({ invalid_type_error: 'Invalid Email' }).email().max(254),
@@ -14,7 +29,18 @@ const schema = z.object({
     password: z.string().min(8, { message: "Must be 8 or more characters long" })
 })
 
-export default async function signUp(prevState: any, formData: FormData) {
+const rateLimiter = new RateLimiter(10, 60000)
+
+export default async function signUp(prevState: SignUpState, formData: FormData): Promise<SignUpState> {
+    const ip = (await headers()).get("x-forwarded-for")
+    const isAllowed = await rateLimiter.allow(`${ip}:/signup`)
+
+    if (!isAllowed) {
+        return {
+            "errors": { "request": "Too many requests. Please try again later." }
+        }
+    }
+
     const validatedFields = schema.safeParse({
         email: formData.get('email'),
         username: formData.get('username'),
@@ -42,4 +68,5 @@ export default async function signUp(prevState: any, formData: FormData) {
     })
 
     revalidatePath('/signup')
+    redirect('login')
 }

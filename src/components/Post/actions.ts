@@ -1,7 +1,6 @@
 'use server'
 
 import { z } from "zod"
-import Redis from 'ioredis'
 import { cookies } from "next/headers"
 import { eq, and } from "drizzle-orm";
 
@@ -14,6 +13,8 @@ import { authAction } from "@/utils/auth"
 import { Post } from "@/types/Post";
 import { UserJWTPayload } from "@/types/User";
 
+import { pubSubClient } from "@/utils/redis";
+
 
 const schema = z.object({
     postId: z.number()
@@ -23,7 +24,7 @@ interface Error {
     errors: string | string[] | undefined,
 }
 
-const redisServer = new Redis(process.env.REDIS_URL!)
+
 async function addLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<number | Error | false> {
     const validatedFields = schema.safeParse({
         postId: postId
@@ -56,7 +57,7 @@ async function addLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promise<
         }).returning({ "notifiedId": notification.notifiedId })
 
         if (newLike[0].notifiedId != null) {
-            await redisServer.publish(`user:${newLike[0].notifiedId}`, JSON.stringify({'userId': newLike[0].notifiedId}))
+            await pubSubClient.publish(`user:${newLike[0].notifiedId}`, JSON.stringify({ 'userId': newLike[0].notifiedId }))
             return newLike[0].notifiedId
         }
     }
@@ -90,7 +91,8 @@ async function removeLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promi
         try {
             await db.delete(notification).where(and(
                 eq(notification.postId, Number(postId)),
-                eq(notification.type, "like")
+                eq(notification.type, "like"),
+                eq(notification.notifierId, Number(loggedUser.id))
             ))
         } catch (e) {
             return { errors: "An error occurred on the server" }
@@ -101,9 +103,9 @@ async function removeLike(loggedUser: UserJWTPayload, postId: Post["id"]): Promi
 }
 
 export async function removeLikeAction(postId: Post["id"]): Promise<true | Error> {
-    return authAction(cookies().get('accessToken'), removeLike, postId)
+    return authAction((await cookies()).get('accessToken'), removeLike, postId);
 }
 
 export async function addLikeAction(postId: Post["id"]): Promise<number | Error | false> {
-    return authAction(cookies().get('accessToken'), addLike, postId)
+    return authAction((await cookies()).get('accessToken'), addLike, postId);
 }

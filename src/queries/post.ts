@@ -11,7 +11,7 @@ export const usePostQuery = (postId: number) => {
         initialData: () => {
             return qClient.getQueryData(['post', postId])
         },
-        staleTime: Infinity,
+        staleTime: 1000 * 10,
     })
 }
 
@@ -23,24 +23,24 @@ export const useTimelineQuery = (enabled: boolean) => {
             return await tFetch('/api/post/timeline' + cursor, 'GET')
         },
         initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
-        getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
         enabled: enabled,
         staleTime: Infinity
     })
 }
 
-export const useUserTimelineQuery = (username: string | string[], userId: number) => {
+export const useUserTimelineQuery = (username: string | string[], userId: number, tab: "posts" | "likes") => {
+    const isTabPosts = tab == "posts"
     return useInfiniteQuery({
-        queryKey: ['profile_posts', username],
+        queryKey: ['posts', username],
         queryFn: async ({ pageParam }) => {
             const cursor = pageParam ? '?cursor=' + pageParam : ''
-            return await tFetch(`/api/post/user-timeline/${userId}/${cursor}` + cursor, 'GET')
+            return await tFetch(`/api/post/user-timeline/${userId}` + cursor, 'GET')
         },
         initialPageParam: false,
-        getNextPageParam: (lastPage, pages) => lastPage.pageParam,
+        getNextPageParam: (lastPage, pages) => lastPage.cursor,
         getPreviousPageParam: (firstPage, pages) => firstPage.pageParam,
-        enabled: !!userId,
+        enabled: !!userId && isTabPosts,
         staleTime: Infinity
     })
 }
