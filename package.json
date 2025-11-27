@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "drizzle-migrate": "tsx src/db/migrate"
+    "migrate": "tsx src/db/migrate"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.10.0",
